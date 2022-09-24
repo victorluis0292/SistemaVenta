@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "536874348219",
+    "project_id": "spacevi-9ce4d",
+    "storage_bucket": "spacevi-9ce4d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:536874348219:android:97d89866e2d5ecde9b039e",
+        "android_client_info": {
+          "package_name": "com.example.spacevi"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "536874348219-1v3lqp7sr655h6hnhs9j2gdh7bd9mabm.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAhlxMVMOrgPOucbW-e7hOEX_Fezpy34z0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "536874348219-1v3lqp7sr655h6hnhs9j2gdh7bd9mabm.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
