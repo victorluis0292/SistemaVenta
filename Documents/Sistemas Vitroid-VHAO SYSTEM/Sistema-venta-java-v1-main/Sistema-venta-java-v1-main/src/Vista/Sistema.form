@@ -549,7 +549,7 @@
               </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="20" y="160" width="1030" height="310"/>
+                  <AbsoluteConstraints x="30" y="160" width="1030" height="310"/>
                 </Constraint>
               </Constraints>
 
@@ -753,6 +753,9 @@
               </Constraints>
             </Component>
             <Component class="javax.swing.JTextField" name="txtIdPro">
+              <AuxValues>
+                <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
+              </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
                   <AbsoluteConstraints x="678" y="126" width="-1" height="-1"/>

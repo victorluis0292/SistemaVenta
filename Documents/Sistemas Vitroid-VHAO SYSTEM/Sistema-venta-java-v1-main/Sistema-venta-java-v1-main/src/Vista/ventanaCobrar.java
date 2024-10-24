@@ -17,6 +17,7 @@ import javax.swing.table.DefaultTableModel; // se llamo con el  jframe de sistem
 import Vista.Sistema;
 import static Vista.Sistema.TableVenta;
 import static Vista.Sistema.txtIdCV;
+import static Vista.Sistema.txtIdPro;
 import static Vista.Sistema.LabelVendedor; 
 import static Vista.Sistema.txtCodigoVenta;
 import static Vista.Sistema.lblEnviaTotal;
@@ -292,7 +293,7 @@ import static Vista.frmtabla2.modelo2;
     }//GEN-LAST:event_txtPaga1KeyReleased
 
     private void txtPaga1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaga1ActionPerformed
-pagarenter();
+//pagarenter();
  //pagarenterCreditos();// TODO add your handling code here:
     }//GEN-LAST:event_txtPaga1ActionPerformed
 
@@ -530,6 +531,8 @@ pagarenter();
         lblEnviaTotal.setText("");
           txtPaga1.setText("");
            lblcambio.setText("");
+           txtIdCV.setText("");
+           txtIdPro.setText("");
     }
 
   private void LimpiarTableVenta() {

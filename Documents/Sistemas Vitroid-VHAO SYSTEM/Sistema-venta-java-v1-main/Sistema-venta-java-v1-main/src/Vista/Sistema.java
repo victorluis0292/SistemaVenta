@@ -127,12 +127,12 @@ public final class Sistema extends javax.swing.JFrame {
         
         
        
-        txtPaga1.setVisible(false);
+        txtPaga1.setVisible(true);
           jLabel39.setVisible(false);
           
           
           jLabel40.setVisible(false);
-          btnGenerarVenta.setVisible(false);
+          btnGenerarVenta.setVisible(true);
           
           
           
@@ -815,7 +815,7 @@ public final class Sistema extends javax.swing.JFrame {
             TableVenta.getColumnModel().getColumn(4).setMaxWidth(150);
         }
 
-        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(20, 160, 1030, 310));
+        jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 1030, 310));
 
         btnEliminarventa.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar.png"))); // NOI18N
         btnEliminarventa.addActionListener(new java.awt.event.ActionListener() {
@@ -3223,7 +3223,7 @@ if (TableCreditClient.getRowCount() > 0) {
            
                 //RegistrarVentaCreditocliente();// si guarda  el registro pero no guarda el total - vendedor .total. fecha
                 RegistrarDetalleCreditocliente();// id pro, cantidad,precio, id venta
-                //ActualizarStock();
+                ActualizarStock();
                 LimpiarTableCredit();
                // LimpiarClienteventa();    se omitio  de momento
                 LimparVentaCredit();
@@ -3518,7 +3518,7 @@ void Operacion(){
     public static javax.swing.JTextField txtIdCV1;
     private javax.swing.JTextField txtIdCliente;
     private javax.swing.JTextField txtIdConfig;
-    private javax.swing.JTextField txtIdPro;
+    public static javax.swing.JTextField txtIdPro;
     private javax.swing.JTextField txtIdPro1;
     private javax.swing.JTextField txtIdPro2;
     private javax.swing.JTextField txtIdProveedor;

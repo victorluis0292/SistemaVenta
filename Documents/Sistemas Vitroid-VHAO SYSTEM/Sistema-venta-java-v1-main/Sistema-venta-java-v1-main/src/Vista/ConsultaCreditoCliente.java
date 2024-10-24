@@ -82,7 +82,7 @@ public class ConsultaCreditoCliente extends javax.swing.JFrame {
                 TotalPagarX();
 
           //ListarProductos4();
-           txtBuscar2.requestFocus();
+           txtBuscar3.requestFocus();
           this.setLocationRelativeTo(null);
            txtCantidadVenta.setVisible(false);
            jLabel5.setVisible(false);
@@ -90,12 +90,11 @@ public class ConsultaCreditoCliente extends javax.swing.JFrame {
            //boton buscar
            jLabel52.setVisible(false);
            
-               txtBuscar2.setVisible(false);
-               btnGenerarVentaCredit.setVisible(false);
-               btnEliminar.setVisible(false);
+               txtBuscar3.setVisible(false);
+               
                txtRucVentaCredit2.setVisible(false);
                txtNombreClienteventaCredit.setVisible(false);
-               btnCobrar.setVisible(false);
+              
                jLabel59.setVisible(false);
                        jLabel58.setVisible(false);
     }
@@ -105,7 +104,7 @@ public void sedDato(String dato,String nombreCliente){
 this.dato=dato;
 this.nombreCliente=nombreCliente;
 
-txtBuscar2.setText(dato);
+txtBuscar3.setText(dato);
 lblNombreCliente.setText(nombreCliente);
 
 
@@ -125,22 +124,21 @@ lblNombreCliente.setText(nombreCliente);
         TableConsultaCreditCliente = new javax.swing.JTable();
         jLabel5 = new javax.swing.JLabel();
         txtCantidadVenta = new javax.swing.JTextField();
-        txtBuscar2 = new javax.swing.JTextField();
+        txtBuscar3 = new javax.swing.JTextField();
         jLabel52 = new javax.swing.JLabel();
         jLabel60 = new javax.swing.JLabel();
         lblEnviaTotalCredit = new javax.swing.JLabel();
         lblNombreCliente = new javax.swing.JLabel();
         jLabel1 = new javax.swing.JLabel();
         PrintBtn = new javax.swing.JButton();
-        btnCobrar = new javax.swing.JButton();
         LabelVendedor = new javax.swing.JLabel();
         txtIdCV = new javax.swing.JTextField();
-        btnGenerarVentaCredit = new javax.swing.JButton();
         jLabel58 = new javax.swing.JLabel();
         txtRucVentaCredit2 = new javax.swing.JTextField();
         jLabel59 = new javax.swing.JLabel();
         txtNombreClienteventaCredit = new javax.swing.JTextField();
         btnEliminar = new javax.swing.JButton();
+        jButton1 = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("formKeyReleased"); // NOI18N
@@ -238,21 +236,21 @@ lblNombreCliente.setText(nombreCliente);
             }
         });
 
-        txtBuscar2.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        txtBuscar2.addActionListener(new java.awt.event.ActionListener() {
+        txtBuscar3.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
+        txtBuscar3.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtBuscar2ActionPerformed(evt);
+                txtBuscar3ActionPerformed(evt);
             }
         });
-        txtBuscar2.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtBuscar3.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtBuscar2KeyPressed(evt);
+                txtBuscar3KeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtBuscar2KeyReleased(evt);
+                txtBuscar3KeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtBuscar2KeyTyped(evt);
+                txtBuscar3KeyTyped(evt);
             }
         });
 
@@ -282,37 +280,11 @@ lblNombreCliente.setText(nombreCliente);
             }
         });
 
-        btnCobrar.setFont(new java.awt.Font("Tahoma", 0, 18)); // NOI18N
-        btnCobrar.setText("cobrar");
-        btnCobrar.addMouseListener(new java.awt.event.MouseAdapter() {
-            public void mouseClicked(java.awt.event.MouseEvent evt) {
-                btnCobrarMouseClicked(evt);
-            }
-        });
-        btnCobrar.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnCobrarActionPerformed(evt);
-            }
-        });
-        btnCobrar.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                btnCobrarKeyPressed(evt);
-            }
-        });
-
         LabelVendedor.setForeground(new java.awt.Color(255, 255, 255));
         LabelVendedor.setHorizontalAlignment(javax.swing.SwingConstants.CENTER);
         LabelVendedor.setText("Vida Informatico");
 
         txtIdCV.setText("1");
-
-        btnGenerarVentaCredit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/print.png"))); // NOI18N
-        btnGenerarVentaCredit.setText("ACEPTAR");
-        btnGenerarVentaCredit.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                btnGenerarVentaCreditActionPerformed(evt);
-            }
-        });
 
         jLabel58.setFont(new java.awt.Font("Tahoma", 1, 13)); // NOI18N
         jLabel58.setText("ID");
@@ -342,6 +314,7 @@ lblNombreCliente.setText(nombreCliente);
         txtNombreClienteventaCredit.setEditable(false);
         txtNombreClienteventaCredit.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
         txtNombreClienteventaCredit.setForeground(new java.awt.Color(51, 51, 255));
+        txtNombreClienteventaCredit.setText("DEFAULT");
 
         btnEliminar.setText("Eliminar");
         btnEliminar.addActionListener(new java.awt.event.ActionListener() {
@@ -349,6 +322,8 @@ lblNombreCliente.setText(nombreCliente);
                 btnEliminarActionPerformed(evt);
             }
         });
+
+        jButton1.setText("jButton1");
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
@@ -365,18 +340,11 @@ lblNombreCliente.setText(nombreCliente);
                 .addComponent(txtNombreClienteventaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(658, 658, 658))
             .addGroup(layout.createSequentialGroup()
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addContainerGap()
-                        .addComponent(txtIdCV, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                        .addComponent(LabelVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(503, 503, 503)
-                        .addComponent(btnGenerarVentaCredit)
-                        .addGap(39, 39, 39)
-                        .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addGap(0, 0, Short.MAX_VALUE))
+                .addContainerGap()
+                .addComponent(txtIdCV, javax.swing.GroupLayout.PREFERRED_SIZE, 20, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(LabelVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 868, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
@@ -387,13 +355,15 @@ lblNombreCliente.setText(nombreCliente);
                                 .addGap(15, 15, 15)
                                 .addComponent(PrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
+                                .addGap(38, 38, 38)
+                                .addComponent(btnEliminar))
+                            .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addComponent(btnEliminar)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel60, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addGap(18, 18, 18)
-                                        .addComponent(lblEnviaTotalCredit))))))
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
+                                    .addComponent(jButton1)
+                                    .addComponent(jLabel60, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addGap(18, 18, 18)
+                                .addComponent(lblEnviaTotalCredit))))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(499, 499, 499)
                         .addComponent(jLabel1)
@@ -403,7 +373,7 @@ lblNombreCliente.setText(nombreCliente);
                         .addGap(99, 99, 99)
                         .addComponent(jLabel52)
                         .addGap(27, 27, 27)
-                        .addComponent(txtBuscar2, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtBuscar3, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(131, 131, 131)
                         .addComponent(jLabel5)
@@ -428,20 +398,21 @@ lblNombreCliente.setText(nombreCliente);
                                     .addComponent(jLabel1))
                                 .addGap(8, 8, 8)))
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                            .addComponent(txtBuscar2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(txtBuscar3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addComponent(jLabel52)))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(68, 68, 68)
-                        .addComponent(PrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(PrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING, false)
                             .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 614, javax.swing.GroupLayout.PREFERRED_SIZE)
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(242, 242, 242)
+                                .addGap(147, 147, 147)
                                 .addComponent(btnEliminar)
                                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addComponent(jButton1)
+                                .addGap(143, 143, 143)
                                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                                     .addComponent(jLabel60)
                                     .addComponent(lblEnviaTotalCredit))))
@@ -449,7 +420,7 @@ lblNombreCliente.setText(nombreCliente);
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                             .addComponent(jLabel5)
                             .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED))
+                        .addGap(555, 555, 555))
                     .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
@@ -462,11 +433,7 @@ lblNombreCliente.setText(nombreCliente);
                                 .addGap(20, 20, 20)
                                 .addComponent(jLabel59))
                             .addComponent(txtNombreClienteventaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                        .addGap(49, 49, 49)))
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(btnGenerarVentaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 45, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnCobrar, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(503, 503, 503))
+                        .addGap(597, 597, 597))))
         );
 
         pack();
@@ -502,60 +469,6 @@ jMyTable.addKeyListener(new java.awt.event.KeyAdapter() {
        
     
     
-    private void txtCantidadVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadVentaActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadVentaActionPerformed
-
-    private void txtCantidadVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVentaKeyPressed
-        // TODO add your handling code here:
-      
-    }//GEN-LAST:event_txtCantidadVentaKeyPressed
-
-    private void txtCantidadVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVentaKeyTyped
-        // TODO add your handling code here:
-     //   event.numberKeyPress(evt);
-    }//GEN-LAST:event_txtCantidadVentaKeyTyped
-
-    private void txtBuscar2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscar2ActionPerformed
-       // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscar2ActionPerformed
-
-    private void txtBuscar2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar2KeyPressed
-          this.setLocationRelativeTo(null);
-     // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscar2KeyPressed
-
-    private void txtBuscar2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar2KeyReleased
-
-    // if (!"".equals(txtBuscar.getText())) {
-        
-     //}else
-         
-     //{
-       //     } 
-     
-
- 
-        
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtBuscar2KeyReleased
-
-    private void txtBuscar2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar2KeyTyped
-
-KeyboardFocusManager kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-kb.addKeyEventPostProcessor(new KeyEventPostProcessor(){
-            public boolean postProcessKeyEvent(KeyEvent e){
-                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null){
-                    System.out.println("probando...");
-                    dispose();
-                    return false;
-                }
-                return true;
-            }
-});       
-     
-    }//GEN-LAST:event_txtBuscar2KeyTyped
-
     private void TableConsultaCreditClienteKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TableConsultaCreditClienteKeyTyped
 
  //if(evt.getKeyCode() == evt.VK_ENTER){
@@ -563,7 +476,7 @@ kb.addKeyEventPostProcessor(new KeyEventPostProcessor(){
      //}
 int fila = TableConsultaCreditCliente.getSelectedRow();
       if(fila == -1){
-          txtBuscar2.requestFocus();
+          txtBuscar3.requestFocus();
      JOptionPane.showMessageDialog(null,"No se selecciono ningna fila");
         }else{
           // EnterBusqueda();      
@@ -618,71 +531,64 @@ System.err.format("Erreur d'impresion ",e.getMessage());
 }     // TODO add your handling code here:
     }//GEN-LAST:event_PrintBtnActionPerformed
 
-    private void btnCobrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCobrarMouseClicked
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCobrarMouseClicked
+    private void txtBuscar3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar3KeyTyped
 
-    private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
-
-        if (TableConsultaCreditCliente.getRowCount() > 0) {
-            //original
-
-            //if (!"".equals(txtPaga1.getText())) {
-                ventanaCobrar cobrar = new ventanaCobrar();
-                cobrar.setVisible(true);
-
-                // String  info= lblEnviaTotal.getText();
-                //ventanaCobrar.lblEnviaTotal.setText(info);
-                // if (!"".equals(txtNombreClienteventa.getText())) {
-
-                    // } else {
-                    //   JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
-                    // }
-                //} else {
-                //JOptionPane.showMessageDialog(null, "Paga con $ ? ");
-                // txtPaga1.requestFocus();
-                //}
-        } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
-            txtCodigoVenta.requestFocus();
-        }
-    }//GEN-LAST:event_btnCobrarActionPerformed
-
-    private void btnCobrarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_btnCobrarKeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_btnCobrarKeyPressed
-
-    private void btnGenerarVentaCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaCreditActionPerformed
-        if (TableConsultaCreditCliente.getRowCount() > 0) {
-            //original
-
-            if (!"".equals(txtNombreClienteventaCredit.getText())) {
-
-                 // RegistrarVentaCreditos();// si guarda  el registro pero no guarda el total - vendedor .total. fecha
-              //RegistrarDetalleCreditocliente();// id pro, cantidad,precio, id venta
-              
-                //ActualizarStock();
-                LimpiarTableCredit();
-                // LimpiarClienteventa();    se omitio  de momento
-                // LimparVentaCredit();
-                // LimpiarCobro();
-                txtNombreClienteventaCredit.requestFocus();
-
-                JOptionPane.showMessageDialog(null, "Registro exitoso");
-
-            } else {
-                JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
-                txtRucVentaCredit2.requestFocus();
+        KeyboardFocusManager kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
+        kb.addKeyEventPostProcessor(new KeyEventPostProcessor(){
+            public boolean postProcessKeyEvent(KeyEvent e){
+                if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null){
+                    System.out.println("probando...");
+                    dispose();
+                    return false;
+                }
+                return true;
             }
+        });
 
-        } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
-        }                  // TODO add your handling code here:
-    }//GEN-LAST:event_btnGenerarVentaCreditActionPerformed
+    }//GEN-LAST:event_txtBuscar3KeyTyped
 
-    private void txtRucVentaCredit2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRucVentaCredit2ActionPerformed
+    private void txtBuscar3KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar3KeyReleased
+
+        // if (!"".equals(txtBuscar.getText())) {
+
+            //}else
+
+        //{
+            //     }
+
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtRucVentaCredit2ActionPerformed
+    }//GEN-LAST:event_txtBuscar3KeyReleased
+
+    private void txtBuscar3KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar3KeyPressed
+        this.setLocationRelativeTo(null);
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscar3KeyPressed
+
+    private void txtBuscar3ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscar3ActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtBuscar3ActionPerformed
+
+    private void txtCantidadVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVentaKeyTyped
+        // TODO add your handling code here:
+        //   event.numberKeyPress(evt);
+    }//GEN-LAST:event_txtCantidadVentaKeyTyped
+
+    private void txtCantidadVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVentaKeyPressed
+        // TODO add your handling code here:
+
+    }//GEN-LAST:event_txtCantidadVentaKeyPressed
+
+    private void txtCantidadVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantidadVentaActionPerformed
+
+    private void txtRucVentaCredit2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCredit2KeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRucVentaCredit2KeyTyped
+
+    private void txtRucVentaCredit2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCredit2KeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRucVentaCredit2KeyReleased
 
     private void txtRucVentaCredit2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCredit2KeyPressed
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
@@ -697,7 +603,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
                     //original
 
                     txtIdCV.setText("" + cl.getId());
-                   
+
                 } else {
                     txtRucVentaCredit2.setText("");
                     JOptionPane.showMessageDialog(null, "El cliente no existe");
@@ -708,17 +614,12 @@ System.err.format("Erreur d'impresion ",e.getMessage());
         }        // TODO add your handling code here:
     }//GEN-LAST:event_txtRucVentaCredit2KeyPressed
 
-    private void txtRucVentaCredit2KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCredit2KeyReleased
+    private void txtRucVentaCredit2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRucVentaCredit2ActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtRucVentaCredit2KeyReleased
-
-    private void txtRucVentaCredit2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCredit2KeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRucVentaCredit2KeyTyped
+    }//GEN-LAST:event_txtRucVentaCredit2ActionPerformed
 
     private void btnEliminarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarActionPerformed
-   
-    
+
         modelo = (DefaultTableModel) TableConsultaCreditCliente.getModel();
         modelo.removeRow(TableConsultaCreditCliente.getSelectedRow());
     }//GEN-LAST:event_btnEliminarActionPerformed
@@ -805,7 +706,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
        
        
       //el trim sirve para remover espacios
-         String cadena = txtBuscar2.getText().trim();
+         String cadena = txtBuscar3.getText().trim();
     String sql = "Select * from detalle_creditocliente where dni   like'"+"%"+cadena+"%' OR nombre  like'"+"%"+cadena+"%' OR precio  like'"+"%"+cadena+"%' OR fecha  like'"+"%"+cadena+"%'  ORDER BY `detalle_creditocliente`.`id` ASC" ;
    
       try{
@@ -893,24 +794,13 @@ System.err.format("Erreur d'impresion ",e.getMessage());
         }
     }
       
-        private void EliminarClienteCredito() {
-      if (!"".equals(txtRucVentaCredit2.getText())) {
-            int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de eliminar");
-            if (pregunta == 0) {
-                int dni = Integer.parseInt(txtRucVentaCredit2.getText());
-                Vdao.EliminarClienteCredito(dni);
-                //LimpiarTable();
-                //LimpiarCliente();
-                //ListarCliente();
-            }
-        }}
+      
     // Variables declaration - do not modify//GEN-BEGIN:variables
     public static javax.swing.JLabel LabelVendedor;
     private javax.swing.JButton PrintBtn;
     public static javax.swing.JTable TableConsultaCreditCliente;
-    public static javax.swing.JButton btnCobrar;
     private javax.swing.JButton btnEliminar;
-    private javax.swing.JButton btnGenerarVentaCredit;
+    private javax.swing.JButton jButton1;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel52;
@@ -920,10 +810,10 @@ System.err.format("Erreur d'impresion ",e.getMessage());
     private javax.swing.JScrollPane jScrollPane8;
     public static javax.swing.JLabel lblEnviaTotalCredit;
     private javax.swing.JLabel lblNombreCliente;
-    private javax.swing.JTextField txtBuscar2;
+    private javax.swing.JTextField txtBuscar3;
     private javax.swing.JTextField txtCantidadVenta;
-    public static javax.swing.JTextField txtIdCV;
-    public static javax.swing.JTextField txtNombreClienteventaCredit;
-    public static javax.swing.JTextField txtRucVentaCredit2;
+    private javax.swing.JTextField txtIdCV;
+    private javax.swing.JTextField txtNombreClienteventaCredit;
+    private javax.swing.JTextField txtRucVentaCredit2;
     // End of variables declaration//GEN-END:variables
 }
