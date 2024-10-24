@@ -30,7 +30,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
         txtCodigoEntrada = new javax.swing.JTextField();
         txtDescripcionEntrada = new javax.swing.JTextField();
         txtCantidadEntrada = new javax.swing.JTextField();
-        txtCantidadEntrada1 = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -76,25 +75,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
             }
         });
 
-        txtCantidadEntrada1.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        txtCantidadEntrada1.setText("1");
-        txtCantidadEntrada1.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidadEntrada1ActionPerformed(evt);
-            }
-        });
-        txtCantidadEntrada1.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCantidadEntrada1KeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtCantidadEntrada1KeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCantidadEntrada1KeyTyped(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -107,10 +87,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
                 .addGap(19, 19, 19)
                 .addComponent(txtCantidadEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addContainerGap(213, Short.MAX_VALUE))
-            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                .addComponent(txtCantidadEntrada1, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(186, 186, 186))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -120,9 +96,7 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
                     .addComponent(txtCodigoEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtDescripcionEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                     .addComponent(txtCantidadEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
-                .addComponent(txtCantidadEntrada1, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(241, Short.MAX_VALUE))
+                .addContainerGap(278, Short.MAX_VALUE))
         );
 
         pack();
@@ -245,22 +219,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCantidadEntradaKeyTyped
 
-    private void txtCantidadEntrada1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadEntrada1ActionPerformed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadEntrada1ActionPerformed
-
-    private void txtCantidadEntrada1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntrada1KeyPressed
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadEntrada1KeyPressed
-
-    private void txtCantidadEntrada1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntrada1KeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadEntrada1KeyReleased
-
-    private void txtCantidadEntrada1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntrada1KeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadEntrada1KeyTyped
-
     /**
      * @param args the command line arguments
      */
@@ -298,7 +256,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JTextField txtCantidadEntrada;
-    private javax.swing.JTextField txtCantidadEntrada1;
     private javax.swing.JTextField txtCodigoEntrada;
     private javax.swing.JTextField txtDescripcionEntrada;
     // End of variables declaration//GEN-END:variables
