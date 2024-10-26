@@ -127,12 +127,12 @@ public final class Sistema extends javax.swing.JFrame {
         
         
        
-        txtPaga1.setVisible(true);
+        txtPaga1.setVisible(false);
           jLabel39.setVisible(false);
           
           
           jLabel40.setVisible(false);
-          btnGenerarVenta.setVisible(true);
+          btnGenerarVenta.setVisible(false);
           
           
           
@@ -3284,7 +3284,8 @@ if (TableCreditClient.getRowCount() > 0) {
         if (!"".equals(txtRucVentaCredit.getText())) {
                     
        ConsultaCreditoCliente consulta = new ConsultaCreditoCliente();
- consulta.sedDato(txtRucVentaCredit.getText(),txtNombreClienteventaCredit.getText());
+ consulta.sedDato(Integer.parseInt(txtRucVentaCredit.getText()),txtNombreClienteventaCredit.getText());
+ 
         consulta.setVisible(true);   
                  
                

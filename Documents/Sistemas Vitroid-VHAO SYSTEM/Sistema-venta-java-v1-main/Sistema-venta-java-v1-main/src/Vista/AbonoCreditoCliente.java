@@ -29,7 +29,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
 
         txtCodigoEntrada = new javax.swing.JTextField();
         txtDescripcionEntrada = new javax.swing.JTextField();
-        txtCantidadEntrada = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,25 +55,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
             }
         });
 
-        txtCantidadEntrada.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
-        txtCantidadEntrada.setText("1");
-        txtCantidadEntrada.addActionListener(new java.awt.event.ActionListener() {
-            public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtCantidadEntradaActionPerformed(evt);
-            }
-        });
-        txtCantidadEntrada.addKeyListener(new java.awt.event.KeyAdapter() {
-            public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtCantidadEntradaKeyPressed(evt);
-            }
-            public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtCantidadEntradaKeyReleased(evt);
-            }
-            public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtCantidadEntradaKeyTyped(evt);
-            }
-        });
-
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -84,9 +64,7 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
                 .addComponent(txtCodigoEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 102, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(18, 18, 18)
                 .addComponent(txtDescripcionEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 191, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(19, 19, 19)
-                .addComponent(txtCantidadEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addContainerGap(213, Short.MAX_VALUE))
+                .addContainerGap(272, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -94,8 +72,7 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
                 .addGap(110, 110, 110)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addComponent(txtCodigoEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtDescripcionEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(txtCantidadEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addComponent(txtDescripcionEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addContainerGap(278, Short.MAX_VALUE))
         );
 
@@ -146,79 +123,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_txtDescripcionEntradaKeyTyped
 
-    private void txtCantidadEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCantidadEntradaActionPerformed
-        //LimpiarEntrada();        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadEntradaActionPerformed
-
-    private void txtCantidadEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntradaKeyPressed
-        // TODO add your handling code here:
-
-       // if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-
-            //si el campo tiene un nuemero
-            //if (!"".equals(txtCantidadEntrada.getText())) {
-         //       if (!"".equals(txtCantidadEntrada.getText())) {
-           //         int id = Integer.parseInt(txtIdPro.getText());
-             //       String descripcion = txtDescripcionEntrada.getText();
-               //     int cant = Integer.parseInt(txtCantidadEntrada.getText());
-                 //   double precio = Double.parseDouble(txtPrecioEntrada.getText());
-                   // double total = cant * precio;
-                    //int stock = Integer.parseInt(txtStockDisponible1.getText());
-                    // aqui le digo que no importa si el producto ingresado es mayor o menor al stock
-                   // stock = 0;
-                    //if (stock != cant) {
-
-                        // !=  >=   38 != 50 esto estaba antes no dejaba meter una entrada mayor al stock
-                      //  item = item + 1;
-                        //tmp = (DefaultTableModel) TableEntrada.getModel();
-                        //for (int i = 0; i < TableEntrada.getRowCount(); i++) {
-                          //  if (TableEntrada.getValueAt(i, 1).equals(txtDescripcionEntrada.getText())) {
-                                //JOptionPane.showMessageDialog(null, "El producto ya esta registrado");
-                                //LimpiarEntrada();
-                                //txtCodigoEntrada.requestFocus();
-                                //return;
-
-                            //}
-                        //}
-                        //ArrayList lista = new ArrayList();
-                        //lista.add(item);
-                        //lista.add(id);
-                        //lista.add(descripcion);
-                        //lista.add(cant);
-                        //lista.add(precio);
-                        //lista.add(total);
-                        //Object[] O = new Object[5];
-                        //O[0] = lista.get(1);
-                        //O[1] = lista.get(2);
-                        //O[2] = lista.get(3);
-                        //O[3] = lista.get(4);
-                        //O[4] = lista.get(5);
-                        //tmp.addRow(O);
-                        //TableEntrada.setModel(tmp);
-                        //LimpiarEntrada();
-                        //TotalPagarEntrada();
-                        //LimparVenta();
-
-                        //txtCodigoEntrada.requestFocus();
-
-                    //} else {
-                      //  JOptionPane.showMessageDialog(null, "Stock no disponible");
-
-                    //}
-                //} else {
-                  //  JOptionPane.showMessageDialog(null, "Ingrese cantidad");
-                //}
-           // }
-    }//GEN-LAST:event_txtCantidadEntradaKeyPressed
-
-    private void txtCantidadEntradaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntradaKeyReleased
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadEntradaKeyReleased
-
-    private void txtCantidadEntradaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntradaKeyTyped
-        // TODO add your handling code here:
-    }//GEN-LAST:event_txtCantidadEntradaKeyTyped
-
     /**
      * @param args the command line arguments
      */
@@ -255,7 +159,6 @@ public class AbonoCreditoCliente extends javax.swing.JFrame {
     }
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
-    private javax.swing.JTextField txtCantidadEntrada;
     private javax.swing.JTextField txtCodigoEntrada;
     private javax.swing.JTextField txtDescripcionEntrada;
     // End of variables declaration//GEN-END:variables
