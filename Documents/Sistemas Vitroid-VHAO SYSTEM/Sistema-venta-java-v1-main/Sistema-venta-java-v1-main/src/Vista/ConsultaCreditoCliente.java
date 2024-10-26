@@ -107,6 +107,7 @@ public class ConsultaCreditoCliente extends javax.swing.JFrame {
               
              jLabel59.setVisible(false);
                        jLabel58.setVisible(false);
+                       txtIdCV.setVisible(false);
     }
 public void sedDato(int dato,String nombreCliente){
 
