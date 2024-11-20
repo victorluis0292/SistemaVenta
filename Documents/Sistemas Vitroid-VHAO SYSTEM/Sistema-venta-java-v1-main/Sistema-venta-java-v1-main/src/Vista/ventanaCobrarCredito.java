@@ -433,7 +433,7 @@ txtEliminarid.setText(dato+"");
         TotalPagar = 0.00;
         int numFila = TableConsultaCreditCliente.getRowCount();
         for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i, 3)));
+            double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i, 4)));
             TotalPagar = TotalPagar + cal;
         }
         lblTotal.setText(String.format("%.2f", TotalPagar));

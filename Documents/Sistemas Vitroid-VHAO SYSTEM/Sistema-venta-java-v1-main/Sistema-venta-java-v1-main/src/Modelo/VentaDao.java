@@ -100,18 +100,19 @@ public class VentaDao {
     
     
      public int RegistrarDetalleCreditocliente(Detalle Dv){
-       String sql = "INSERT INTO detalle_creditocliente (id_pro, cantidad, precio, id_venta,cliente,nombre,dni,fecha) VALUES (?,?,?,?,?,?,?,?)";
+       String sql = "INSERT INTO detalle_creditocliente (id_pro, cantidad, precio,total, id_venta,cliente,nombre,dni,fecha) VALUES (?,?,?,?,?,?,?,?,?)";
         try {
          con = cn.getConnection();
            ps = con.prepareStatement(sql);
            ps.setInt(1, Dv.getId_pro());
            ps.setInt(2, Dv.getCantidad());
             ps.setDouble(3, Dv.getPrecio());
-          ps.setInt(4, Dv.getId());
-           ps.setString(5, Dv.getCliente());
-           ps.setString(6, Dv.getNombre());
-            ps.setInt(7, Dv.getDni());
-            ps.setString(8, Dv.getFecha());
+            ps.setDouble(4, Dv.getTotal());
+          ps.setInt(5, Dv.getId());
+           ps.setString(6, Dv.getCliente());
+           ps.setString(7, Dv.getNombre());
+            ps.setInt(8, Dv.getDni());
+            ps.setString(9, Dv.getFecha());
           ps.execute();
         } catch (SQLException e) {
             System.out.println(e.toString());
@@ -162,6 +163,21 @@ public class VentaDao {
     
     
     public boolean ActualizarStockEntrada(int cant, int id){
+        String sql = "UPDATE productos SET stock = ? WHERE id = ?";
+        try {
+            con = cn.getConnection();
+            ps = con.prepareStatement(sql);
+            ps.setInt(1,cant);
+            ps.setInt(2, id);
+            ps.execute();
+            return true;
+        } catch (SQLException e) {
+            System.out.println(e.toString());
+            return false;
+        }
+    }
+    
+     public boolean ActualizarStockCreditCliente(int cant, int id){
         String sql = "UPDATE productos SET stock = ? WHERE id = ?";
         try {
             con = cn.getConnection();

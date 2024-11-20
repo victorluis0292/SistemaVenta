@@ -93,7 +93,7 @@ public final class Sistema extends javax.swing.JFrame {
     public Sistema() {
         initComponents();
          btnBusccarPro.setMnemonic(KeyEvent.VK_X);   
-        
+      
     }
     
     public Sistema (login priv){
@@ -133,9 +133,13 @@ public final class Sistema extends javax.swing.JFrame {
           
           jLabel40.setVisible(false);
           btnGenerarVenta.setVisible(false);
-          
-          
-          
+          //credito cliente
+          txtCantidadVenta1.setVisible(false);
+          txtPrecioVenta1.setVisible(false);
+          jLabel56.setVisible(false);
+          jLabel55.setVisible(false);
+          txtStockDisponible2.setVisible(false);
+          jLabel57.setVisible(false);
           ///
           txtRucVenta.setVisible(false);
           txtNombreClienteventa.setVisible(false);
@@ -491,6 +495,11 @@ public final class Sistema extends javax.swing.JFrame {
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1070, 660));
+        addComponentListener(new java.awt.event.ComponentAdapter() {
+            public void componentShown(java.awt.event.ComponentEvent evt) {
+                formComponentShown(evt);
+            }
+        });
         addWindowListener(new java.awt.event.WindowAdapter() {
             public void windowActivated(java.awt.event.WindowEvent evt) {
                 formWindowActivated(evt);
@@ -748,6 +757,9 @@ public final class Sistema extends javax.swing.JFrame {
         txtCantidadVenta.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
                 txtCantidadVentaKeyPressed(evt);
+            }
+            public void keyReleased(java.awt.event.KeyEvent evt) {
+                txtCantidadVentaKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
                 txtCantidadVentaKeyTyped(evt);
@@ -1316,6 +1328,12 @@ public final class Sistema extends javax.swing.JFrame {
 
         jLabel24.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel24.setText("Cantidad:");
+
+        txtCantPro.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtCantProKeyTyped(evt);
+            }
+        });
 
         jLabel25.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
         jLabel25.setText("Precio:");
@@ -2024,7 +2042,6 @@ public final class Sistema extends javax.swing.JFrame {
         if (TableCreditClient.getColumnModel().getColumnCount() > 0) {
             TableCreditClient.getColumnModel().getColumn(0).setMinWidth(80);
             TableCreditClient.getColumnModel().getColumn(0).setMaxWidth(100);
-            TableCreditClient.getColumnModel().getColumn(1).setResizable(false);
             TableCreditClient.getColumnModel().getColumn(2).setMinWidth(50);
             TableCreditClient.getColumnModel().getColumn(2).setMaxWidth(120);
             TableCreditClient.getColumnModel().getColumn(3).setMinWidth(100);
@@ -2236,7 +2253,7 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void btnGuardarproActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarproActionPerformed
         // TODO add your handling code here:
-        if (!"".equals(txtCodigoPro.getText()) || !"".equals(txtDesPro.getText()) || !"".equals(cbxProveedorPro.getSelectedItem()) || !"".equals(txtCantPro.getText()) || !"".equals(txtPrecioPro.getText())) {
+       if (!"".equals(txtCodigoPro.getText()) || !"".equals(txtDesPro.getText())  || !"".equals(txtCantPro.getText()) || !"".equals(txtPrecioPro.getText())) {
             pro.setCodigo(txtCodigoPro.getText());
             pro.setNombre(txtDesPro.getText());
             Combo itemP = (Combo) cbxProveedorPro.getSelectedItem();
@@ -2477,7 +2494,12 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void txtRucVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaKeyPressed
         //original
-       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+   EnterClienteVenta();
+       
+    }//GEN-LAST:event_txtRucVentaKeyPressed
+
+    public void EnterClienteVenta() {                                          
+          
             //original
               if (!"".equals(txtRucVenta.getText())) {
       
@@ -2497,9 +2519,8 @@ public final class Sistema extends javax.swing.JFrame {
                
             } 
             
-        }
-       
-    }//GEN-LAST:event_txtRucVentaKeyPressed
+        
+    }                                      
 
     private void btnEliminarventaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarventaActionPerformed
         // TODO add your handling code here:
@@ -2967,7 +2988,8 @@ if (TableVenta.getRowCount() > 0) {
             jTabbedPane1.setSelectedIndex(8);
        } else {
             JOptionPane.showMessageDialog(null, "Noy productos en la tabla");
-            txtCodigoVenta.requestFocus();
+             jPanel17.requestFocus();
+          
        }  
     }//GEN-LAST:event_btnTodasFilasActionPerformed
  
@@ -3082,7 +3104,7 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
                     txtStockDisponible.setText("" + pro.getStock());
                     
                     txtCodigoVentaCreditClient.requestFocus();
-                      int cant = Integer.parseInt(txtCantidadVenta.getText());
+                      int cant = Integer.parseInt(txtCantidadVenta1.getText());
                       
                          int id = Integer.parseInt(txtIdPro.getText());
                 
@@ -3183,7 +3205,15 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
 
     private void txtRucVentaCreditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCreditKeyPressed
       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            //original
+          
+         EnterClienteCredit();   
+        }        // TODO add your handling code here:
+    }//GEN-LAST:event_txtRucVentaCreditKeyPressed
+
+    
+    
+    public void EnterClienteCredit(){
+      //original
               if (!"".equals(txtRucVentaCredit.getText())) {
       
                 int dni = Integer.parseInt(txtRucVentaCredit.getText());
@@ -3201,10 +3231,7 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
                 }
                
             } 
-            
-        }        // TODO add your handling code here:
-    }//GEN-LAST:event_txtRucVentaCreditKeyPressed
-
+               } 
     private void txtRucVentaCreditKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCreditKeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRucVentaCreditKeyReleased
@@ -3223,7 +3250,8 @@ if (TableCreditClient.getRowCount() > 0) {
            
                 //RegistrarVentaCreditocliente();// si guarda  el registro pero no guarda el total - vendedor .total. fecha
                 RegistrarDetalleCreditocliente();// id pro, cantidad,precio, id venta
-                ActualizarStock();
+                //  ActualizarStock();
+              ActualizarStockCreditCliente();
                 LimpiarTableCredit();
                // LimpiarClienteventa();    se omitio  de momento
                 LimparVentaCredit();
@@ -3281,8 +3309,10 @@ if (TableCreditClient.getRowCount() > 0) {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        if (!"".equals(txtRucVentaCredit.getText())) {
-                    
+        if (!"".equals(txtRucVentaCredit.getText())||!"".equals(txtNombreClienteventaCredit.getText())) {
+       
+         
+         
        ConsultaCreditoCliente consulta = new ConsultaCreditoCliente();
  consulta.sedDato(Integer.parseInt(txtRucVentaCredit.getText()),txtNombreClienteventaCredit.getText());
  
@@ -3291,7 +3321,9 @@ if (TableCreditClient.getRowCount() > 0) {
                
                LimparVentaCredit();//LIMPIA EL ID DEL CLIENTE
               
-          } else{
+          } 
+        
+        else{
       JOptionPane.showMessageDialog(null, "Ingresa Numero de Casa");
        txtRucVentaCredit.requestFocus();
              }
@@ -3299,8 +3331,25 @@ if (TableCreditClient.getRowCount() > 0) {
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-    // TODO add your handling code here:
+TotalPagarCreditoCliente();
+        TotalPagarX();
+        EnterClienteVenta();
+        EnterClienteCredit();
+
+// TODO add your handling code here:
     }//GEN-LAST:event_formWindowActivated
+
+    private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
+        // TODO add your handling code here:
+    }//GEN-LAST:event_formComponentShown
+
+    private void txtCantidadVentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVentaKeyReleased
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantidadVentaKeyReleased
+
+    private void txtCantProKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantProKeyTyped
+       event.numberDecimalKeyPress(evt, txtCantPro);        // TODO add your handling code here:
+    }//GEN-LAST:event_txtCantProKeyTyped
    private void filtrar(){
 
    try{
@@ -3595,7 +3644,15 @@ void Operacion(){
        }
         TotalEntrada.setText(String.format("%.2f", TotalpagarEntrada));
    }
-  
+     public void TotalPagarCreditoCliente() {
+        TotalpagarCredit = 0.00;
+     int numFila = TableCreditClient.getRowCount();
+       for (int i = 0; i < numFila; i++) {
+            double cal = Double.parseDouble(String.valueOf(TableCreditClient.getModel().getValueAt(i, 4)));
+            TotalpagarCredit = TotalpagarCredit + cal;
+       }
+        lblTotalCredit.setText(String.format("%.2f", TotalpagarCredit));
+   }
 
     private void LimparVenta() {
         txtCodigoVentaCreditClient.setText("");
@@ -3712,6 +3769,28 @@ void Operacion(){
 
         }
     }
+    private void ActualizarStockEntrada() {
+        for (int i = 0; i < TableEntrada.getRowCount(); i++) {
+            int id = Integer.parseInt(TableEntrada.getValueAt(i, 0).toString());
+            int cant = Integer.parseInt(TableEntrada.getValueAt(i, 2).toString());
+            pro = proDao.BuscarId(id);
+            int StockActual = pro.getStock() + cant;
+            Vdao.ActualizarStockEntrada(StockActual, id);
+
+        }
+    }
+    
+    
+             private void ActualizarStockCreditCliente() {
+       for (int i = 0; i < TableCreditClient.getRowCount(); i++) {
+            int id = Integer.parseInt(TableCreditClient.getValueAt(i, 0).toString());
+            int cant = Integer.parseInt(TableCreditClient.getValueAt(i, 2).toString());
+            pro = proDao.BuscarId(id);
+            int StockActual = pro.getStock() - cant;
+            Vdao.ActualizarStock(StockActual, id);
+
+        }
+    }
     //------credito cliente-------------
     private void RegistrarVentaCreditocliente() {
          int cliente = Integer.parseInt(txtIdCV1.getText());
@@ -3733,6 +3812,7 @@ void Operacion(){
             
             int cantidad = Integer.parseInt(TableCreditClient.getValueAt(i, 2).toString());
             double precio = Double.parseDouble(TableCreditClient.getValueAt(i, 3).toString());
+            double total = Double.parseDouble(TableCreditClient.getValueAt(i, 4).toString());
              String cliente = txtNombreClienteventaCredit.getText();
               int dni = Integer.parseInt(txtRucVentaCredit.getText());
                
@@ -3740,6 +3820,7 @@ void Operacion(){
              Dv.setNombre(nombre);
             Dv.setCantidad(cantidad);
             Dv.setPrecio(precio);
+             Dv.setTotal(total);
             Dv.setId(id);
              Dv.setCliente(cliente);
              Dv.setDni(dni);
@@ -3751,15 +3832,7 @@ void Operacion(){
        //  Vdao.pdfV(id, cliente, TotalpagarCredit, LabelVendedor.getText()); // aqui viajan
     }
     
-        private void TotalPagarCreditoCliente() {
-        TotalpagarCredit = 0.00;
-     int numFila = TableCreditClient.getRowCount();
-       for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(TableCreditClient.getModel().getValueAt(i, 4)));
-            TotalpagarCredit = TotalpagarCredit + cal;
-       }
-        lblTotalCredit.setText(String.format("%.2f", TotalpagarCredit));
-   }
+     
     
     
     
@@ -3770,16 +3843,7 @@ void Operacion(){
     
     
     //-------------------------//
-      private void ActualizarStockEntrada() {
-        for (int i = 0; i < TableEntrada.getRowCount(); i++) {
-            int id = Integer.parseInt(TableEntrada.getValueAt(i, 0).toString());
-            int cant = Integer.parseInt(TableEntrada.getValueAt(i, 2).toString());
-            pro = proDao.BuscarId(id);
-            int StockActual = pro.getStock() + cant;
-            Vdao.ActualizarStockEntrada(StockActual, id);
-
-        }
-    }
+    
 //suma las filas de la tabla
   // public void TotalPagarE() {
         //TotalpagarEntrada = 0.00;

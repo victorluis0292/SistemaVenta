@@ -9,6 +9,7 @@ public class Venta {
     private String nombre;
     private String vendedor;
     private double total;
+  
     private String fecha;
     
     public Venta(){
@@ -73,7 +74,7 @@ public Venta(int id, int cliente, String nombre_cli,int producto,String nombre, 
         this.vendedor = vendedor;
     }
 
-    public double getTotal() {
+  public double getTotal() {
         return total;
     }
 

@@ -8,14 +8,16 @@ package Vista;
 import Modelo.Conexion;
 import Modelo.Productos;
 import Modelo.ProductosDao;
-import static Vista.Sistema.TableVenta;
 import static Vista.Sistema.TableProducto;
 import static Vista.Sistema.TableVenta;
 import static Vista.Sistema.jTabbedPane1;
 import static Vista.Sistema.lblEnviaTotal;
 import static Vista.Sistema.modelo3;
 import static Vista.Sistema.modelo4;
+import static Vista.Sistema.txtCodigoPro;
 import static Vista.Sistema.txtCodigoVenta;
+import static Vista.Sistema.txtNombreClienteventaCredit;
+import static Vista.Sistema.txtRucVentaCredit;
 import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.KeyEvent;
@@ -64,6 +66,7 @@ public class FrmBusqueda extends javax.swing.JFrame {
           this.setLocationRelativeTo(null);
            txtCantidadVenta.setVisible(false);
            jLabel5.setVisible(false);
+           txtcodigo.setVisible(false);         
     }
 
     /**
@@ -81,6 +84,7 @@ public class FrmBusqueda extends javax.swing.JFrame {
         txtCantidadVenta = new javax.swing.JTextField();
         txtBuscar = new javax.swing.JTextField();
         jLabel52 = new javax.swing.JLabel();
+        txtcodigo = new javax.swing.JTextField();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("formKeyReleased"); // NOI18N
@@ -195,6 +199,21 @@ public class FrmBusqueda extends javax.swing.JFrame {
         jLabel52.setForeground(new java.awt.Color(51, 51, 255));
         jLabel52.setText("Buscar ");
 
+        txtcodigo.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        txtcodigo.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                txtcodigoActionPerformed(evt);
+            }
+        });
+        txtcodigo.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                txtcodigoKeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                txtcodigoKeyTyped(evt);
+            }
+        });
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -209,7 +228,9 @@ public class FrmBusqueda extends javax.swing.JFrame {
                         .addGap(123, 123, 123)
                         .addComponent(jLabel5)
                         .addGap(33, 33, 33)
-                        .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(58, 58, 58)
+                        .addComponent(txtcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
                         .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 936, javax.swing.GroupLayout.PREFERRED_SIZE)))
@@ -218,13 +239,19 @@ public class FrmBusqueda extends javax.swing.JFrame {
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addContainerGap(30, Short.MAX_VALUE)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                    .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(jLabel52)
-                    .addComponent(jLabel5)
-                    .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                .addGap(18, 18, 18)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(30, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                            .addComponent(txtBuscar, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addComponent(jLabel52)
+                            .addComponent(jLabel5)
+                            .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                        .addGap(18, 18, 18))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap()
+                        .addComponent(txtcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
                 .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(63, 63, 63))
         );
@@ -233,15 +260,13 @@ public class FrmBusqueda extends javax.swing.JFrame {
     }// </editor-fold>//GEN-END:initComponents
 
     private void TableProductoJFMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableProductoJFMouseClicked
-    
+     
     }//GEN-LAST:event_TableProductoJFMouseClicked
 
     private void TableProductoJFKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TableProductoJFKeyPressed
 
 
-
-        
-        //este codigog desactiva la accion enter por defefault
+           //este codigog desactiva la accion enter por defefault
         JTable jMyTable = new JTable();
 jMyTable.addKeyListener(new java.awt.event.KeyAdapter() {
      public void keyPressed(java.awt.event.KeyEvent evt) {
@@ -252,9 +277,8 @@ jMyTable.addKeyListener(new java.awt.event.KeyAdapter() {
         if(evt.getKeyCode() == evt.VK_ENTER){
          evt.consume();
          EnterBusqueda();
-            txtCodigoVenta.requestFocus();
+            //txtCodigoVenta.requestFocus();
      }
-
 
     }//GEN-LAST:event_TableProductoJFKeyPressed
 
@@ -352,6 +376,18 @@ int fila = TableProductoJF.getSelectedRow();
        // TODO add your handling code here:
     }//GEN-LAST:event_formKeyPressed
 
+    private void txtcodigoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtcodigoActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtcodigoActionPerformed
+
+    private void txtcodigoKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcodigoKeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtcodigoKeyPressed
+
+    private void txtcodigoKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtcodigoKeyTyped
+        // TODO add your handling code here:
+    }//GEN-LAST:event_txtcodigoKeyTyped
+
     /**
      * @param args the command line arguments
      */
@@ -403,26 +439,36 @@ int fila = TableProductoJF.getSelectedRow();
   
     
      public void EnterBusqueda() {
-           int  FilaSeleccionada=TableProductoJF.getSelectedRow();
-           if(FilaSeleccionada>=0){
+          // int  FilaSeleccionada=TableProductoJF.getSelectedRow();
+         //  if(FilaSeleccionada>=0){
  
-        DefaultTableModel modelo=(DefaultTableModel)TableVenta.getModel();
+      //  DefaultTableModel modelo=(DefaultTableModel)TableVenta.getModel();
            // envia los datos de tabla venta 
-                  String Object[]=new String[5];
+          //        String Object[]=new String[5];
           
-            Object[0]=TableProductoJF.getValueAt(FilaSeleccionada,0).toString(); //id tabla venta
-            Object[1]=TableProductoJF.getValueAt(FilaSeleccionada,2).toString();
-          Object[2]=txtCantidadVenta.getText().trim(); //cantida;
-            Object[3]=TableProductoJF.getValueAt(FilaSeleccionada,4).toString();
-           Object[4]=TableProductoJF.getValueAt(FilaSeleccionada,4).toString();
-      modelo.addRow(Object);
-   TotalPagarX();
-  } 
-           this.dispose();
+       //     Object[0]=TableProductoJF.getValueAt(FilaSeleccionada,0).toString(); //id tabla venta
+       //     Object[1]=TableProductoJF.getValueAt(FilaSeleccionada,2).toString(); //Codigo
+      //    Object[2]=txtCantidadVenta.getText().trim(); //cantida;
+      //      Object[3]=TableProductoJF.getValueAt(FilaSeleccionada,4).toString();
+     //      Object[4]=TableProductoJF.getValueAt(FilaSeleccionada,4).toString();
+    //  modelo.addRow(Object);
+  // TotalPagarX();
+ // } 
+          // this.dispose();
        
-   jTabbedPane1.setSelectedIndex(0);    
+   //jTabbedPane1.setSelectedIndex(0);  
+      VentanaCantidadBusqueda consulta = new VentanaCantidadBusqueda();
+         int  fila=TableProductoJF.getSelectedRow();
+      txtcodigo.setText(TableProductoJF.getValueAt(fila, 1).toString()); 
+      consulta.sedDato(txtcodigo.getText());
+       // consulta.sedDato(Integer.parseInt(txtcodigo.getText()));
+        consulta.setVisible(true);
+        //  int fila = TableProductoJF();
+     dispose();
+    
+      
        } 
-     
+    
    
        public void listar(){
        DefaultTableModel modelo=new DefaultTableModel();
@@ -482,5 +528,6 @@ int fila = TableProductoJF.getSelectedRow();
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCantidadVenta;
+    private javax.swing.JTextField txtcodigo;
     // End of variables declaration//GEN-END:variables
 }

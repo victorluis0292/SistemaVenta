@@ -117,7 +117,7 @@ import static Vista.frmtabla2.modelo2;
    
     public ventanaCobrar() {
         initComponents();
-          txtPaga1.requestFocus();
+          txtPaga.requestFocus();
         this.setLocationRelativeTo(null);
          double envia = 0.00;
         
@@ -143,7 +143,7 @@ import static Vista.frmtabla2.modelo2;
 
         jScrollPane1 = new javax.swing.JScrollPane();
         table2 = new javax.swing.JTable();
-        txtPaga1 = new javax.swing.JTextField();
+        txtPaga = new javax.swing.JTextField();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
         lblcambio = new javax.swing.JLabel();
@@ -165,21 +165,21 @@ import static Vista.frmtabla2.modelo2;
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
 
-        txtPaga1.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
-        txtPaga1.addActionListener(new java.awt.event.ActionListener() {
+        txtPaga.setFont(new java.awt.Font("Tahoma", 0, 24)); // NOI18N
+        txtPaga.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                txtPaga1ActionPerformed(evt);
+                txtPagaActionPerformed(evt);
             }
         });
-        txtPaga1.addKeyListener(new java.awt.event.KeyAdapter() {
+        txtPaga.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyPressed(java.awt.event.KeyEvent evt) {
-                txtPaga1KeyPressed(evt);
+                txtPagaKeyPressed(evt);
             }
             public void keyReleased(java.awt.event.KeyEvent evt) {
-                txtPaga1KeyReleased(evt);
+                txtPagaKeyReleased(evt);
             }
             public void keyTyped(java.awt.event.KeyEvent evt) {
-                txtPaga1KeyTyped(evt);
+                txtPagaKeyTyped(evt);
             }
         });
 
@@ -244,7 +244,7 @@ import static Vista.frmtabla2.modelo2;
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(18, 18, 18)
-                                .addComponent(txtPaga1, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                .addComponent(txtPaga, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
                                 .addGap(28, 28, 28)
                                 .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 160, javax.swing.GroupLayout.PREFERRED_SIZE))))
@@ -269,7 +269,7 @@ import static Vista.frmtabla2.modelo2;
                     .addGroup(layout.createSequentialGroup()
                         .addComponent(lblTotal, javax.swing.GroupLayout.PREFERRED_SIZE, 61, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addGap(47, 47, 47)
-                        .addComponent(txtPaga1, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(txtPaga, javax.swing.GroupLayout.PREFERRED_SIZE, 35, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(102, 102, 102)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
                     .addComponent(jLabel2)
@@ -282,20 +282,20 @@ import static Vista.frmtabla2.modelo2;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-    private void txtPaga1KeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPaga1KeyReleased
+    private void txtPagaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagaKeyReleased
 
-    String  valor = txtPaga1.getText();
+    String  valor = txtPaga.getText();
         lblcambio.setText(valor);
        Operacion(); 
        // OperacionCreditos();
         
 // TODO add your handling code here:
-    }//GEN-LAST:event_txtPaga1KeyReleased
+    }//GEN-LAST:event_txtPagaKeyReleased
 
-    private void txtPaga1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPaga1ActionPerformed
-//pagarenter();
+    private void txtPagaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtPagaActionPerformed
+pagarenter();
  //pagarenterCreditos();// TODO add your handling code here:
-    }//GEN-LAST:event_txtPaga1ActionPerformed
+    }//GEN-LAST:event_txtPagaActionPerformed
 
     private void btnGenerarCobroActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarCobroActionPerformed
        // TODO add your handling code here:
@@ -304,7 +304,7 @@ import static Vista.frmtabla2.modelo2;
      // pagarenterCreditos();
     }//GEN-LAST:event_btnGenerarCobroActionPerformed
 
-    private void txtPaga1KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPaga1KeyPressed
+    private void txtPagaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagaKeyPressed
  if (evt.getKeyCode() == KeyEvent.VK_ENTER) {  
 
 
@@ -313,11 +313,11 @@ import static Vista.frmtabla2.modelo2;
 
 
  }       // TODO add your handling code here:
-    }//GEN-LAST:event_txtPaga1KeyPressed
+    }//GEN-LAST:event_txtPagaKeyPressed
 
-    private void txtPaga1KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPaga1KeyTyped
+    private void txtPagaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagaKeyTyped
         // TODO add your handling code here:
-    }//GEN-LAST:event_txtPaga1KeyTyped
+    }//GEN-LAST:event_txtPagaKeyTyped
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
   ventanaCobroConTarjeta cobrarConTarjeta = new ventanaCobroConTarjeta();
@@ -431,7 +431,7 @@ import static Vista.frmtabla2.modelo2;
    //
    
    public void pagarenter(){
-      if (!"".equals(txtPaga1.getText())) {
+      if (!"".equals(txtPaga.getText())) {
 
             // if (!"".equals(txtNombreClienteventa.getText())) {
 
@@ -454,7 +454,7 @@ import static Vista.frmtabla2.modelo2;
             //}
         } else {
             JOptionPane.showMessageDialog(null,"Paga con $ ? ");
-            txtPaga1.requestFocus();
+            txtPaga.requestFocus();
         }
    
    
@@ -529,7 +529,7 @@ import static Vista.frmtabla2.modelo2;
 
      public void LimpiarCobro() {
         lblEnviaTotal.setText("");
-          txtPaga1.setText("");
+          txtPaga.setText("");
            lblcambio.setText("");
            txtIdCV.setText("");
            txtIdPro.setText("");
@@ -546,7 +546,7 @@ import static Vista.frmtabla2.modelo2;
   void Operacion(){
      
     double num1=Double.parseDouble(lblTotal.getText()); 
-    double num2=Double.parseDouble(txtPaga1.getText());   
+    double num2=Double.parseDouble(txtPaga.getText());   
    
    
 
@@ -585,7 +585,7 @@ import static Vista.frmtabla2.modelo2;
     public static final javax.swing.JLabel lblTotal = new javax.swing.JLabel();
     private javax.swing.JLabel lblcambio;
     private javax.swing.JTable table2;
-    private javax.swing.JTextField txtPaga1;
+    private javax.swing.JTextField txtPaga;
     // End of variables declaration//GEN-END:variables
 
  

@@ -674,7 +674,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
         TotalPagarCreditos = 0.00;
         int numFila = TableConsultaCreditCliente.getRowCount();
         for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i, 3)));
+            double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i, 4)));
             
             TotalPagarCreditos = TotalPagarCreditos + cal;
         }
@@ -713,7 +713,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
        
       //el trim sirve para remover espacios
          String cadena = txtBuscar3.getText().trim();
-    String sql = "Select * from detalle_creditocliente where dni   like'"+"%"+cadena+"%' OR nombre  like'"+"%"+cadena+"%' OR precio  like'"+"%"+cadena+"%' OR fecha  like'"+"%"+cadena+"%'  ORDER BY `detalle_creditocliente`.`id` ASC" ;
+    String sql = "Select * from detalle_creditocliente where dni   like'"+"%"+cadena+"%' OR nombre  like'"+"%"+cadena+"%' OR precio  like'"+"%"+cadena+"%'OR total  like'"+"%"+cadena+"%' OR fecha  like'"+"%"+cadena+"%'  ORDER BY `detalle_creditocliente`.`id` ASC" ;
    
       try{
           con = cn.getConnection();
@@ -726,7 +726,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
        
        Statement s= nuevaConexion.createStatement();
        ResultSet rs=s.executeQuery(sql); 
-       modelo.setColumnIdentifiers(new Object[]{"id_pro","nombre","cantidad","precio","fecha","dni"});
+       modelo.setColumnIdentifiers(new Object[]{"id_pro","nombre","cantidad","precio","total","fecha","dni"});
        // modelo.setColumnIdentifiers(new Object[]{"dni"});
        while (rs.next())
        {
@@ -736,6 +736,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
                rs.getString("nombre"),
                rs.getString("cantidad"),
                rs.getString("precio"),
+                rs.getString("total"), 
                 rs.getString("fecha"), 
                 rs.getString("dni")});  
 
@@ -747,12 +748,16 @@ System.err.format("Erreur d'impresion ",e.getMessage());
          TableConsultaCreditCliente.getColumnModel().getColumn(0).setResizable(false); 
            TableConsultaCreditCliente.getColumnModel().getColumn(1).setPreferredWidth(500); 
          TableConsultaCreditCliente.getColumnModel().getColumn(1).setResizable(false);
-           TableConsultaCreditCliente.getColumnModel().getColumn(2).setPreferredWidth(30); 
+           TableConsultaCreditCliente.getColumnModel().getColumn(2).setPreferredWidth(80); 
          TableConsultaCreditCliente.getColumnModel().getColumn(2).setResizable(false);
           TableConsultaCreditCliente.getColumnModel().getColumn(3).setPreferredWidth(100); 
          TableConsultaCreditCliente.getColumnModel().getColumn(3).setResizable(false);
-              TableConsultaCreditCliente.getColumnModel().getColumn(4).setPreferredWidth(140); 
+              TableConsultaCreditCliente.getColumnModel().getColumn(4).setPreferredWidth(80); 
          TableConsultaCreditCliente.getColumnModel().getColumn(4).setResizable(false);
+               TableConsultaCreditCliente.getColumnModel().getColumn(5).setPreferredWidth(140); 
+         TableConsultaCreditCliente.getColumnModel().getColumn(5).setResizable(false);
+                 TableConsultaCreditCliente.getColumnModel().getColumn(6).setPreferredWidth(80); 
+         TableConsultaCreditCliente.getColumnModel().getColumn(6).setResizable(false);
          
          
          //alto de filas

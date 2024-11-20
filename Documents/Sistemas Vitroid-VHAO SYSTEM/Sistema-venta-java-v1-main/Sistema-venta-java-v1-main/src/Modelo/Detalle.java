@@ -7,6 +7,7 @@ public class Detalle {
     private String nombre; // se metio
     private int cantidad;
     private double precio;
+   private double total;
     private int id_venta;
     private String cliente;
      private int dni;//se agrego para creditocliente
@@ -17,12 +18,13 @@ public class Detalle {
         
     }
 
-    public Detalle(int id, int id_pro,String nombre_product, int cantidad, double precio, int id_venta, String cliente, int dni, String fecha) {
+    public Detalle(int id, int id_pro,String nombre_product, int cantidad, double precio, double total, int id_venta, String cliente, int dni, String fecha) {
         this.id = id;
         this.id_pro = id_pro;
         this.nombre = nombre;
         this.cantidad = cantidad;
         this.precio = precio;
+        this.total = total;
         this.id_venta = id_venta;
          this.cliente = cliente;
           this.dni = dni;
@@ -79,7 +81,13 @@ public class Detalle {
     public void setPrecio(double precio) {
         this.precio = precio;
     }
+  public double getTotal() {
+        return total;
+    }
 
+    public void setTotal(double total) {
+        this.total = total;
+    }
     public int getId_venta() {
         return id_venta;
     }

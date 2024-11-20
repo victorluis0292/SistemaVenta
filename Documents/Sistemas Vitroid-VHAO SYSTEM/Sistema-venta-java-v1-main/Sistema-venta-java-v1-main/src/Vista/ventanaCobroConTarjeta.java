@@ -266,9 +266,10 @@ import static Vista.frmtabla2.modelo2;
             
             
             
-            
-              double comision = 0.04*cal;
-            TotalPagar = TotalPagar + cal+comision;
+            double iva=0.016* cal;
+              double comision = 0.035*cal;
+              double subtotal= comision+iva;
+            TotalPagar = TotalPagar + cal+subtotal;
             
         }
         lblTotal.setText(String.format("%.2f", TotalPagar));
