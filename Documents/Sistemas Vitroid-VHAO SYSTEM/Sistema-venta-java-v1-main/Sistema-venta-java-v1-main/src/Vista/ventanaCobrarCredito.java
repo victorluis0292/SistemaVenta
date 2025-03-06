@@ -305,7 +305,7 @@ txtEliminarid.setText(dato+"");
                         .addGap(297, 297, 297)
                         .addComponent(btnGenerarCobro, javax.swing.GroupLayout.PREFERRED_SIZE, 150, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(236, 236, 236)
+                        .addGap(232, 232, 232)
                         .addComponent(txtEliminarid, javax.swing.GroupLayout.PREFERRED_SIZE, 72, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addContainerGap(136, Short.MAX_VALUE))
         );
@@ -433,7 +433,7 @@ txtEliminarid.setText(dato+"");
         TotalPagar = 0.00;
         int numFila = TableConsultaCreditCliente.getRowCount();
         for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i, 4)));
+            double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i, 5)));
             TotalPagar = TotalPagar + cal;
         }
         lblTotal.setText(String.format("%.2f", TotalPagar));

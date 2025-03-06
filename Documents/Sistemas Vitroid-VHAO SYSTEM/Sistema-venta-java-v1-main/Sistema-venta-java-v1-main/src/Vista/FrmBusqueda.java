@@ -30,6 +30,8 @@ import java.sql.SQLException;
 import java.sql.Statement;
 import java.util.List;
 import static java.util.jar.Pack200.Packer.PASS;
+import javax.swing.ImageIcon;
+import javax.swing.JLabel;
 import javax.swing.JOptionPane;
 import javax.swing.JTable;
 import javax.swing.RowFilter;
@@ -48,7 +50,7 @@ public class FrmBusqueda extends javax.swing.JFrame {
     PreparedStatement ps;
     ResultSet rs;
     DefaultTableModel modelo = new DefaultTableModel(); 
-   
+
   //TableRowSorter<DefaultTableModel>sorter;
   
    Productos pro = new Productos();
@@ -85,6 +87,7 @@ public class FrmBusqueda extends javax.swing.JFrame {
         txtBuscar = new javax.swing.JTextField();
         jLabel52 = new javax.swing.JLabel();
         txtcodigo = new javax.swing.JTextField();
+        jPanel1 = new javax.swing.JPanel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("formKeyReleased"); // NOI18N
@@ -214,6 +217,17 @@ public class FrmBusqueda extends javax.swing.JFrame {
             }
         });
 
+        javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
+        jPanel1.setLayout(jPanel1Layout);
+        jPanel1Layout.setHorizontalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+        jPanel1Layout.setVerticalGroup(
+            jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 100, Short.MAX_VALUE)
+        );
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -233,8 +247,10 @@ public class FrmBusqueda extends javax.swing.JFrame {
                         .addComponent(txtcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 112, javax.swing.GroupLayout.PREFERRED_SIZE))
                     .addGroup(layout.createSequentialGroup()
                         .addGap(26, 26, 26)
-                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 936, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(46, Short.MAX_VALUE))
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 936, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -252,7 +268,11 @@ public class FrmBusqueda extends javax.swing.JFrame {
                         .addContainerGap()
                         .addComponent(txtcodigo, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
                         .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                    .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 570, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(15, 15, 15)
+                        .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(63, 63, 63))
         );
 
@@ -305,7 +325,12 @@ jMyTable.addKeyListener(new java.awt.event.KeyAdapter() {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void txtBuscarKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyPressed
-       // TODO add your handling code here:
+  if (evt.getKeyCode() == KeyEvent.VK_DOWN) {
+      
+      TableProductoJF.requestFocus();
+     
+  
+  }        // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarKeyPressed
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
@@ -329,9 +354,12 @@ KeyboardFocusManager kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
 kb.addKeyEventPostProcessor(new KeyEventPostProcessor(){
             public boolean postProcessKeyEvent(KeyEvent e){
                 if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null){
-                    System.out.println("probando...");
+                    System.out.println("dissmise...");
                     dispose();
+                    txtCodigoVenta.requestFocus();
                     return false;
+                  
+                    
                 }
                 return true;
             }
@@ -483,10 +511,22 @@ int fila = TableProductoJF.getSelectedRow();
           con = cn.getConnection();
             ps = con.prepareStatement(sql);
            
-           
-       Class.forName("com.mysql.cj.jdbc.Driver");
-        String myBD = "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC";
-       nuevaConexion=(Connection)DriverManager.getConnection(myBD, "root", "");
+          //CONFIGURACION LOCAL 
+       // Class.forName("com.mysql.cj.jdbc.Driver");
+        // String myBD = "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC";
+        //nuevaConexion=(Connection)DriverManager.getConnection(myBD, "root", "");
+       
+       
+       // Configuración para conexión remota (en Hostinger)
+          String myBD = "jdbc:mysql://185.212.71.153/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000";
+           nuevaConexion=(Connection)DriverManager.getConnection(myBD, "u722149126_victor", "Lolo140516");
+            // Mensaje en consola si la conexión es exitosa
+            System.out.println("Conexión exitosa.");
+       
+       
+       
+       
+       
        
        Statement s= nuevaConexion.createStatement();
        ResultSet rs=s.executeQuery(sql); 
@@ -525,6 +565,7 @@ int fila = TableProductoJF.getSelectedRow();
     public static javax.swing.JTable TableProductoJF;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel52;
+    private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane8;
     private javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCantidadVenta;

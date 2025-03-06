@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static Vista.Sistema.TableVenta;
+import static Vista.Sistema.txtCodigoVenta;
 /**
  *
  * @author vic
@@ -228,7 +229,8 @@ txtCodigoEntrada.setText(codigo);
                           //  if (TableVenta.getValueAt(i, 1).equals(txtDescripcionEntrada.getText())) {
                                 JOptionPane.showMessageDialog(null, "El producto ya esta registrado");
                                 //LimpiarEntrada();
-                                txtCodigoEntrada.requestFocus();
+                                
+                              
                                 return;
 
                             }
@@ -248,6 +250,7 @@ txtCodigoEntrada.setText(codigo);
                         O[4] = lista.get(5);
                         tmp.addRow(O);
                         TableVenta.setModel(tmp);
+                          txtCodigoVenta.requestFocus();
                       //  LimpiarEntrada();
                        // TotalPagarEntrada();
                       //  LimparVenta();
@@ -261,6 +264,7 @@ txtCodigoEntrada.setText(codigo);
                 } else {
                     JOptionPane.showMessageDialog(null, "Ingrese cantidad");
                 }
+           txtCodigoEntrada.requestFocus();
             }
       
     }//GEN-LAST:event_txtCantidadEntradaKeyPressed

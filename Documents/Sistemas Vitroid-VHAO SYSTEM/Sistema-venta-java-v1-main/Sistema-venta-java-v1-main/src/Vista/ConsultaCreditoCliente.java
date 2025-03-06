@@ -17,6 +17,7 @@ import static Vista.Sistema.LabelVendedor;
 import static Vista.Sistema.TableCreditClient;
 import static Vista.Sistema.TableVenta;
 import static Vista.Sistema.jTabbedPane1;
+import static Vista.Sistema.txtCodigoPro;
 import static Vista.Sistema.txtCodigoVenta;
 import static Vista.Sistema.txtCodigoVentaCreditClient;
 import static Vista.Sistema.txtIdCV;
@@ -108,6 +109,11 @@ public class ConsultaCreditoCliente extends javax.swing.JFrame {
              jLabel59.setVisible(false);
                        jLabel58.setVisible(false);
                        txtIdCV.setVisible(false);
+                       
+                       
+                       //boton eliminar
+                       btnEliminarventaCredit.setVisible(true);
+                               txtEliminarRegistro.setVisible(true);
     }
 public void sedDato(int dato,String nombreCliente){
 
@@ -149,6 +155,10 @@ txtRucVentaCredit.setText(dato+"");
         jLabel59 = new javax.swing.JLabel();
         txtNombreClienteventaCredit = new javax.swing.JTextField();
         btnCobrarCredito = new javax.swing.JButton();
+        btnEliminarventaCredit = new javax.swing.JButton();
+        txtStockDisponible2 = new javax.swing.JTextField();
+        txtEliminarRegistro = new javax.swing.JTextField();
+        jlanelid = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.DISPOSE_ON_CLOSE);
         setName("formKeyReleased"); // NOI18N
@@ -190,10 +200,10 @@ txtRucVentaCredit.setText(dato+"");
             }
         });
         TableConsultaCreditCliente.addInputMethodListener(new java.awt.event.InputMethodListener() {
-            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
-            }
             public void caretPositionChanged(java.awt.event.InputMethodEvent evt) {
                 TableConsultaCreditClienteCaretPositionChanged(evt);
+            }
+            public void inputMethodTextChanged(java.awt.event.InputMethodEvent evt) {
             }
         });
         TableConsultaCreditCliente.addPropertyChangeListener(new java.beans.PropertyChangeListener() {
@@ -333,6 +343,20 @@ txtRucVentaCredit.setText(dato+"");
             }
         });
 
+        btnEliminarventaCredit.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/eliminar.png"))); // NOI18N
+        btnEliminarventaCredit.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                btnEliminarventaCreditActionPerformed(evt);
+            }
+        });
+
+        txtStockDisponible2.setEditable(false);
+
+        txtEliminarRegistro.setEditable(false);
+
+        jlanelid.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        jlanelid.setText("id :");
+
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
@@ -344,47 +368,56 @@ txtRucVentaCredit.setText(dato+"");
                 .addComponent(LabelVendedor, javax.swing.GroupLayout.PREFERRED_SIZE, 359, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(0, 0, Short.MAX_VALUE))
             .addGroup(layout.createSequentialGroup()
+                .addGap(55, 55, 55)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(55, 55, 55)
+                        .addGap(329, 329, 329)
+                        .addComponent(jLabel5)
+                        .addGap(28, 28, 28)
+                        .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(18, 18, 18)
+                        .addComponent(jLabel58)
+                        .addGap(16, 16, 16)
+                        .addComponent(txtRucVentaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(4, 4, 4)
+                        .addComponent(jLabel59)
+                        .addGap(31, 31, 31)
+                        .addComponent(txtNombreClienteventaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(7, 7, 7)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 936, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 936, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addGap(34, 34, 34)
-                                        .addComponent(btnCobrarCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))
-                                    .addGroup(layout.createSequentialGroup()
-                                        .addComponent(jLabel60, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
-                                        .addComponent(lblEnviaTotalCredit)
-                                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 32, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addComponent(jLabel60, javax.swing.GroupLayout.PREFERRED_SIZE, 90, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.UNRELATED)
+                                .addComponent(lblEnviaTotalCredit))
                             .addGroup(layout.createSequentialGroup()
-                                .addComponent(jLabel52)
-                                .addGap(28, 28, 28)
-                                .addComponent(txtBuscar3, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(39, 39, 39)
-                                .addComponent(jLabel1)
-                                .addGap(33, 33, 33)
-                                .addComponent(lblNombreCliente))
+                                .addComponent(btnEliminarventaCredit)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(jlanelid, javax.swing.GroupLayout.PREFERRED_SIZE, 24, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                                .addComponent(txtEliminarRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 76, javax.swing.GroupLayout.PREFERRED_SIZE))
                             .addGroup(layout.createSequentialGroup()
-                                .addGap(329, 329, 329)
-                                .addComponent(jLabel5)
-                                .addGap(28, 28, 28)
-                                .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(18, 18, 18)
-                                .addComponent(jLabel58)
-                                .addGap(16, 16, 16)
-                                .addComponent(txtRucVentaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 116, javax.swing.GroupLayout.PREFERRED_SIZE)
-                                .addGap(4, 4, 4)
-                                .addComponent(jLabel59)
-                                .addGap(31, 31, 31)
-                                .addComponent(txtNombreClienteventaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 190, javax.swing.GroupLayout.PREFERRED_SIZE))))
+                                .addGap(34, 34, 34)
+                                .addComponent(btnCobrarCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 155, javax.swing.GroupLayout.PREFERRED_SIZE))))
                     .addGroup(layout.createSequentialGroup()
-                        .addGap(868, 868, 868)
+                        .addComponent(jLabel52)
+                        .addGap(28, 28, 28)
+                        .addComponent(txtBuscar3, javax.swing.GroupLayout.PREFERRED_SIZE, 274, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addGap(39, 39, 39)
+                        .addComponent(jLabel1)
+                        .addGap(33, 33, 33)
+                        .addComponent(lblNombreCliente))
+                    .addGroup(layout.createSequentialGroup()
+                        .addGap(813, 813, 813)
                         .addComponent(PrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 113, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                .addContainerGap(35, Short.MAX_VALUE))
+                .addContainerGap(144, Short.MAX_VALUE))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 629, Short.MAX_VALUE)
+                    .addComponent(txtStockDisponible2, javax.swing.GroupLayout.PREFERRED_SIZE, 79, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 630, Short.MAX_VALUE)))
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -392,54 +425,67 @@ txtRucVentaCredit.setText(dato+"");
                 .addContainerGap()
                 .addComponent(txtIdCV, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addGap(715, 715, 715))
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(LabelVendedor)
-                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addGroup(layout.createSequentialGroup()
-                        .addGap(0, 0, Short.MAX_VALUE)
-                        .addComponent(txtBuscar3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel1)
-                                .addComponent(lblNombreCliente)
-                                .addComponent(PrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
-                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                                .addComponent(jLabel52)
-                                .addGap(33, 33, 33)))))
-                .addGap(18, 18, 18)
-                .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(229, 229, 229))
             .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
-                .addGap(0, 0, Short.MAX_VALUE)
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.TRAILING)
                     .addGroup(layout.createSequentialGroup()
+                        .addComponent(LabelVendedor)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(0, 0, Short.MAX_VALUE)
+                                .addComponent(txtBuscar3, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
+                            .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                        .addComponent(jLabel1)
+                                        .addComponent(lblNombreCliente)
+                                        .addComponent(PrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE))
+                                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, layout.createSequentialGroup()
+                                        .addComponent(jLabel52)
+                                        .addGap(33, 33, 33)))))
+                        .addGap(10, 10, 10)
+                        .addComponent(jScrollPane8, javax.swing.GroupLayout.PREFERRED_SIZE, 574, javax.swing.GroupLayout.PREFERRED_SIZE)
+                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, 43, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(7, 7, 7)
+                                .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                    .addComponent(jLabel58)
+                                    .addComponent(jLabel5)
+                                    .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                            .addComponent(txtRucVentaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createSequentialGroup()
+                                .addGap(15, 15, 15)
+                                .addComponent(jLabel59))
+                            .addComponent(txtNombreClienteventaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                    .addGroup(layout.createSequentialGroup()
+                        .addContainerGap(javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addComponent(btnEliminarventaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
+                                .addComponent(txtEliminarRegistro, javax.swing.GroupLayout.PREFERRED_SIZE, 31, javax.swing.GroupLayout.PREFERRED_SIZE)
+                                .addComponent(jlanelid)))
+                        .addGap(450, 450, 450)
                         .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                             .addComponent(jLabel60)
                             .addComponent(lblEnviaTotalCredit))
                         .addGap(79, 79, 79)
-                        .addComponent(btnCobrarCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE))
-                    .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(7, 7, 7)
-                            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.BASELINE)
-                                .addComponent(jLabel58)
-                                .addComponent(jLabel5)
-                                .addComponent(txtCantidadVenta, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)))
-                        .addComponent(txtRucVentaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addGroup(layout.createSequentialGroup()
-                            .addGap(15, 15, 15)
-                            .addComponent(jLabel59))
-                        .addComponent(txtNombreClienteventaCredit, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                        .addComponent(btnCobrarCredito, javax.swing.GroupLayout.PREFERRED_SIZE, 48, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGap(154, 154, 154))
+            .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                .addGroup(layout.createSequentialGroup()
+                    .addGap(0, 0, Short.MAX_VALUE)
+                    .addComponent(txtStockDisponible2, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE)
+                    .addGap(0, 0, Short.MAX_VALUE)))
         );
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
     private void TableConsultaCreditClienteMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableConsultaCreditClienteMouseClicked
-    
+int fila = TableConsultaCreditCliente.rowAtPoint(evt.getPoint());
+        txtEliminarRegistro.setText(TableConsultaCreditCliente.getValueAt(fila, 0).toString());
+     
     }//GEN-LAST:event_TableConsultaCreditClienteMouseClicked
 
     private void TableConsultaCreditClienteKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_TableConsultaCreditClienteKeyPressed
@@ -630,6 +676,19 @@ System.err.format("Erreur d'impresion ",e.getMessage());
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRucVentaCreditActionPerformed
 
+    private void btnEliminarventaCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarventaCreditActionPerformed
+       if (TableConsultaCreditCliente.getRowCount() > 0) { 
+                 
+      EliminarRegistro();
+     
+            
+      } else {
+            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
+            txtCodigoVenta.requestFocus();
+             limpiarTabla();
+       } 
+    }//GEN-LAST:event_btnEliminarventaCreditActionPerformed
+
     /**
      * @param args the command line arguments
      */
@@ -674,7 +733,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
         TotalPagarCreditos = 0.00;
         int numFila = TableConsultaCreditCliente.getRowCount();
         for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i, 4)));
+            double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i, 5)));
             
             TotalPagarCreditos = TotalPagarCreditos + cal;
         }
@@ -713,7 +772,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
        
       //el trim sirve para remover espacios
          String cadena = txtBuscar3.getText().trim();
-    String sql = "Select * from detalle_creditocliente where dni   like'"+"%"+cadena+"%' OR nombre  like'"+"%"+cadena+"%' OR precio  like'"+"%"+cadena+"%'OR total  like'"+"%"+cadena+"%' OR fecha  like'"+"%"+cadena+"%'  ORDER BY `detalle_creditocliente`.`id` ASC" ;
+    String sql = "Select * from detalle_creditocliente where dni   like'"+"%"+cadena+"%' OR nombre  like'"+"%"+cadena+"%'   OR precio  like'"+"%"+cadena+"%'   OR total  like'"+"%"+cadena+"%' OR fecha  like'"+"%"+cadena+"%'  ORDER BY `detalle_creditocliente`.`id` ASC" ;
    
       try{
           con = cn.getConnection();
@@ -721,17 +780,24 @@ System.err.format("Erreur d'impresion ",e.getMessage());
            
            
        Class.forName("com.mysql.cj.jdbc.Driver");
-        String myBD = "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC";
-       nuevaConexion=(Connection)DriverManager.getConnection(myBD, "root", "");
+        // String myBD = "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC";
+       // nuevaConexion=(Connection)DriverManager.getConnection(myBD, "root", "");
+       
+       
+       
+              String myBD = "jdbc:mysql://185.212.71.153/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000";
+
+        nuevaConexion=(Connection)DriverManager.getConnection(myBD, "u722149126_victor", "Lolo140516");
        
        Statement s= nuevaConexion.createStatement();
        ResultSet rs=s.executeQuery(sql); 
-       modelo.setColumnIdentifiers(new Object[]{"id_pro","nombre","cantidad","precio","total","fecha","dni"});
+       modelo.setColumnIdentifiers(new Object[]{"id","id_pro","nombre","cantidad","precio","total","fecha","dni"});
        // modelo.setColumnIdentifiers(new Object[]{"dni"});
        while (rs.next())
        {
          modelo.addRow(new Object[]{
           
+                 rs.getString("id"),
               rs.getString("id_pro"),
                rs.getString("nombre"),
                rs.getString("cantidad"),
@@ -742,23 +808,25 @@ System.err.format("Erreur d'impresion ",e.getMessage());
 
       
        }
+       
        //ancho de columnas
        TableConsultaCreditCliente.setModel(modelo);
-          TableConsultaCreditCliente.getColumnModel().getColumn(0).setPreferredWidth(50); 
+          TableConsultaCreditCliente.getColumnModel().getColumn(0).setPreferredWidth(0); 
          TableConsultaCreditCliente.getColumnModel().getColumn(0).setResizable(false); 
-           TableConsultaCreditCliente.getColumnModel().getColumn(1).setPreferredWidth(500); 
+           TableConsultaCreditCliente.getColumnModel().getColumn(1).setPreferredWidth(0); 
          TableConsultaCreditCliente.getColumnModel().getColumn(1).setResizable(false);
-           TableConsultaCreditCliente.getColumnModel().getColumn(2).setPreferredWidth(80); 
+           TableConsultaCreditCliente.getColumnModel().getColumn(2).setPreferredWidth(500); 
          TableConsultaCreditCliente.getColumnModel().getColumn(2).setResizable(false);
-          TableConsultaCreditCliente.getColumnModel().getColumn(3).setPreferredWidth(100); 
+          TableConsultaCreditCliente.getColumnModel().getColumn(3).setPreferredWidth(80); 
          TableConsultaCreditCliente.getColumnModel().getColumn(3).setResizable(false);
-              TableConsultaCreditCliente.getColumnModel().getColumn(4).setPreferredWidth(80); 
+              TableConsultaCreditCliente.getColumnModel().getColumn(4).setPreferredWidth(100); 
          TableConsultaCreditCliente.getColumnModel().getColumn(4).setResizable(false);
-               TableConsultaCreditCliente.getColumnModel().getColumn(5).setPreferredWidth(140); 
+               TableConsultaCreditCliente.getColumnModel().getColumn(5).setPreferredWidth(80); 
          TableConsultaCreditCliente.getColumnModel().getColumn(5).setResizable(false);
-                 TableConsultaCreditCliente.getColumnModel().getColumn(6).setPreferredWidth(80); 
+                 TableConsultaCreditCliente.getColumnModel().getColumn(6).setPreferredWidth(140); 
          TableConsultaCreditCliente.getColumnModel().getColumn(6).setResizable(false);
-         
+           TableConsultaCreditCliente.getColumnModel().getColumn(7).setPreferredWidth(80); 
+         TableConsultaCreditCliente.getColumnModel().getColumn(7).setResizable(false);
          
          //alto de filas
           TableConsultaCreditCliente.setRowHeight(30);
@@ -766,6 +834,42 @@ System.err.format("Erreur d'impresion ",e.getMessage());
        JOptionPane.showMessageDialog(null,"No se a seleccionado alguna fila");
        }
     } 
+      void EliminarRegistro(){
+           
+ Conexion con1=null;
+    DefaultTableModel modelo=new DefaultTableModel();
+  Connection nuevaConexion=null;
+    if (!"".equals(txtEliminarRegistro.getText())) {
+        
+    }else{
+       JOptionPane.showMessageDialog(null, "Selecciona una fila");
+   }
+    
+    
+    try{
+         
+          con = cn.getConnection();
+      
+     ps = con.prepareStatement("delete from  detalle_creditocliente  where  id=?");
+         ps.setInt(1,Integer.parseInt(txtEliminarRegistro.getText()));
+    
+        int resultado=ps.executeUpdate();
+        
+           if(resultado>=0){
+           JOptionPane.showMessageDialog(null,"Registro Eliminado");
+           limpiarTabla();
+           }else{
+           JOptionPane.showMessageDialog(null," No se encuentra regitro");
+                   }
+        
+          con.close();
+         
+     }catch (Exception e){
+     System.err.println("Error:"+e);
+     }     
+
+        
+      } 
          private void RegistrarVentaCreditos() {
         int cliente = Integer.parseInt(txtIdCV.getText());
        
@@ -807,7 +911,7 @@ System.err.format("Erreur d'impresion ",e.getMessage());
     }
     
       void limpiarTabla(){
-         
+      txtEliminarRegistro.setText("");   
 for (int i=0; i <= TableConsultaCreditCliente.getRowCount(); i++){
     modelo.removeRow(i);
             i= i-1;
@@ -819,6 +923,7 @@ for (int i=0; i <= TableConsultaCreditCliente.getRowCount(); i++){
     private javax.swing.JButton PrintBtn;
     public static javax.swing.JTable TableConsultaCreditCliente;
     private javax.swing.JButton btnCobrarCredito;
+    private javax.swing.JButton btnEliminarventaCredit;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel52;
@@ -826,12 +931,15 @@ for (int i=0; i <= TableConsultaCreditCliente.getRowCount(); i++){
     private javax.swing.JLabel jLabel59;
     private javax.swing.JLabel jLabel60;
     private javax.swing.JScrollPane jScrollPane8;
+    private javax.swing.JLabel jlanelid;
     public static javax.swing.JLabel lblEnviaTotalCredit;
     private javax.swing.JLabel lblNombreCliente;
     private javax.swing.JTextField txtBuscar3;
     private javax.swing.JTextField txtCantidadVenta;
+    private javax.swing.JTextField txtEliminarRegistro;
     public static javax.swing.JTextField txtIdCV;
-    private javax.swing.JTextField txtNombreClienteventaCredit;
-    private javax.swing.JTextField txtRucVentaCredit;
+    public static javax.swing.JTextField txtNombreClienteventaCredit;
+    public static javax.swing.JTextField txtRucVentaCredit;
+    private javax.swing.JTextField txtStockDisponible2;
     // End of variables declaration//GEN-END:variables
 }

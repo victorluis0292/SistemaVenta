@@ -1874,6 +1874,11 @@ public final class Sistema extends javax.swing.JFrame {
         jTabbedPane1.addTab("1", jPanel14);
 
         jPanel17.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel17.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel17KeyPressed(evt);
+            }
+        });
         jPanel17.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel53.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -3205,8 +3210,25 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
 
     private void txtRucVentaCreditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCreditKeyPressed
       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-          
-         EnterClienteCredit();   
+            if (!"".equals(txtRucVentaCredit.getText())) {
+      
+                int dni = Integer.parseInt(txtRucVentaCredit.getText());
+                cl = client.Buscarcliente(dni);
+                 
+                if (cl.getNombre()!= null) {
+                    txtNombreClienteventaCredit.setText("" + cl.getNombre());
+                    //original  
+                   
+                      txtIdCV.setText("" + cl.getId());
+                    txtCodigoVentaCreditClient.requestFocus();
+                } else {
+                   // txtRucVenta.setText("");
+                   JOptionPane.showMessageDialog(null, "El cliente no existe");
+                    LimparVentaCredit();
+                }
+               
+            }    
+         //EnterClienteCredit();   
         }        // TODO add your handling code here:
     }//GEN-LAST:event_txtRucVentaCreditKeyPressed
 
@@ -3214,23 +3236,7 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
     
     public void EnterClienteCredit(){
       //original
-              if (!"".equals(txtRucVentaCredit.getText())) {
-      
-                int dni = Integer.parseInt(txtRucVentaCredit.getText());
-                cl = client.Buscarcliente(dni);
-                 
-                if (cl.getNombre() != null) {
-                    txtNombreClienteventaCredit.setText("" + cl.getNombre());
-                    //original  
-                   
-                      txtIdCV.setText("" + cl.getId());
-                    txtCodigoVentaCreditClient.requestFocus();
-                } else {
-                    txtRucVenta.setText("");
-                    JOptionPane.showMessageDialog(null, "El cliente no existe");
-                }
-               
-            } 
+         
                } 
     private void txtRucVentaCreditKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCreditKeyReleased
         // TODO add your handling code here:
@@ -3262,7 +3268,8 @@ if (TableCreditClient.getRowCount() > 0) {
              
                 
                JOptionPane.showMessageDialog(null, "Registro exitoso");  
-                  
+                   //ConsultaCreditoCliente consulta = new ConsultaCreditoCliente();
+             //consulta.setVisible(true);   
                 
           } else {
                JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
@@ -3309,7 +3316,7 @@ if (TableCreditClient.getRowCount() > 0) {
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
 
-        if (!"".equals(txtRucVentaCredit.getText())||!"".equals(txtNombreClienteventaCredit.getText())) {
+        if (!"".equals(txtRucVentaCredit.getText())&& !"".equals(txtNombreClienteventaCredit.getText())) {
        
          
          
@@ -3324,7 +3331,7 @@ if (TableCreditClient.getRowCount() > 0) {
           } 
         
         else{
-      JOptionPane.showMessageDialog(null, "Ingresa Numero de Casa");
+      JOptionPane.showMessageDialog(null, "Ingresa Numero de Casa + ENTER");
        txtRucVentaCredit.requestFocus();
              }
         
@@ -3350,6 +3357,10 @@ TotalPagarCreditoCliente();
     private void txtCantProKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantProKeyTyped
        event.numberDecimalKeyPress(evt, txtCantPro);        // TODO add your handling code here:
     }//GEN-LAST:event_txtCantProKeyTyped
+
+    private void jPanel17KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel17KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel17KeyPressed
    private void filtrar(){
 
    try{
