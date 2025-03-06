@@ -496,69 +496,73 @@ int fila = TableProductoJF.getSelectedRow();
     
       
        } 
+    public void listar() {
+    DefaultTableModel modelo = new DefaultTableModel();
+    Connection nuevaConexion = null;
     
-   
-       public void listar(){
-       DefaultTableModel modelo=new DefaultTableModel();
-       Connection nuevaConexion=null;
-       
-       
-      //el trim sirve para remover espacios
-         String cadena = txtBuscar.getText().trim();
-     String sql = "Select * from productos where codigo   like'"+"%"+cadena+"%' OR nombre  like'"+"%"+cadena+"%' OR precio like'"+"%"+cadena+"%'";
+    // El trim sirve para remover espacios
+    String cadena = txtBuscar.getText().trim();
     
-       try{
-          con = cn.getConnection();
-            ps = con.prepareStatement(sql);
-           
-          //CONFIGURACION LOCAL 
-       // Class.forName("com.mysql.cj.jdbc.Driver");
-        // String myBD = "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC";
-        //nuevaConexion=(Connection)DriverManager.getConnection(myBD, "root", "");
-       
-       
-       // Configuración para conexión remota (en Hostinger)
-          String myBD = "jdbc:mysql://185.212.71.153/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000";
-           nuevaConexion=(Connection)DriverManager.getConnection(myBD, "u722149126_victor", "Lolo140516");
-            // Mensaje en consola si la conexión es exitosa
-            System.out.println("Conexión exitosa.");
-       
-       
-       
-       
-       
-       
-       Statement s= nuevaConexion.createStatement();
-       ResultSet rs=s.executeQuery(sql); 
-       modelo.setColumnIdentifiers(new Object[]{"id","codigo","nombre","stock","precio"});
+    // Preparamos la consulta SQL utilizando parámetros en lugar de concatenar el string
+    String sql = "SELECT * FROM productos WHERE codigo LIKE ? OR nombre LIKE ? OR precio LIKE ?";
+    
+    try {
+        // Usamos una conexión ya establecida en lugar de crear una nueva cada vez
+        nuevaConexion = DriverManager.getConnection("jdbc:mysql://185.212.71.153/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", "u722149126_victor", "Lolo140516");
         
-       while (rs.next())
-       {
-         modelo.addRow(new Object[]{
-            rs.getString("id"),
-              rs.getString("codigo"),
-               rs.getString("nombre"),
-               rs.getString("stock"),
-                rs.getString("precio")});  
+        // Preparamos la consulta
+        PreparedStatement ps = nuevaConexion.prepareStatement(sql);
+        
+        // Parametrizamos los valores para evitar inyecciones SQL y mejorar el rendimiento
+        String searchTerm = "%" + cadena + "%";  // Añadimos el '%' solo una vez
+        ps.setString(1, searchTerm);
+        ps.setString(2, searchTerm);
+        ps.setString(3, searchTerm);
+        
+        // Ejecutamos la consulta
+        ResultSet rs = ps.executeQuery();
+        
+        // Configuramos las columnas de la tabla
+        modelo.setColumnIdentifiers(new Object[]{"id", "codigo", "nombre", "stock", "precio"});
+        
+        // Llenamos el modelo con los resultados de la consulta
+        while (rs.next()) {
+            modelo.addRow(new Object[]{
+                rs.getString("id"),
+                rs.getString("codigo"),
+                rs.getString("nombre"),
+                rs.getString("stock"),
+                rs.getString("precio")
+            });
+        }
+        
+        // Establecemos el modelo en la tabla y configuramos el tamaño de las columnas
+        TableProductoJF.setModel(modelo);
+        TableProductoJF.getColumnModel().getColumn(0).setPreferredWidth(100); 
+        TableProductoJF.getColumnModel().getColumn(0).setResizable(false); 
+        TableProductoJF.getColumnModel().getColumn(1).setPreferredWidth(200); 
+        TableProductoJF.getColumnModel().getColumn(1).setResizable(false);
+        TableProductoJF.getColumnModel().getColumn(2).setPreferredWidth(600); 
+        TableProductoJF.getColumnModel().getColumn(2).setResizable(false);
+        
+        // Ajustamos la altura de las filas
+        TableProductoJF.setRowHeight(30);
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al cargar los productos: " + e.getMessage());
+    } finally {
+        try {
+            if (nuevaConexion != null && !nuevaConexion.isClosed()) {
+                nuevaConexion.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
 
-      
-       }
-       //ancho de columnas
-       TableProductoJF.setModel(modelo);
-          TableProductoJF.getColumnModel().getColumn(0).setPreferredWidth(100); 
-         TableProductoJF.getColumnModel().getColumn(0).setResizable(false); 
-           TableProductoJF.getColumnModel().getColumn(1).setPreferredWidth(200); 
-         TableProductoJF.getColumnModel().getColumn(1).setResizable(false);
-           TableProductoJF.getColumnModel().getColumn(2).setPreferredWidth(600); 
-         TableProductoJF.getColumnModel().getColumn(2).setResizable(false);
-         
-         
-         //alto de filas
-          TableProductoJF.setRowHeight(30);
-       }catch(Exception e){
-       JOptionPane.showMessageDialog(null,"No se a seleccionado alguna fila");
-       }
-    } 
+   
+       
      
        
     // Variables declaration - do not modify//GEN-BEGIN:variables

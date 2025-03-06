@@ -32,6 +32,7 @@ import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
 import java.sql.Statement;
 import java.text.MessageFormat;
 import java.text.SimpleDateFormat;
@@ -764,76 +765,92 @@ System.err.format("Erreur d'impresion ",e.getMessage());
    jTabbedPane1.setSelectedIndex(0);    
        } 
      
-   
-       public void listar(){
-       DefaultTableModel modelo=new DefaultTableModel();
-       Connection nuevaConexion=null;
-       
-       
-      //el trim sirve para remover espacios
-         String cadena = txtBuscar3.getText().trim();
-    String sql = "Select * from detalle_creditocliente where dni   like'"+"%"+cadena+"%' OR nombre  like'"+"%"+cadena+"%'   OR precio  like'"+"%"+cadena+"%'   OR total  like'"+"%"+cadena+"%' OR fecha  like'"+"%"+cadena+"%'  ORDER BY `detalle_creditocliente`.`id` ASC" ;
-   
-      try{
-          con = cn.getConnection();
-            ps = con.prepareStatement(sql);
-           
-           
-       Class.forName("com.mysql.cj.jdbc.Driver");
-        // String myBD = "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC";
-       // nuevaConexion=(Connection)DriverManager.getConnection(myBD, "root", "");
-       
-       
-       
-              String myBD = "jdbc:mysql://185.212.71.153/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000";
+  public void listar() {
+    DefaultTableModel modelo = new DefaultTableModel();
+    Connection nuevaConexion = null;
+    
+    // El trim sirve para remover espacios
+    String cadena = txtBuscar3.getText().trim();
+    
+    // Usamos parámetros para evitar inyecciones SQL y mejorar la eficiencia
+    String sql = "SELECT * FROM detalle_creditocliente WHERE dni LIKE ? OR nombre LIKE ? OR precio LIKE ? OR total LIKE ? OR fecha LIKE ? ORDER BY id ASC";
 
-        nuevaConexion=(Connection)DriverManager.getConnection(myBD, "u722149126_victor", "Lolo140516");
-       
-       Statement s= nuevaConexion.createStatement();
-       ResultSet rs=s.executeQuery(sql); 
-       modelo.setColumnIdentifiers(new Object[]{"id","id_pro","nombre","cantidad","precio","total","fecha","dni"});
-       // modelo.setColumnIdentifiers(new Object[]{"dni"});
-       while (rs.next())
-       {
-         modelo.addRow(new Object[]{
-          
-                 rs.getString("id"),
-              rs.getString("id_pro"),
-               rs.getString("nombre"),
-               rs.getString("cantidad"),
-               rs.getString("precio"),
-                rs.getString("total"), 
-                rs.getString("fecha"), 
-                rs.getString("dni")});  
+    try {
+        // Usamos una conexión ya establecida
+        nuevaConexion = DriverManager.getConnection(
+                "jdbc:mysql://185.212.71.153/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", 
+                "u722149126_victor", 
+                "Lolo140516");
 
-      
-       }
-       
-       //ancho de columnas
-       TableConsultaCreditCliente.setModel(modelo);
-          TableConsultaCreditCliente.getColumnModel().getColumn(0).setPreferredWidth(0); 
-         TableConsultaCreditCliente.getColumnModel().getColumn(0).setResizable(false); 
-           TableConsultaCreditCliente.getColumnModel().getColumn(1).setPreferredWidth(0); 
-         TableConsultaCreditCliente.getColumnModel().getColumn(1).setResizable(false);
-           TableConsultaCreditCliente.getColumnModel().getColumn(2).setPreferredWidth(500); 
-         TableConsultaCreditCliente.getColumnModel().getColumn(2).setResizable(false);
-          TableConsultaCreditCliente.getColumnModel().getColumn(3).setPreferredWidth(80); 
-         TableConsultaCreditCliente.getColumnModel().getColumn(3).setResizable(false);
-              TableConsultaCreditCliente.getColumnModel().getColumn(4).setPreferredWidth(100); 
-         TableConsultaCreditCliente.getColumnModel().getColumn(4).setResizable(false);
-               TableConsultaCreditCliente.getColumnModel().getColumn(5).setPreferredWidth(80); 
-         TableConsultaCreditCliente.getColumnModel().getColumn(5).setResizable(false);
-                 TableConsultaCreditCliente.getColumnModel().getColumn(6).setPreferredWidth(140); 
-         TableConsultaCreditCliente.getColumnModel().getColumn(6).setResizable(false);
-           TableConsultaCreditCliente.getColumnModel().getColumn(7).setPreferredWidth(80); 
-         TableConsultaCreditCliente.getColumnModel().getColumn(7).setResizable(false);
-         
-         //alto de filas
-          TableConsultaCreditCliente.setRowHeight(30);
-       }catch(Exception e){
-       JOptionPane.showMessageDialog(null,"No se a seleccionado alguna fila");
-       }
-    } 
+        // Preparamos la consulta
+        PreparedStatement ps = nuevaConexion.prepareStatement(sql);
+        
+        // Creamos el término de búsqueda con los comodines '%'
+        String searchTerm = "%" + cadena + "%";
+        
+        // Parametrizamos la consulta
+        ps.setString(1, searchTerm);
+        ps.setString(2, searchTerm);
+        ps.setString(3, searchTerm);
+        ps.setString(4, searchTerm);
+        ps.setString(5, searchTerm);
+        
+        // Ejecutamos la consulta
+        ResultSet rs = ps.executeQuery();
+        
+        // Configuramos las columnas de la tabla
+        modelo.setColumnIdentifiers(new Object[]{"id", "id_pro", "nombre", "cantidad", "precio", "total", "fecha", "dni"});
+        
+        // Llenamos el modelo con los resultados de la consulta
+        while (rs.next()) {
+            modelo.addRow(new Object[]{
+                rs.getString("id"),
+                rs.getString("id_pro"),
+                rs.getString("nombre"),
+                rs.getString("cantidad"),
+                rs.getString("precio"),
+                rs.getString("total"),
+                rs.getString("fecha"),
+                rs.getString("dni")
+            });
+        }
+
+        // Establecemos el modelo en la tabla y configuramos el tamaño de las columnas
+        TableConsultaCreditCliente.setModel(modelo);
+        TableConsultaCreditCliente.getColumnModel().getColumn(0).setPreferredWidth(0); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(0).setResizable(false); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(1).setPreferredWidth(0); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(1).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(2).setPreferredWidth(500); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(2).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(3).setPreferredWidth(80); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(3).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(4).setPreferredWidth(100); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(4).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(5).setPreferredWidth(80); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(5).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(6).setPreferredWidth(140); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(6).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(7).setPreferredWidth(80); 
+        TableConsultaCreditCliente.getColumnModel().getColumn(7).setResizable(false);
+        
+        // Ajustamos la altura de las filas
+        TableConsultaCreditCliente.setRowHeight(30);
+        
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al cargar los productos: " + e.getMessage());
+    } finally {
+        try {
+            if (nuevaConexion != null && !nuevaConexion.isClosed()) {
+                nuevaConexion.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}
+ 
+  
       void EliminarRegistro(){
            
  Conexion con1=null;
