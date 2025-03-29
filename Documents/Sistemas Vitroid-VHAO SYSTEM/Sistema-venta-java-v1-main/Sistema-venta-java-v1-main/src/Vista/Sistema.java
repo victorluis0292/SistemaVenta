@@ -5,6 +5,7 @@
  */
 package Vista;
 
+import Modelo.AbrirCajaEfectivo;
 import Modelo.Cliente;
 import Modelo.ClienteDao;
 import Modelo.Combo;
@@ -28,12 +29,35 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import javax.print.Doc;
+import javax.print.DocFlavor;
+import javax.print.DocPrintJob;
+import javax.print.PrintService;
+import javax.print.PrintServiceLookup;
+import javax.print.SimpleDoc;
 import javax.swing.JOptionPane;
 import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 
 import javax.swing.table.TableRowSorter;
-
+import javax.print.*; //caja registradora
+import javax.print.attribute.*;  //caja registradora
+import java.io.*; 
+import static Modelo.AbrirCajaEfectivo.main;
+import java.awt.BorderLayout;
+import java.awt.KeyEventPostProcessor;
+import java.awt.KeyboardFocusManager;
+import java.awt.event.ActionEvent;
+import javax.swing.AbstractAction;
+import javax.swing.ActionMap;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JFrame;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
 /**
  *
  * @author USUARIO
@@ -700,6 +724,14 @@ public final class Sistema extends javax.swing.JFrame {
         jTabbedPane1.setPreferredSize(new java.awt.Dimension(865, 660));
 
         jPanel2.setBackground(new java.awt.Color(102, 255, 204));
+        jPanel2.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel2KeyPressed(evt);
+            }
+            public void keyTyped(java.awt.event.KeyEvent evt) {
+                jPanel2KeyTyped(evt);
+            }
+        });
         jPanel2.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
         jLabel3.setFont(new java.awt.Font("Tahoma", 1, 12)); // NOI18N
@@ -2275,6 +2307,7 @@ public final class Sistema extends javax.swing.JFrame {
             btnEditarpro.setEnabled(false);
             btnEliminarPro.setEnabled(false);
             btnGuardarpro.setEnabled(true);
+            txtCodigoPro.requestFocus();
         } else {
             JOptionPane.showMessageDialog(null, "Los campos estan vacios");
         }
@@ -2597,49 +2630,44 @@ public final class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDescripcionVentaKeyTyped
 
     private void txtCodigoVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaKeyTyped
+//SwingUtilities.invokeLater(VentaFrame::new);
+//abrirVentanaCobrar();
+ InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+        ActionMap actionMap = getRootPane().getActionMap();
 
-//KeyboardFocusManager kb = KeyboardFocusManager.getCurrentKeyboardFocusManager();
-//kb.addKeyEventPostProcessor(new KeyEventPostProcessor(){
-           // public boolean postProcessKeyEvent(KeyEvent e){
-              //  if (e.getKeyCode() == KeyEvent.VK_ESCAPE && this != null){
-            //        System.out.println("probando...");
-          //          dispose();
-        //            return false;
-      //          }
-    //            return true;
-  //          }
-//});        // TODO add your handling code here:
-       // event.numberKeyPress(evt);
+        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "openCobrarWindow");
+        actionMap.put("openCobrarWindow", new AbstractAction() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                abrirVentanaCobrar(); // Llama al método que abre la ventana de cobro
+            }
+        });
+
+        setVisible(true);
+      
     }//GEN-LAST:event_txtCodigoVentaKeyTyped
 
+
+
+
+    private void abrirVentanaCobrar() {
+      if (TableVenta.getRowCount() > 0) {
+           
+             ventanaCobrar cobrar = new ventanaCobrar();
+        cobrar.setVisible(true);
+        
+       } else {
+            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
+            txtCodigoVenta.requestFocus();
+       }
+    }
+
+
+
+   //// hasta aqui
+
     private void txtCodigoVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaKeyPressed
-        // TODO add your handling code here:original
-       /* if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (!"".equals(txtCodigoVenta.getText())) {
-                String cod = txtCodigoVenta.getText();
-                pro = proDao.BuscarPro(cod);
-                if (pro.getNombre() != null) {
-                    txtIdPro.setText("" + pro.getId());
-                    txtDescripcionVenta.setText("" + pro.getNombre());
-                    txtPrecioVenta.setText("" + pro.getPrecio());
-                    txtStockDisponible.setText("" + pro.getStock());
-                    txtCantidadVenta.requestFocus();
-                } else {
-                    LimparVenta();
-                    txtCodigoVenta.requestFocus();
-                    JOptionPane.showMessageDialog(null, "EL CODIGO DE PRODUCTO NO EXISTE"); 
-                }
-            } else {
-                JOptionPane.showMessageDialog(null, "Ingrese el codigo del productos");
-                txtCodigoVenta.requestFocus();
-            }
-       }*/
-       //
-       
-       
-       
-       
-       
+    
        
        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (!"".equals(txtCodigoVenta.getText())) {
@@ -2999,31 +3027,8 @@ if (TableVenta.getRowCount() > 0) {
     }//GEN-LAST:event_btnTodasFilasActionPerformed
  
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
-       
-        
-if (TableVenta.getRowCount() > 0) {
-            //original
-              
-              //if (!"".equals(txtPaga1.getText())) {
-             ventanaCobrar cobrar = new ventanaCobrar();
-        cobrar.setVisible(true);
-        
-       // String  info= lblEnviaTotal.getText();
-        //ventanaCobrar.lblEnviaTotal.setText(info);
-           // if (!"".equals(txtNombreClienteventa.getText())) {
-           
-               
-         // } else {
-            //   JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
-          // }
-               //} else {
-               //JOptionPane.showMessageDialog(null, "Paga con $ ? ");
-              // txtPaga1.requestFocus();
-           //}
-       } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
-            txtCodigoVenta.requestFocus();
-       }
+ abrirVentanaCobrar();       
+ AbrirCajaEfectivo.main(null); // Llama la función para abrir la caja  
     }//GEN-LAST:event_btnCobrarActionPerformed
 
     private void btnCobrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCobrarMouseClicked
@@ -3209,27 +3214,30 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
     }//GEN-LAST:event_txtRucVentaCreditActionPerformed
 
     private void txtRucVentaCreditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCreditKeyPressed
-      if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-            if (!"".equals(txtRucVentaCredit.getText())) {
-      
-                int dni = Integer.parseInt(txtRucVentaCredit.getText());
-                cl = client.Buscarcliente(dni);
-                 
-                if (cl.getNombre()!= null) {
-                    txtNombreClienteventaCredit.setText("" + cl.getNombre());
-                    //original  
-                   
-                      txtIdCV.setText("" + cl.getId());
-                    txtCodigoVentaCreditClient.requestFocus();
-                } else {
-                   // txtRucVenta.setText("");
-                   JOptionPane.showMessageDialog(null, "El cliente no existe");
-                    LimparVentaCredit();
-                }
-               
-            }    
-         //EnterClienteCredit();   
-        }        // TODO add your handling code here:
+       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        String rucText = txtRucVentaCredit.getText().trim();
+        
+        if (rucText.isEmpty()) {
+            return; // Evita procesar si el campo está vacío
+        }
+
+        try {
+            int dni = Integer.parseInt(rucText);
+            cl = client.Buscarcliente(dni);
+
+            if (cl.getNombre() != null) {
+                txtNombreClienteventaCredit.setText(cl.getNombre());
+                txtIdCV.setText(String.valueOf(cl.getId()));
+                txtCodigoVentaCreditClient.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "El cliente no existe");
+                LimparVentaCredit();
+            }
+        } catch (NumberFormatException e) {
+            JOptionPane.showMessageDialog(null, "Número de DNI inválido");
+            txtRucVentaCredit.requestFocus();
+        }
+    }
     }//GEN-LAST:event_txtRucVentaCreditKeyPressed
 
     
@@ -3247,38 +3255,31 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
     }//GEN-LAST:event_txtRucVentaCreditKeyTyped
 
     private void btnGenerarVentaCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaCreditActionPerformed
-if (TableCreditClient.getRowCount() > 0) {
-            //original
-              
-            
-            
-            if (!"".equals(txtNombreClienteventaCredit.getText())) {
-           
-                //RegistrarVentaCreditocliente();// si guarda  el registro pero no guarda el total - vendedor .total. fecha
-                RegistrarDetalleCreditocliente();// id pro, cantidad,precio, id venta
-                //  ActualizarStock();
-              ActualizarStockCreditCliente();
-                LimpiarTableCredit();
-               // LimpiarClienteventa();    se omitio  de momento
-                LimparVentaCredit();
-                LimpiarCobro();
-                txtNombreClienteventaCredit.requestFocus();
-                
-             
-             
-                
-               JOptionPane.showMessageDialog(null, "Registro exitoso");  
-                   //ConsultaCreditoCliente consulta = new ConsultaCreditoCliente();
-             //consulta.setVisible(true);   
-                
-          } else {
-               JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
-               txtRucVentaCredit.requestFocus();
-           }
-            
-       } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
-       }                  // TODO add your handling code here:
+              if (TableCreditClient.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(null, "No hay productos en la venta");
+        return;
+    }
+
+    if (txtNombreClienteventaCredit.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
+        txtRucVentaCredit.requestFocus();
+        return;
+    }
+
+    // Procesos principales
+    RegistrarDetalleCreditocliente();
+    ActualizarStockCreditCliente();
+
+    // Limpieza de datos
+    LimpiarTableCredit();
+    LimparVentaCredit();
+    LimpiarCobro();
+
+    // Foco en el campo del cliente
+    txtNombreClienteventaCredit.requestFocus();
+
+    // Mensaje final
+    JOptionPane.showMessageDialog(null, "Registro exitoso");
     }//GEN-LAST:event_btnGenerarVentaCreditActionPerformed
 
     private void btnBusccarPro1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusccarPro1ActionPerformed
@@ -3342,8 +3343,10 @@ TotalPagarCreditoCliente();
         TotalPagarX();
         EnterClienteVenta();
         EnterClienteCredit();
+        
 
 // TODO add your handling code here:
+
     }//GEN-LAST:event_formWindowActivated
 
     private void formComponentShown(java.awt.event.ComponentEvent evt) {//GEN-FIRST:event_formComponentShown
@@ -3361,6 +3364,20 @@ TotalPagarCreditoCliente();
     private void jPanel17KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel17KeyPressed
         // TODO add your handling code here:
     }//GEN-LAST:event_jPanel17KeyPressed
+
+    private void jPanel2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel2KeyPressed
+     // Detectar si la tecla presionada es F12
+    if (evt.getKeyCode() == KeyEvent.VK_F12) {
+        if (TableVenta.getRowCount() > 0) {
+            ventanaCobrar cobrar = new ventanaCobrar();
+            cobrar.setVisible(true);
+        }
+    }        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel2KeyPressed
+
+    private void jPanel2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel2KeyTyped
+  
+    }//GEN-LAST:event_jPanel2KeyTyped
    private void filtrar(){
 
    try{

@@ -6,6 +6,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.ChartFrame;
 import org.jfree.chart.JFreeChart;
@@ -17,18 +19,40 @@ public class Grafico {
         Conexion cn = new Conexion();
         PreparedStatement ps;
         ResultSet rs;
+        
+        
+      
+        
+        
+        
+        
         try {
             String sql = "SELECT total FROM ventas WHERE fecha = ?";
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
             ps.setString(1, fecha);
             rs = ps.executeQuery();
-            DefaultPieDataset dateset = new DefaultPieDataset();
+            
+            //
+             double totalVentas = 0.0;
+            //
+             
+             DefaultPieDataset dateset = new DefaultPieDataset();
             while(rs.next()){
                 dateset.setValue(rs.getString("total"), rs.getDouble("total"));
+                
+                //jjjjj
+                 double total = rs.getDouble("total");
+                //dataset.setValue("Venta Total", total);
+                totalVentas += total;
+                
             }
-            JFreeChart jf = ChartFactory.createPieChart("Reporte de Venta", dateset);
-            ChartFrame f = new ChartFrame("Total de Ventas por dia", jf);
+            
+             
+            
+            
+            JFreeChart jf = ChartFactory.createPieChart("Reporte de Venta Total: "+ totalVentas, dateset); // Titulo central
+            ChartFrame f = new ChartFrame("Total de Ventas por dia", jf); //titulo del framee
             f.setSize(1000, 500);
             f.setLocationRelativeTo(null);
             f.setVisible(true);

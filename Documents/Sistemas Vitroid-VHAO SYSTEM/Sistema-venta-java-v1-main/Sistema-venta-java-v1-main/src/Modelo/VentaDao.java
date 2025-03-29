@@ -194,10 +194,10 @@ public class VentaDao {
     
     public List Listarventas(){
        List<Venta> ListaVenta = new ArrayList();
-     // String sql = "SELECT c.id AS id_cli, c.nombre, v.* FROM clientes c INNER JOIN ventas v ON c.id = v.cliente";
-      String sql = "SELECT c.id AS id_clic, c.nombre, v.* FROM clientes c INNER JOIN ventas v ON c.id  = v.cliente ";
-       //  String sql = "SELECT c.id AS id_pro, c.nombre, v.* FROM productos c INNER JOIN ventas v ON c.id = v.cliente";
-        //String sql = "SELECT c.id AS id_pro , c.nombre ,v.* FROM productos c INNER JOIN ventas v ON c.id = v.producto";
+     
+      // String sql = "SELECT c.id AS id_clic, c.nombre, v.* FROM clientes c INNER JOIN ventas v ON c.id  = v.cliente ";
+          String sql = "SELECT c.id AS id_cli, c.nombre, v.* FROM clientes c INNER JOIN ventas v ON c.id = v.cliente ORDER BY v.id DESC";
+
        
        try {
            con = cn.getConnection();

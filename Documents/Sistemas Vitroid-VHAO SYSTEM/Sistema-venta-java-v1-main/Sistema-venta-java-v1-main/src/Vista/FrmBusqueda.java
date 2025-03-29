@@ -38,13 +38,17 @@ import javax.swing.RowFilter;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableModel;
 import javax.swing.table.TableRowSorter;
+import java.awt.event.KeyAdapter;
+import java.awt.event.KeyEvent;
+import javax.swing.Timer;
+
 
 /**
  *
  * @author vic
  */
 public class FrmBusqueda extends javax.swing.JFrame {
-   
+   private Timer timer;
         Connection con;
     Conexion cn = new Conexion();
     PreparedStatement ps;
@@ -335,17 +339,19 @@ jMyTable.addKeyListener(new java.awt.event.KeyAdapter() {
 
     private void txtBuscarKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyReleased
  
-     if (!"".equals(txtBuscar.getText())) {
-       listar();    
-     }else
-         
-     {
-            } 
-     
+    // Cancelamos el timer anterior si existe, para reiniciar el temporizador
+    if (timer != null) {
+        timer.stop();
+    }
 
- 
-        
-        // TODO add your handling code here:
+    // Solo llamamos a listar() si el campo de texto no está vacío
+    String textoBusqueda = txtBuscar.getText().trim();
+    if (!textoBusqueda.isEmpty()) {
+        // Configuramos un temporizador que ejecutará 'listar' después de 500 ms
+        timer = new Timer(200, e -> listar());
+        timer.setRepeats(false);  // Aseguramos que solo se ejecute una vez
+        timer.start();
+    }
     }//GEN-LAST:event_txtBuscarKeyReleased
 
     private void txtBuscarKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscarKeyTyped
