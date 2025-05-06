@@ -3735,9 +3735,7 @@ void Operacion(){
         txtPrecioVenta.setText("");
         txtIdVenta.setText("");
         
-        // LabelTotal.setText("");
-          //txtPaga1.setText("");
-           //lblcambio.setText("");
+        
     }
       private void LimparVentaCredit() {
         txtCodigoVentaCreditClient.setText("");
