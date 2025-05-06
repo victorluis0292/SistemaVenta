@@ -3956,28 +3956,9 @@ void Operacion(){
        //  Vdao.pdfV(id, cliente, TotalpagarCredit, LabelVendedor.getText()); // aqui viajan
     }
     
-     
+
     
-    
-    
-    
-    
-    
-    
-    
-    
-    //-------------------------//
-    
-//suma las filas de la tabla
-  // public void TotalPagarE() {
-        //TotalpagarEntrada = 0.00;
-      //   int numFila = TableEntrada.getRowCount();
-      //   for (int i = 0; i < numFila; i++) {
-      //     double cal = Double.parseDouble(String.valueOf(TableEntrada.getModel().getValueAt(i, 4)));
-        //    TotalpagarEntrada = TotalpagarEntrada + cal;
-    //    }
-     //   TotalEntrada.setText(String.format("%.2f", TotalpagarEntrada));
-   // }
+ 
    private void LimpiarTableVenta() {
         tmp = (DefaultTableModel) TableVenta.getModel();
         int fila = TableVenta.getRowCount();
