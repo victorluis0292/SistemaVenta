@@ -66,6 +66,7 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 import static Vista.frmtabla2.modelo2;
+import java.text.ParseException;
 
 
 /**
@@ -74,7 +75,8 @@ import static Vista.frmtabla2.modelo2;
  */
 //public class ventanaCobrar extends javax.swing.JFrame {
     public final class ventanaCobrar extends javax.swing.JFrame {
-  DefaultTableModel modelo = new DefaultTableModel();
+  private boolean esPrimeraVez = true;
+        DefaultTableModel modelo = new DefaultTableModel();
    Venta v = new Venta();
     VentaDao Vdao = new VentaDao(); 
      Detalle Dv = new Detalle();
@@ -85,6 +87,7 @@ import static Vista.frmtabla2.modelo2;
     ProductosDao proDao = new ProductosDao();
     Date fechaVenta = new Date();
     String fechaActual = new SimpleDateFormat("dd/MM/yyyy").format(fechaVenta);
+    
   /**
      * Creates new form ventanaCobrar
      * @param args
@@ -324,17 +327,34 @@ pagarenter();
         cobrarConTarjeta.setVisible(true);     
         this.dispose();  // TODO add your handling code here:
     }//GEN-LAST:event_jButton1ActionPerformed
-    private void RegistrarVenta() {
+private void RegistrarVenta() {
+    try {
         int cliente = Integer.parseInt(txtIdCV.getText());
         String vendedor = LabelVendedor.getText();
         double monto = TotalPagar;
-        
+
+        // Obtener fecha actual en formato dd/MM/yyyy
+        Date fecha = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaActual = sdf.format(fecha);
+
+        // Crear y llenar objeto Venta
+        Venta v = new Venta();
         v.setCliente(cliente);
         v.setVendedor(vendedor);
         v.setTotal(monto);
         v.setFecha(fechaActual);
+
+        // Registrar la venta
         Vdao.RegistrarVenta(v);
+    } catch (NumberFormatException e) {
+        System.out.println("Error al convertir ID del cliente: " + e.getMessage());
+    } catch (ParseException e) {
+        System.out.println("Error al parsear la fecha: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Error al registrar la venta: " + e.getMessage());
     }
+}
     public void RegistrarDetalle() {
         int id = Vdao.IdVenta();
         for (int i = 0; i < TableVenta.getRowCount(); i++) {
@@ -374,61 +394,7 @@ pagarenter();
         }
         lblTotal.setText(String.format("%.2f", TotalPagar));
     }
-   
-   //REGISTRAR  VENTA DE VECINOS CREDITO
-   // private void RegistrarVentaCreditos() {
-     //   int cliente = Integer.parseInt(txtIdCV.getText());
-    //    String vendedor = LabelVendedor.getText();
-       // double monto = TotalPagarCreditos;
-        
-       // v.setCliente(cliente);
-      //  v.setVendedor(vendedor);
-       // v.setTotal(monto);
-      //  v.setFecha(fechaActual);
-      //  Vdao.RegistrarVenta(v);
-    //}
-    //public void RegistrarDetalleCreditos() {
-       // int id = Vdao.IdVenta();
-       // for (int i = 0; i < TableConsultaCreditCliente.getRowCount(); i++) {
-          //  int id_pro = Integer.parseInt(TableConsultaCreditCliente.getValueAt(i, 0).toString());
-           // int cant = Integer.parseInt(TableConsultaCreditCliente.getValueAt(i, 2).toString());
-          //  double precio = Double.parseDouble(TableConsultaCreditCliente.getValueAt(i, 3).toString());
-         //   Dv.setId_pro(id_pro);
-         //   Dv.setCantidad(cant);
-          //  Dv.setPrecio(precio);
-         //   Dv.setId(id);
-          //  Vdao.RegistrarDetalle(Dv);
-
-       // }
-       // int cliente = Integer.parseInt(txtIdCV.getText());
-        //Vdao.pdfV(id, cliente, TotalPagarCreditos, LabelVendedor.getText());
-    //}
-    
-    
-   // private void ActualizarStockCreditos() {
-       // for (int i = 0; i < TableConsultaCreditCliente.getRowCount(); i++) {
-          //  int id = Integer.parseInt(TableConsultaCreditCliente.getValueAt(i, 0).toString());
-           // int cant = Integer.parseInt(TableConsultaCreditCliente.getValueAt(i, 2).toString());
-          //  pro = proDao.BuscarId(id);
-         //   int StockActual = pro.getStock() - cant;
-          //  Vdao.ActualizarStock(StockActual, id);
-
-      //  }
-  //  }
-    
-   //public void TotalPagarXCreditos() {
-      //  TotalPagarCreditos = 0.00;
-      //  int numFila = TableConsultaCreditCliente.getRowCount();
-      //  for (int i = 0; i < numFila; i++) {
-        //   double cal = Double.parseDouble(String.valueOf(TableConsultaCreditCliente.getModel().getValueAt(i,3)));
-        //   TotalPagarCreditos = TotalPagarCreditos + cal;
-      // }
-      //  lblTotal.setText(String.format("%.2f", TotalPagarCreditos));
-   // }
-   
-   
-   
-   //
+  
    
    public void pagarenter(){
       if (!"".equals(txtPaga.getText())) {
@@ -461,31 +427,7 @@ pagarenter();
    
    
    }
- //  public void pagarenterCreditos(){
-     // if (!"".equals(txtPaga1.getText())) {
-
-            // if (!"".equals(txtNombreClienteventa.getText())) {
-
-              //  RegistrarVentaCreditos();
-              //  RegistrarDetalleCreditos();
-              //  ActualizarStockCreditos();
-
-                //LimpiarTableVenta();
-                // LimpiarClienteventa();    se omitio  de momento
-                //  LimparVenta();
-               // LimpiarCobro();
-               // txtCodigoVenta.requestFocus();
-              //  this.dispose();
-              //
-      //  } else {
-        //    JOptionPane.showMessageDialog(null,"Paga con $ ? ");
-        //    txtPaga1.requestFocus();
-      //  }
-   
-   
-   
-   
- //  }
+ 
     /**
      * @param args the command line arguments
      */
@@ -544,35 +486,37 @@ pagarenter();
     }
   
   void Operacion(){
-     
-    double num1=Double.parseDouble(lblTotal.getText()); 
-    double num2=Double.parseDouble(txtPaga.getText());   
-   
-   
-
-   double resta=0.0;
-      resta = num2 - num1; 
-    lblcambio.setText(String.valueOf(resta));
+     // Obtener el texto de los campos y limpiarlo
+      String totalText = lblTotal.getText().trim();
+      String pagaText = txtPaga.getText().trim();
+  
+      // Verificar si los campos están vacíos
+      if (totalText.isEmpty() || pagaText.isEmpty()) {
+          // Si no es la primera vez, mostrar la alerta
+          if (!esPrimeraVez) {
+              JOptionPane.showMessageDialog(null, "Por favor, ingrese ambos valores: Total y Pago.");
+          }
+          esPrimeraVez = false; // Marcar que ya no es la primera vez
+          return; // Salir del método si alguno de los campos está vacío
+      }
+  
+      try {
+          // Convertir los textos a double
+          double num1 = Double.parseDouble(totalText); 
+          double num2 = Double.parseDouble(pagaText);
+  
+          // Realizar la operación
+          double resta = num2 - num1; 
+          lblcambio.setText(String.valueOf(resta)); // Mostrar el resultado
+      } catch (NumberFormatException e) {
+          // Si no es la primera vez y el formato es incorrecto, mostrar la alerta
+          if (!esPrimeraVez) {
+              JOptionPane.showMessageDialog(null, "Por favor, ingrese valores numéricos válidos.");
+          }
+          esPrimeraVez = false; // Marcar que ya no es la primera vez
+      }    
 }
-   // void OperacionCreditos(){
-     
- //   double num1=Double.parseDouble(lblTotal.getText()); 
-  //  double num2=Double.parseDouble(txtPaga1.getText());   
-   
-   
-
- //  double resta=0.0;
-  //    resta = num2 - num1; 
-  //  lblcambio.setText(String.valueOf(resta));
-//}
- 
   
-  
-  
- 
-  
-  
- 
   
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnGenerarCobro;

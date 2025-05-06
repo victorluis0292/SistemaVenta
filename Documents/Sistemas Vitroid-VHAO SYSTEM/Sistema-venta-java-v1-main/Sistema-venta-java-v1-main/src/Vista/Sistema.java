@@ -48,6 +48,7 @@ import java.awt.BorderLayout;
 import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
 import java.awt.event.ActionEvent;
+import java.text.ParseException;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
@@ -82,6 +83,8 @@ public final class Sistema extends javax.swing.JFrame {
     
    
     String fechaActual = new SimpleDateFormat("dd/MM/yyyy").format(fechaVenta);
+    //String fechaActual = new SimpleDateFormat("dd/MM/yyyy").format(fechaVenta);
+    
     //String fechaActual = new SimpleDateFormat("HH:mm").format(fechaVenta);
     // Date horacredocliente = new Date();
     //String fechaActual = new SimpleDateFormat("dd/MM/yyyy").format(horacredocliente);
@@ -117,7 +120,7 @@ public final class Sistema extends javax.swing.JFrame {
     public Sistema() {
         initComponents();
          btnBusccarPro.setMnemonic(KeyEvent.VK_X);   
-      
+    
     }
     
     public Sistema (login priv){
@@ -137,6 +140,7 @@ public final class Sistema extends javax.swing.JFrame {
    
         txtIdPro.setVisible(false);
         txtIdproducto.setVisible(false);
+        txtIDProduct.setVisible(false);
         txtIdProveedor.setVisible(false);
         txtIdConfig.setVisible(false);
         txtIdCV.setVisible(false);
@@ -185,7 +189,9 @@ public final class Sistema extends javax.swing.JFrame {
           modelo3.addColumn("Precio U.");
           modelo3.addColumn("Precio Total.");
         TableCreditClient.setModel(modelo3);
-        
+          // Método autogenerado para la inicialización de los componentes de la ventana
+    inicializarTeclas();  // Llamar al método que configura las teclas de acceso rápido
+    setVisible(true);
                 
         ListarConfig();
         if (priv.getRol().equals("Asistente")) {
@@ -1491,11 +1497,11 @@ public final class Sistema extends javax.swing.JFrame {
                         .addComponent(jLabel26))
                     .addComponent(cbxProveedorPro, javax.swing.GroupLayout.PREFERRED_SIZE, 30, javax.swing.GroupLayout.PREFERRED_SIZE))
                 .addGap(29, 29, 29)
-                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-                    .addComponent(btnGuardarpro)
-                    .addComponent(btnEditarpro)
-                    .addComponent(btnEliminarPro, javax.swing.GroupLayout.PREFERRED_SIZE, 33, javax.swing.GroupLayout.PREFERRED_SIZE)
-                    .addComponent(btnNuevoPro))
+                .addGroup(jPanel11Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING, false)
+                    .addComponent(btnGuardarpro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEditarpro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnEliminarPro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                    .addComponent(btnNuevoPro, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE))
                 .addGap(23, 23, 23))
         );
 
@@ -2225,7 +2231,7 @@ public final class Sistema extends javax.swing.JFrame {
     private void btnPdfVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfVentasActionPerformed
 
         if(txtIdVenta.getText().equals("")){
-            JOptionPane.showMessageDialog(null, "Selecciona una fila");
+            JOptionPane.showMessageDialog(null, "Selecciona una fila"); 
         }else{
             v = Vdao.BuscarVenta(Integer.parseInt(txtIdVenta.getText()));
             Vdao.pdfV(v.getId(), v.getCliente(), v.getTotal(), v.getVendedor());
@@ -2240,6 +2246,7 @@ public final class Sistema extends javax.swing.JFrame {
     private void btnNuevoProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProActionPerformed
         // TODO add your handling code here:
         LimpiarProductos();
+        btnGuardarpro.setEnabled(true);
     }//GEN-LAST:event_btnNuevoProActionPerformed
 
     private void btnEliminarProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProActionPerformed
@@ -2489,10 +2496,13 @@ public final class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_TableClienteMouseClicked
 
     private void btnGraficarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGraficarActionPerformed
-        // TODO add your handling code here:
-
+         try {
         String fechaReporte = new SimpleDateFormat("dd/MM/yyyy").format(Midate.getDate());
         Grafico.Graficar(fechaReporte);
+    } catch (ParseException e) {
+        e.printStackTrace();
+        JOptionPane.showMessageDialog(null, "Error al convertir la fecha. Asegúrate de seleccionar una fecha válida.");
+    }
     }//GEN-LAST:event_btnGraficarActionPerformed
 
     private void btnGenerarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaActionPerformed
@@ -2630,51 +2640,86 @@ public final class Sistema extends javax.swing.JFrame {
     }//GEN-LAST:event_txtDescripcionVentaKeyTyped
 
     private void txtCodigoVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaKeyTyped
-//SwingUtilities.invokeLater(VentaFrame::new);
-//abrirVentanaCobrar();
- InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
-        ActionMap actionMap = getRootPane().getActionMap();
+   InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ActionMap actionMap = getRootPane().getActionMap();
 
-        inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "openCobrarWindow");
-        actionMap.put("openCobrarWindow", new AbstractAction() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                abrirVentanaCobrar(); // Llama al método que abre la ventana de cobro
-            }
-        });
+     //Asignar F12 para abrir la ventana de cobro
+    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "openCobrarWindow");
+    actionMap.put("openCobrarWindow", new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            abrirVentanaCobrar(); // Llama al método que abre la ventana de cobro
+        AbrirCajaEfectivo.main(null); 
+        }
+    });
 
-        setVisible(true);
+     //Asignar F1 para abrir la ventana de búsqueda
+    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "openBuscarWindow");
+    actionMap.put("openBuscarWindow", new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            abrirVentanaBuscar(); // Llama al método que abre la ventana de búsqueda
+        }
+    });
+
+    setVisible(true);
       
     }//GEN-LAST:event_txtCodigoVentaKeyTyped
+// Constructor o método de inicialización de la ventana
+private void inicializarTeclas() {
+    // Obtener el InputMap y el ActionMap del RootPane
+    InputMap inputMap = getRootPane().getInputMap(JComponent.WHEN_IN_FOCUSED_WINDOW);
+    ActionMap actionMap = getRootPane().getActionMap();
+
+    // Asignar F12 para abrir la ventana de cobro
+    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F12, 0), "openCobrarWindow");
+    actionMap.put("openCobrarWindow", new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            abrirVentanaCobrar(); // Llama al método que abre la ventana de cobro
+            AbrirCajaEfectivo.main(null);
+        }
+    });
+
+    // Asignar F1 para abrir la ventana de búsqueda
+    inputMap.put(KeyStroke.getKeyStroke(KeyEvent.VK_F1, 0), "openBuscarWindow");
+    actionMap.put("openBuscarWindow", new AbstractAction() {
+        @Override
+        public void actionPerformed(ActionEvent e) {
+            abrirVentanaBuscar(); // Llama al método que abre la ventana de búsqueda
+        }
+    });
+}
+
+// Llamar este método en el constructor de la ventana o en un método de inicialización
 
 
 
-
-    private void abrirVentanaCobrar() {
-      if (TableVenta.getRowCount() > 0) {
-           
-             ventanaCobrar cobrar = new ventanaCobrar();
-        cobrar.setVisible(true);
-        
-       } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
-            txtCodigoVenta.requestFocus();
-       }
+private ventanaCobrar cobrar = null;
+   private void abrirVentanaCobrar() {
+    if (TableVenta.getRowCount() > 0) {
+        if (cobrar == null || !cobrar.isShowing()) {  //cobrar == null: verifica si aún no has abierto la ventana.
+            cobrar = new ventanaCobrar();             //!cobrar.isShowing(): verifica si ya fue cerrada.
+            cobrar.setVisible(true);
+        } else {
+            cobrar.toFront(); // Trae la ventana al frente si ya está abierta
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "No hay productos en la venta");
+        txtCodigoVenta.requestFocus();
     }
+}
 
 
 
    //// hasta aqui
 
     private void txtCodigoVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaKeyPressed
-    
-       
-       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+    if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
             if (!"".equals(txtCodigoVenta.getText())) {
                 String cod = txtCodigoVenta.getText();
                 pro = proDao.BuscarPro(cod);
-//original                
-// if (pro.getNombre() != null) {
+
                if (pro.getNombre() != null) {
                     txtIdPro.setText("" + pro.getId());
                     txtCodigoVenta.setText("" + pro.getCodigo());
@@ -2686,7 +2731,7 @@ public final class Sistema extends javax.swing.JFrame {
                       int cant = Integer.parseInt(txtCantidadVenta.getText());
                       
                          int id = Integer.parseInt(txtIdPro.getText());
-                 //String codigo = txtCodigoVenta.getText();
+                 
                 String descripcion = txtDescripcionVenta.getText();
               
                 double precio = Double.parseDouble(txtPrecioVenta.getText());
@@ -2699,22 +2744,15 @@ public final class Sistema extends javax.swing.JFrame {
                       
                       
                       if (stock >= cant) {
-                          //es el que restaa al stock
+                       
                     item = item + 1;
                     tmp = (DefaultTableModel) TableVenta.getModel();
-                   // for (int i = 0; i < TableVenta.getRowCount(); i++) {
-                      //if (TableVenta.getValueAt(i, 0).equals(txtCodigoVenta.getText())) {
-                        // original
-                        //if (TableVenta.getValueAt(i, 1).equals(txtDescripcionVenta.getText())) {
-                          //  JOptionPane.showMessageDialog(null, "El producto ya esta registrado");
-                          //  return;
-                       // }
-                  // }
+                 
                     ArrayList lista = new ArrayList();
                     lista.add(item);
                     lista.add(id);
-                   //lista.add(cod);
-                    lista.add(descripcion); //2
+                  
+                    lista.add(descripcion); 
                     lista.add(cant);
                     lista.add(precio);
                     lista.add(total);
@@ -2722,7 +2760,7 @@ public final class Sistema extends javax.swing.JFrame {
                     
                   
                     Object[] O = new Object[5];
-                   // modelo=(DefaultTableModel)TableVenta.getModel();
+                  
                     O[0] = lista.get(1);
                     O[1] = lista.get(2);
                     O[2] = lista.get(3);
@@ -2740,14 +2778,15 @@ public final class Sistema extends javax.swing.JFrame {
                                        JOptionPane.showMessageDialog(null, "Stock no disponible"); 
                 }
             } else {
-                    //original  JOptionPane.showMessageDialog(null, "Ingrese el codigo del productos");
+                    
                      LimparVenta();
                 JOptionPane.showMessageDialog(null, "EL CODIGO DE PRODUCTO NO EXISTE");
                txtCodigoVenta.requestFocus();
             }
        }else {JOptionPane.showMessageDialog(null, "Ingrese el codigo del producto");
             } 
-       }
+       }    
+       
     }//GEN-LAST:event_txtCodigoVentaKeyPressed
 
     private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
@@ -3028,7 +3067,7 @@ if (TableVenta.getRowCount() > 0) {
  
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
  abrirVentanaCobrar();       
- AbrirCajaEfectivo.main(null); // Llama la función para abrir la caja  
+ //     AbrirCajaEfectivo.main(null); // Llama la función para abrir la caja  
     }//GEN-LAST:event_btnCobrarActionPerformed
 
     private void btnCobrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCobrarMouseClicked
@@ -3095,7 +3134,12 @@ if (TableVenta.getRowCount() > 0) {
 FrmBusqueda BuscarProd = new FrmBusqueda();
        BuscarProd.setVisible(true);        // TODO add your handling code here:
     }//GEN-LAST:event_btnBusccarProActionPerformed
-
+    private void abrirVentanaBuscar() {
+   FrmBusqueda BuscarProd = new FrmBusqueda();
+       BuscarProd.setVisible(true); 
+    }
+    
+ 
     private void txtCodigoVentaCreditClientActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtCodigoVentaCreditClientActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoVentaCreditClientActionPerformed
@@ -3728,28 +3772,64 @@ void Operacion(){
      
        
                  }
-    private void RegistrarVenta() {
+  private void RegistrarVenta() {
+    try {
+        // Asegurarse de que el objeto v esté inicializado
+        Venta v = new Venta();
+        
+        // Obtener el cliente, vendedor y monto
         int cliente = Integer.parseInt(txtIdCV.getText());
-       
-         String vendedor = LabelVendedor.getText();
-       double monto = TotalPagar;
-      v.setCliente(cliente);
-      //   v.setProducto(producto);
+        String vendedor = LabelVendedor.getText();
+        double monto = TotalPagar;
+
+        // Asignar los datos al objeto v
+        v.setCliente(cliente);
         v.setVendedor(vendedor);
         v.setTotal(monto);
+        
+        // Asignar la fecha (asegúrate de que fechaActual está bien definida y formateada)
         v.setFecha(fechaActual);
+
+        // Registrar la venta
         Vdao.RegistrarVenta(v);
+        
+    } catch (NumberFormatException e) {
+        System.out.println("Error al convertir el ID del cliente: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Error al registrar la venta: " + e.getMessage());
     }
+}
     
   private void RegistrarEntrada() {
-         
+    try {
+        // Asegurarse de que el objeto v está inicializado
+        Venta v = new Venta();
+
+        // Obtener el vendedor
         String vendedor = LabelVendedor.getText();
         
-     
+        // Obtener fecha actual (si es necesario formatearla)
+        Date fecha = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaActual = sdf.format(fecha);
         
+        // Asignar la fecha al objeto v
         v.setFecha(fechaActual);
+        v.setVendedor(vendedor);
+        
+        // Asignar más información si es necesario, como cliente y monto
+        // Ejemplo:
+        // int cliente = Integer.parseInt(txtIdCV1.getText());  // Asumir que tienes un campo para el ID del cliente
+        // double monto = TotalPagar;  // Asumir que tienes la variable TotalPagar
+        // v.setCliente(cliente);
+        // v.setTotal(monto);
+
+        // Registrar la venta
         Vdao.RegistrarVenta(v);
+    } catch (Exception e) {
+        System.out.println("Error al registrar la entrada: " + e.getMessage());
     }
+}
     
 
     private void RegistrarDetalle() {
@@ -3820,17 +3900,33 @@ void Operacion(){
         }
     }
     //------credito cliente-------------
-    private void RegistrarVentaCreditocliente() {
-         int cliente = Integer.parseInt(txtIdCV1.getText());
+ private void RegistrarVentaCreditocliente() {
+    try {
+        int cliente = Integer.parseInt(txtIdCV1.getText());
         String vendedor = LabelVendedor.getText();
         double monto = TotalPagar;
-        
+
+        // Crear e inicializar el objeto Venta
+        Venta v = new Venta();
         v.setCliente(cliente);
         v.setVendedor(vendedor);
         v.setTotal(monto);
-        v.setFecha(fechaActual);
+
+        // Obtener fecha actual en formato dd/MM/yyyy
+        Date fecha = new Date();
+        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
+        String fechaActual = sdf.format(fecha);
+        
+        v.setFecha(fechaActual); // Asignar fecha formateada a la venta
+
+        // Registrar la venta
         Vdao.RegistrarVenta(v);
+    } catch (NumberFormatException e) {
+        System.out.println("Error al convertir ID del cliente: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Error al registrar la venta: " + e.getMessage());
     }
+}
         private void RegistrarDetalleCreditocliente() {
         int id = Vdao.IdVenta();
         for (int i = 0; i < TableCreditClient.getRowCount(); i++) {

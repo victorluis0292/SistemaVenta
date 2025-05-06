@@ -6,6 +6,9 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import org.jfree.chart.ChartFactory;
@@ -14,23 +17,26 @@ import org.jfree.chart.JFreeChart;
 import org.jfree.data.general.DefaultPieDataset;
 
 public class Grafico {
-    public static void Graficar(String fecha){
+    public static void Graficar(String fecha) throws ParseException{
         Connection con;
         Conexion cn = new Conexion();
         PreparedStatement ps;
         ResultSet rs;
-        
-        
-      
-        
-        
-        
-        
+ 
         try {
+            
             String sql = "SELECT total FROM ventas WHERE fecha = ?";
             con = cn.getConnection();
             ps = con.prepareStatement(sql);
-            ps.setString(1, fecha);
+           // ps.setString(1, fecha);
+           SimpleDateFormat entrada = new SimpleDateFormat("dd/MM/yyyy");
+SimpleDateFormat salida = new SimpleDateFormat("yyyy-MM-dd");
+
+Date fechaConvertida = entrada.parse(fecha);
+String fechaFormateada = salida.format(fechaConvertida);
+
+ps.setString(1, fechaFormateada);
+
             rs = ps.executeQuery();
             
             //

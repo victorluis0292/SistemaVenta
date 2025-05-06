@@ -388,17 +388,33 @@ txtEliminarid.setText(dato+"");
     private void txtEliminaridActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtEliminaridActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtEliminaridActionPerformed
-    private void RegistrarVenta() {
+   private void RegistrarVenta() {
+    try {
+        // Asegurarse de que el objeto v esté inicializado
+        Venta v = new Venta();
+        
+        // Obtener los datos
         int cliente = Integer.parseInt(txtEliminarid.getText());
         String vendedor = LabelVendedor.getText();
         double monto = TotalPagar;
-        
+
+        // Asignar los datos al objeto v
         v.setCliente(cliente);
         v.setVendedor(vendedor);
         v.setTotal(monto);
+        
+        // Asignar la fecha (asegúrate de que fechaActual esté bien definida y formateada)
         v.setFecha(fechaActual);
+
+        // Registrar la venta
         Vdao.RegistrarVenta(v);
+        
+    } catch (NumberFormatException e) {
+        System.out.println("Error al convertir el ID del cliente: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Error al registrar la venta: " + e.getMessage());
     }
+}
     public void RegistrarDetalle() {
         int id = Vdao.IdVenta();
         for (int i = 0; i < TableVenta.getRowCount(); i++) {

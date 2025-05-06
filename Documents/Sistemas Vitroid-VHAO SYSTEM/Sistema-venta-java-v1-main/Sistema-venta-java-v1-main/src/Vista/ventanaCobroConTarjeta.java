@@ -214,17 +214,47 @@ import static Vista.frmtabla2.modelo2;
        // TODO add your handling code here:
       pagarenter(); 
     }//GEN-LAST:event_btnGenerarCobroActionPerformed
-    private void RegistrarVenta() {
-        int cliente = Integer.parseInt(txtIdCV.getText());
-        String vendedor = LabelVendedor.getText();
-        double monto = TotalPagar;
+  private void RegistrarVenta() {
+    try {
+        // Validar si el campo de texto está vacío
+        String idTexto = txtIdCV.getText();
+        if (idTexto.isEmpty()) {
+            System.out.println("El ID del cliente no puede estar vacío.");
+            return; // Salir si el campo está vacío
+        }
         
+        // Convertir el texto a número y verificar que sea válido
+        int cliente = Integer.parseInt(idTexto);
+        
+        // Verificar que la variable TotalPagar tenga un valor válido
+        if (TotalPagar <= 0) {
+            System.out.println("El monto total no es válido.");
+            return; // Salir si el monto es no válido
+        }
+
+        // Obtener el vendedor
+        String vendedor = LabelVendedor.getText();
+
+        // Inicializar el objeto v (si no está ya inicializado)
+        if (v == null) {
+            v = new Venta(); // Asegúrate de que v esté inicializado
+        }
+        
+        // Asignar los valores al objeto v
         v.setCliente(cliente);
         v.setVendedor(vendedor);
-        v.setTotal(monto);
+        v.setTotal(TotalPagar);
         v.setFecha(fechaActual);
+        
+        // Registrar la venta
         Vdao.RegistrarVenta(v);
+
+    } catch (NumberFormatException e) {
+        System.out.println("Error al convertir el ID del cliente: " + e.getMessage());
+    } catch (Exception e) {
+        System.out.println("Error al registrar la venta: " + e.getMessage());
     }
+}
     public void RegistrarDetalle() {
         int id = Vdao.IdVenta();
         for (int i = 0; i < TableVenta.getRowCount(); i++) {
@@ -266,10 +296,10 @@ import static Vista.frmtabla2.modelo2;
             
             
             
-            double iva=0.016* cal;
-              double comision = 0.035*cal;
-              double subtotal= comision+iva;
-            TotalPagar = TotalPagar + cal+subtotal;
+           // double iva=0.016* cal;
+              double comision = 0.04*cal;
+              //double subtotal= comision;
+            TotalPagar = cal+comision;
             
         }
         lblTotal.setText(String.format("%.2f", TotalPagar));

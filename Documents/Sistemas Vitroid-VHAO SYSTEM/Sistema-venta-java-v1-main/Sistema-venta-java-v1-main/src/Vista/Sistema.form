@@ -1644,11 +1644,11 @@
                               <Component id="cbxProveedorPro" min="-2" pref="30" max="-2" attributes="0"/>
                           </Group>
                           <EmptySpace min="29" pref="29" max="-2" attributes="0"/>
-                          <Group type="103" groupAlignment="0" attributes="0">
-                              <Component id="btnGuardarpro" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnEditarpro" min="-2" max="-2" attributes="0"/>
-                              <Component id="btnEliminarPro" min="-2" pref="33" max="-2" attributes="0"/>
-                              <Component id="btnNuevoPro" min="-2" max="-2" attributes="0"/>
+                          <Group type="103" groupAlignment="0" max="-2" attributes="0">
+                              <Component id="btnGuardarpro" max="32767" attributes="0"/>
+                              <Component id="btnEditarpro" max="32767" attributes="0"/>
+                              <Component id="btnEliminarPro" max="32767" attributes="0"/>
+                              <Component id="btnNuevoPro" alignment="0" max="32767" attributes="0"/>
                           </Group>
                           <EmptySpace min="-2" pref="23" max="-2" attributes="0"/>
                       </Group>
