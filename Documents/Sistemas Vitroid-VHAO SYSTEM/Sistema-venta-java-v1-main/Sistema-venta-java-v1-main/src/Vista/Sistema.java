@@ -3406,7 +3406,7 @@ TotalPagarCreditoCliente();
     }//GEN-LAST:event_txtCantProKeyTyped
 
     private void jPanel17KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel17KeyPressed
-        // TODO add your handling code here:
+        // TODO aing code here:
     }//GEN-LAST:event_jPanel17KeyPressed
 
     private void jPanel2KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel2KeyPressed
