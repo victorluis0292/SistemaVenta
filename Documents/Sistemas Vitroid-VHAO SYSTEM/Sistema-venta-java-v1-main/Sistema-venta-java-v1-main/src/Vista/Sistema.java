@@ -3749,9 +3749,7 @@ void Operacion(){
         txtStockDisponible.setText("");
         txtPrecioVenta.setText("");
         txtIdVenta.setText("");
-        // LabelTotal.setText("");
-          //txtPaga1.setText("");
-           //lblcambio.setText("");
+     
     }
      public void LimpiarCobro() {
         lblEnviaTotal.setText("");
