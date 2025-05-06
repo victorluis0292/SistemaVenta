@@ -7,7 +7,7 @@ package Vista;
 
 /**
  *
- * @author vic
+
  */
 public class AbonoCreditoCliente extends javax.swing.JFrame {
 
