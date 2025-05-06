@@ -3398,7 +3398,7 @@ TotalPagarCreditoCliente();
     }//GEN-LAST:event_formComponentShown
 
     private void txtCantidadVentaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVentaKeyReleased
-        // TODO add your handling code here:
+        
     }//GEN-LAST:event_txtCantidadVentaKeyReleased
 
     private void txtCantProKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantProKeyTyped
