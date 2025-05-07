@@ -784,17 +784,17 @@ System.err.format("Erreur d'impresion ",e.getMessage());
 
   try {
       // Usamos una conexión ya establecida en linea hostinguer
-    //  nuevaConexion = DriverManager.getConnection(
-      //        "jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", 
+      nuevaConexion = DriverManager.getConnection(  //es en linea
+              "jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", //es en linea
               
-    // "u722149126_victor", 
-    //          "Lolo140516");
+     "u722149126_victor", //es en linea
+              "Lolo140516");//es en linea
 
-     
+      /*es localmente
      nuevaConexion = DriverManager.getConnection( // es localmente
     "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC", // es localmente
     "root", ""// es localmente
-);
+);*/  //es localmente 
       // Preparamos la consulta
       PreparedStatement ps = nuevaConexion.prepareStatement(sql);
       

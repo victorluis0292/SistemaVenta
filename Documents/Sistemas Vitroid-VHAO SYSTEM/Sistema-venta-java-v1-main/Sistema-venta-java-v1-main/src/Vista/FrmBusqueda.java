@@ -514,11 +514,14 @@ int fila = TableProductoJF.getSelectedRow();
     
     try {
         // Usamos una conexión ya establecida en lugar de crear una nueva cada vez
-       //en linea  nuevaConexion = DriverManager.getConnection("jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", "u722149126_victor", "Lolo140516");
-nuevaConexion = DriverManager.getConnection( // es localmente
+       //en linea 
+        nuevaConexion = DriverManager.getConnection("jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", "u722149126_victor", "Lolo140516");
+
+       
+     /*  nuevaConexion = DriverManager.getConnection( // es localmente
     "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC", // es localmente
-    "root", ""// es localmente
-);
+  "root", ""*/ //es localmente 
+//);
        
         // Preparamos la consulta
         PreparedStatement ps = nuevaConexion.prepareStatement(sql);

@@ -285,25 +285,16 @@ import static Vista.frmtabla2.modelo2;
     }
     
     //suma las filas de la tabla
-   public void TotalPagarX() {
-       
-    
-    
-        TotalPagar = 0.00;
-        int numFila = TableVenta.getRowCount();
-        for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(TableVenta.getModel().getValueAt(i, 4)));
-            
-            
-            
-           // double iva=0.016* cal;
-              double comision = 0.04*cal;
-              //double subtotal= comision;
-            TotalPagar = cal+comision;
-            
-        }
-        lblTotal.setText(String.format("%.2f", TotalPagar));
+public void TotalPagarX() {
+    TotalPagar = 0.00;
+    int numFila = TableVenta.getRowCount();
+    for (int i = 0; i < numFila; i++) {
+        double cal = Double.parseDouble(String.valueOf(TableVenta.getModel().getValueAt(i, 4)));
+        double comision = 0.045 * cal;
+        TotalPagar += cal + comision; // ← Sumar al acumulador
     }
+    lblTotal.setText(String.format("%.2f", TotalPagar));
+}
    
    
    
