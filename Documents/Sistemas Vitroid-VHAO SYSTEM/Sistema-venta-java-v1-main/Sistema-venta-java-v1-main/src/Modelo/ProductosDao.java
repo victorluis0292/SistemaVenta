@@ -75,29 +75,35 @@ public class ProductosDao {
        }
    }
     
-    public boolean ModificarProductos(Productos pro){
-       String sql = "UPDATE productos SET codigo=?, nombre=?, proveedor=?, stock=?, precio=? WHERE id=?";
-       try {
-           ps = con.prepareStatement(sql);
-           ps.setString(1, pro.getCodigo());
-           ps.setString(2, pro.getNombre());
-           ps.setInt(3, pro.getProveedor());
-           ps.setInt(4, pro.getStock());
-           ps.setDouble(5, pro.getPrecio());
-           ps.setInt(6, pro.getId());
-           ps.execute();
-           return true;
-       } catch (SQLException e) {
-           System.out.println(e.toString());
-           return false;
-       }finally{
-           try {
-               con.close();
-           } catch (SQLException e) {
-               System.out.println(e.toString());
-           }
-       }
-   }
+  public boolean ModificarProductos(Productos pro) {
+    Connection con = null;
+    PreparedStatement ps = null;
+    String sql = "UPDATE productos SET codigo=?, nombre=?, proveedor=?, stock=?, precio=? WHERE id=?";
+    
+    try {
+        // Obtener nueva conexión aquí
+        con = new Conexion().getConnection();
+        ps = con.prepareStatement(sql);
+        ps.setString(1, pro.getCodigo());
+        ps.setString(2, pro.getNombre());
+        ps.setInt(3, pro.getProveedor());
+        ps.setInt(4, pro.getStock());
+        ps.setDouble(5, pro.getPrecio());
+        ps.setInt(6, pro.getId());
+        ps.execute();
+        return true;
+    } catch (SQLException e) {
+        System.out.println("Error al modificar producto: " + e.toString());
+        return false;
+    } finally {
+        try {
+            if (con != null) con.close();
+            if (ps != null) ps.close();
+        } catch (SQLException e) {
+            System.out.println("Error al cerrar conexión: " + e.toString());
+        }
+    }
+}
     
     public Productos BuscarPro(String cod){
         Productos producto = new Productos();
