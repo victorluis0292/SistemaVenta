@@ -1,9 +1,11 @@
+package Vista;
+
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package Vista;
+
 
 import Modelo.AbrirCajaEfectivo;
 import Modelo.Cliente;
@@ -23,7 +25,7 @@ import Modelo.Venta;
 import Modelo.VentaDao;
 import Modelo.login;
 import Reportes.Grafico;
-import static Vista.frmtabla2.modelo2;
+
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -2030,8 +2032,8 @@ public final class Sistema extends javax.swing.JFrame {
         lblTotalCredit.setText("-----");
         jPanel17.add(lblTotalCredit, new org.netbeans.lib.awtextra.AbsoluteConstraints(850, 570, -1, -1));
 
-        txtIdCV1.setText("1");
-        jPanel17.add(txtIdCV1, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 580, 20, -1));
+        txtIdCV1.setText("2");
+        jPanel17.add(txtIdCV1, new org.netbeans.lib.awtextra.AbsoluteConstraints(50, 580, 20, -1));
         jPanel17.add(txtIdPro2, new org.netbeans.lib.awtextra.AbsoluteConstraints(678, 126, -1, -1));
 
         lblcambioCredit.setFont(new java.awt.Font("Tahoma", 0, 20)); // NOI18N
@@ -2693,23 +2695,23 @@ private void inicializarTeclas() {
 
 // Llamar este método en el constructor de la ventana o en un método de inicialización
 
-
-
 private ventanaCobrar cobrar = null;
-   private void abrirVentanaCobrar() {
+
+private void abrirVentanaCobrar() {
     if (TableVenta.getRowCount() > 0) {
-        if (cobrar == null || !cobrar.isShowing()) {  //cobrar == null: verifica si aún no has abierto la ventana.
-            cobrar = new ventanaCobrar();             //!cobrar.isShowing(): verifica si ya fue cerrada.
+        if (cobrar == null || !cobrar.isShowing()) {
+            cobrar = new ventanaCobrar();
             cobrar.setVisible(true);
         } else {
-            cobrar.toFront(); // Trae la ventana al frente si ya está abierta
+            cobrar.toFront();
+            cobrar.LimpiarTxtPaga();
+            cobrar.TotalPagarX();
         }
     } else {
         JOptionPane.showMessageDialog(null, "No hay productos en la venta");
         txtCodigoVenta.requestFocus();
     }
 }
-
 
 
    //// hasta aqui
@@ -3637,7 +3639,7 @@ void Operacion(){
     private javax.swing.JTextField txtDniCliente;
     private javax.swing.JTextField txtIDProduct;
     public static javax.swing.JTextField txtIdCV;
-    public static javax.swing.JTextField txtIdCV1;
+    private javax.swing.JTextField txtIdCV1;
     private javax.swing.JTextField txtIdCliente;
     private javax.swing.JTextField txtIdConfig;
     public static javax.swing.JTextField txtIdPro;

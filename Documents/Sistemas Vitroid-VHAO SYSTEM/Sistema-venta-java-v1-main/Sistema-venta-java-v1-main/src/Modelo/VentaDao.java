@@ -130,7 +130,7 @@ java.sql.Date fechaSQL = new java.sql.Date(fechaUtil.getTime());
         }
        return r;
     }
-     
+    // 
         
    public boolean EliminarClienteCredito(int dni){
        String sql = "DELETE FROM detalle_creditocliente WHERE dni = dni";

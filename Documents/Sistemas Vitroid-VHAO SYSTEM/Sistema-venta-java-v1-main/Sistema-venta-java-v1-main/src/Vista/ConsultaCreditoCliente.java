@@ -448,8 +448,7 @@ txtRucVentaCredit.setText(dato+"");
                                         .addGap(33, 33, 33))))))
                     .addGroup(layout.createSequentialGroup()
                         .addContainerGap()
-                        .addComponent(PrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)
-                        .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)))
+                        .addComponent(PrintBtn, javax.swing.GroupLayout.PREFERRED_SIZE, 38, javax.swing.GroupLayout.PREFERRED_SIZE)))
                 .addGroup(layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(layout.createSequentialGroup()
                         .addGap(10, 10, 10)
@@ -646,6 +645,19 @@ System.err.format("Erreur d'impresion ",e.getMessage());
         // TODO add your handling code here:
     }//GEN-LAST:event_txtCantidadVentaActionPerformed
 
+    private void btnEliminarventaCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarventaCreditActionPerformed
+       if (TableConsultaCreditCliente.getRowCount() > 0) { 
+                 
+      EliminarRegistro();
+     
+            
+      } else {
+            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
+            txtCodigoVenta.requestFocus();
+             limpiarTabla();
+       } 
+    }//GEN-LAST:event_btnEliminarventaCreditActionPerformed
+
     private void txtRucVentaCreditKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCreditKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRucVentaCreditKeyTyped
@@ -681,19 +693,6 @@ System.err.format("Erreur d'impresion ",e.getMessage());
     private void txtRucVentaCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtRucVentaCreditActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRucVentaCreditActionPerformed
-
-    private void btnEliminarventaCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarventaCreditActionPerformed
-       if (TableConsultaCreditCliente.getRowCount() > 0) { 
-                 
-      EliminarRegistro();
-     
-            
-      } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
-            txtCodigoVenta.requestFocus();
-             limpiarTabla();
-       } 
-    }//GEN-LAST:event_btnEliminarventaCreditActionPerformed
 
     /**
      * @param args the command line arguments
@@ -785,16 +784,16 @@ System.err.format("Erreur d'impresion ",e.getMessage());
   try {
       // Usamos una conexión ya establecida en linea hostinguer
       nuevaConexion = DriverManager.getConnection(  //es en linea
-              "jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", //es en linea
+               "jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", //es en linea
               
-     "u722149126_victor", //es en linea
-              "Lolo140516");//es en linea
+      "u722149126_victor", //es en linea
+               "Lolo140516");//es en linea
 
-      /*es localmente
+      /* es localmente
      nuevaConexion = DriverManager.getConnection( // es localmente
     "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC", // es localmente
     "root", ""// es localmente
-);*/  //es localmente 
+);  */   //es localmente 
       // Preparamos la consulta
       PreparedStatement ps = nuevaConexion.prepareStatement(sql);
       
@@ -980,7 +979,7 @@ for (int i=0; i <= TableConsultaCreditCliente.getRowCount(); i++){
     private javax.swing.JTextField txtEliminarRegistro;
     public static javax.swing.JTextField txtIdCV;
     public static javax.swing.JTextField txtNombreClienteventaCredit;
-    public static javax.swing.JTextField txtRucVentaCredit;
+    private javax.swing.JTextField txtRucVentaCredit;
     private javax.swing.JTextField txtStockDisponible2;
     // End of variables declaration//GEN-END:variables
 }

@@ -65,7 +65,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static Vista.frmtabla2.modelo2;
+import static Vista.CorteParcial.modelo2;
 import java.text.ParseException;
 
 
@@ -285,6 +285,10 @@ import java.text.ParseException;
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
+    //En FrmBusqueda.java, crea este método público:
+   
+    
+
     private void txtPagaKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtPagaKeyReleased
 
     String  valor = txtPaga.getText();
@@ -476,6 +480,9 @@ private void RegistrarVenta() {
            txtIdCV.setText("");
            txtIdPro.setText("");
     }
+     public void LimpiarTxtPaga() {
+         txtPaga.setText("");
+     }
 
   private void LimpiarTableVenta() {
         tmp = (DefaultTableModel) TableVenta.getModel();
@@ -484,37 +491,28 @@ private void RegistrarVenta() {
             tmp.removeRow(0);
         }
     }
-  
-  void Operacion(){
-     // Obtener el texto de los campos y limpiarlo
-      String totalText = lblTotal.getText().trim();
-      String pagaText = txtPaga.getText().trim();
-  
-      // Verificar si los campos están vacíos
-      if (totalText.isEmpty() || pagaText.isEmpty()) {
-          // Si no es la primera vez, mostrar la alerta
-          if (!esPrimeraVez) {
-              JOptionPane.showMessageDialog(null, "Por favor, ingrese ambos valores: Total y Pago.");
-          }
-          esPrimeraVez = false; // Marcar que ya no es la primera vez
-          return; // Salir del método si alguno de los campos está vacío
-      }
-  
-      try {
-          // Convertir los textos a double
-          double num1 = Double.parseDouble(totalText); 
-          double num2 = Double.parseDouble(pagaText);
-  
-          // Realizar la operación
-          double resta = num2 - num1; 
-          lblcambio.setText(String.valueOf(resta)); // Mostrar el resultado
-      } catch (NumberFormatException e) {
-          // Si no es la primera vez y el formato es incorrecto, mostrar la alerta
-          if (!esPrimeraVez) {
-              JOptionPane.showMessageDialog(null, "Por favor, ingrese valores numéricos válidos.");
-          }
-          esPrimeraVez = false; // Marcar que ya no es la primera vez
-      }    
+void Operacion() {
+    // Obtener el texto de los campos y limpiarlo
+    String totalText = lblTotal.getText().trim();
+    String pagaText = txtPaga.getText().trim();
+
+    // Si el campo está vacío, no hacer nada
+    if (pagaText.isEmpty()) {
+        return;
+    }
+
+    try {
+        // Convertir los textos a double
+        double num1 = Double.parseDouble(totalText); 
+        double num2 = Double.parseDouble(pagaText);
+
+        // Realizar la operación
+        double resta = num2 - num1; 
+        lblcambio.setText(String.valueOf(resta)); // Mostrar el resultado
+    } catch (NumberFormatException e) {
+        // Mostrar la alerta si el valor no es numérico
+        JOptionPane.showMessageDialog(null, "Por favor, ingrese valores numéricos válidos.");
+    }    
 }
   
   
@@ -529,8 +527,10 @@ private void RegistrarVenta() {
     public static final javax.swing.JLabel lblTotal = new javax.swing.JLabel();
     private javax.swing.JLabel lblcambio;
     private javax.swing.JTable table2;
-    private javax.swing.JTextField txtPaga;
+    public javax.swing.JTextField txtPaga;
     // End of variables declaration//GEN-END:variables
+
+
 
  
 

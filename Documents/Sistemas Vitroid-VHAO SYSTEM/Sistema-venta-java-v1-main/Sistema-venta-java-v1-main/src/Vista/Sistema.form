@@ -2995,14 +2995,14 @@
             </Component>
             <Component class="javax.swing.JTextField" name="txtIdCV1">
               <Properties>
-                <Property name="text" type="java.lang.String" value="1"/>
+                <Property name="text" type="java.lang.String" value="2"/>
               </Properties>
               <AuxValues>
                 <AuxValue name="JavaCodeGenerator_VariableModifier" type="java.lang.Integer" value="9"/>
               </AuxValues>
               <Constraints>
                 <Constraint layoutClass="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout" value="org.netbeans.modules.form.compat2.layouts.DesignAbsoluteLayout$AbsoluteConstraintsDescription">
-                  <AbsoluteConstraints x="570" y="580" width="20" height="-1"/>
+                  <AbsoluteConstraints x="50" y="580" width="20" height="-1"/>
                 </Constraint>
               </Constraints>
             </Component>

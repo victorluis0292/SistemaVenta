@@ -69,7 +69,7 @@ import java.lang.reflect.Method;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
-import static Vista.frmtabla2.modelo2;
+import static Vista.CorteParcial.modelo2;
 import java.sql.Statement;
 
 

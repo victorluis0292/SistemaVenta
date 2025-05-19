@@ -18,14 +18,15 @@ public class Conexion {
               String myBD = "jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000";
               con = DriverManager.getConnection(myBD, "u722149126_victor", "Lolo140516");
             // Mensaje en consola si la conexión es exitosa
-               System.out.println("Conexión exitosa.");
+               System.out.println("Conexión exitosa."); 
       
             
             
       /*configuracion para el local
        String myBD = "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC";
             con = DriverManager.getConnection(myBD, "root", "");
-    System.out.println("Conexión exitosa.");*/
+    System.out.println("Conexión exitosa.");
+    */
             return con;
         } catch (SQLException e) {
             JOptionPane.showMessageDialog(null,"Error al crear la conexión , "+e.getMessage());
