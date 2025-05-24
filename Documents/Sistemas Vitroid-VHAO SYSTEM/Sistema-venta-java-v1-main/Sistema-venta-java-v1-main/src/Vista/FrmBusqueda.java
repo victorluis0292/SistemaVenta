@@ -48,6 +48,8 @@ import javax.swing.Timer;
  * @author vic
  */
 public class FrmBusqueda extends javax.swing.JFrame {
+    public String origen = "venta"; // declarado arriba
+
    private Timer timer;
         Connection con;
     Conexion cn = new Conexion();
@@ -301,6 +303,7 @@ jMyTable.addKeyListener(new java.awt.event.KeyAdapter() {
         if(evt.getKeyCode() == evt.VK_ENTER){
          evt.consume();
          EnterBusqueda();
+         
             //txtCodigoVenta.requestFocus();
      }
 
@@ -473,32 +476,25 @@ int fila = TableProductoJF.getSelectedRow();
   
     
      public void EnterBusqueda() {
-          // int  FilaSeleccionada=TableProductoJF.getSelectedRow();
-         //  if(FilaSeleccionada>=0){
- 
-      //  DefaultTableModel modelo=(DefaultTableModel)TableVenta.getModel();
-           // envia los datos de tabla venta 
-          //        String Object[]=new String[5];
-          
-       //     Object[0]=TableProductoJF.getValueAt(FilaSeleccionada,0).toString(); //id tabla venta
-       //     Object[1]=TableProductoJF.getValueAt(FilaSeleccionada,2).toString(); //Codigo
-      //    Object[2]=txtCantidadVenta.getText().trim(); //cantida;
-      //      Object[3]=TableProductoJF.getValueAt(FilaSeleccionada,4).toString();
-     //      Object[4]=TableProductoJF.getValueAt(FilaSeleccionada,4).toString();
-    //  modelo.addRow(Object);
-  // TotalPagarX();
- // } 
-          // this.dispose();
-       
-   //jTabbedPane1.setSelectedIndex(0);  
-      VentanaCantidadBusqueda consulta = new VentanaCantidadBusqueda();
-         int  fila=TableProductoJF.getSelectedRow();
-      txtcodigo.setText(TableProductoJF.getValueAt(fila, 1).toString()); 
-      consulta.sedDato(txtcodigo.getText());
-       // consulta.sedDato(Integer.parseInt(txtcodigo.getText()));
-        consulta.setVisible(true);
-        //  int fila = TableProductoJF();
-     dispose();
+         
+           // Crear la ventana de cantidad
+    VentanaCantidadBusqueda consulta = new VentanaCantidadBusqueda();
+
+    // Obtener la fila seleccionada
+    int fila = TableProductoJF.getSelectedRow();
+
+    // Obtener el código y pasarlo a VentanaCantidadBusqueda
+    txtcodigo.setText(TableProductoJF.getValueAt(fila, 1).toString());
+    consulta.sedDato(txtcodigo.getText()); // esto está bien
+
+    // PASAR EL ORIGEN TAMBIÉN
+    consulta.origen = this.origen;  // <-- Aquí pasamos el valor actual del origen
+
+    // Mostrar la ventana
+    consulta.setVisible(true);
+
+    // Cerrar la ventana de búsqueda
+    dispose();
     
       
        } 
@@ -516,13 +512,10 @@ int fila = TableProductoJF.getSelectedRow();
         // Usamos una conexión ya establecida en lugar de crear una nueva cada vez
        //en linea 
         
-       nuevaConexion = DriverManager.getConnection("jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", "u722149126_victor", "Lolo140516");
-
-       
-       /*nuevaConexion = DriverManager.getConnection( // es localmente
-    "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC", // es localmente
-  "root", "" es localmente 
-);*/
+         // ✅ Usamos la clase reutilizable Conexion del form conbe
+        Conexion conexion = new Conexion(); // es en linea Hostinguer
+        nuevaConexion = conexion.getConnection(); // es en linea Hostinguer
+    
        
         // Preparamos la consulta
         PreparedStatement ps = nuevaConexion.prepareStatement(sql);

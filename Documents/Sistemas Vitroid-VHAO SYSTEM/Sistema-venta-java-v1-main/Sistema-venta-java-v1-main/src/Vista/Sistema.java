@@ -70,11 +70,13 @@ import javax.swing.SwingUtilities;
  
 
 public final class Sistema extends javax.swing.JFrame {
-    
-    
+   public String origenActual = "venta"; // valor inicial por defecto
+
+//public static String modoOperacion = "CREDITO";
+
    
  
- 
+
      public static DefaultTableModel modelo2;
     public static DefaultTableModel modelo3;
      public static DefaultTableModel modelo4;
@@ -116,7 +118,7 @@ public final class Sistema extends javax.swing.JFrame {
  
     double TotalpagarEntrada = 0.00;
      double TotalpagarCredit= 0.00;
-    
+
     
 
     public Sistema() {
@@ -129,8 +131,22 @@ public final class Sistema extends javax.swing.JFrame {
         
        
         initComponents();
-     
+     jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
+    public void stateChanged(javax.swing.event.ChangeEvent evt) {
+        int selectedIndex = jTabbedPane1.getSelectedIndex();
+
+        if (selectedIndex == 2) {
+            origenActual = "venta";
+            System.out.println("origenActual = venta");
+        } else if (selectedIndex == 7) {
+            origenActual = "credito";
+            System.out.println("origenActual = credito");
+        }
+    }
+});
+      
         
+      
          btnBusccarPro.setMnemonic(KeyEvent.VK_X);  
          txtCodigoVenta.requestFocus();
         this.setLocationRelativeTo(null);
@@ -2651,7 +2667,7 @@ public final class Sistema extends javax.swing.JFrame {
         @Override
         public void actionPerformed(ActionEvent e) {
             abrirVentanaCobrar(); // Llama al método que abre la ventana de cobro
-        AbrirCajaEfectivo.main(null); 
+        //AbrirCajaEfectivo.main(null); 
         }
     });
 
@@ -3060,6 +3076,7 @@ if (TableVenta.getRowCount() > 0) {
              LimpiarTableVenta();
        } 
             jTabbedPane1.setSelectedIndex(8);
+            TotalPagarCreditoCliente();
        } else {
             JOptionPane.showMessageDialog(null, "Noy productos en la tabla");
              jPanel17.requestFocus();
@@ -3134,11 +3151,15 @@ if (TableVenta.getRowCount() > 0) {
 
     private void btnBusccarProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusccarProActionPerformed
 FrmBusqueda BuscarProd = new FrmBusqueda();
-       BuscarProd.setVisible(true);        // TODO add your handling code here:
+       BuscarProd.setVisible(true);  
+        origenActual = "venta";
+       
+// TODO add your handling code here:
     }//GEN-LAST:event_btnBusccarProActionPerformed
     private void abrirVentanaBuscar() {
-   FrmBusqueda BuscarProd = new FrmBusqueda();
-       BuscarProd.setVisible(true); 
+   FrmBusqueda busqueda = new FrmBusqueda();
+        busqueda.origen = origenActual; // ← Aquí se pasa el valor "venta" o "credito"
+        busqueda.setVisible(true);
     }
     
  
@@ -3303,7 +3324,9 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
     private void btnGenerarVentaCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaCreditActionPerformed
               if (TableCreditClient.getRowCount() == 0) {
         JOptionPane.showMessageDialog(null, "No hay productos en la venta");
+          txtCodigoVentaCreditClient.requestFocus();
         return;
+        
     }
 
     if (txtNombreClienteventaCredit.getText().trim().isEmpty()) {
@@ -3329,11 +3352,15 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
     }//GEN-LAST:event_btnGenerarVentaCreditActionPerformed
 
     private void btnBusccarPro1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusccarPro1ActionPerformed
-        // TODO add your handling code here:
+   FrmBusqueda frmBusqueda = new FrmBusqueda();
+    frmBusqueda.origen = "credito"; // importante: indicamos que es crédito
+    frmBusqueda.setVisible(true);
     }//GEN-LAST:event_btnBusccarPro1ActionPerformed
 
     private void BtnCreditoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCreditoClienteActionPerformed
   jTabbedPane1.setSelectedIndex(8); 
+ 
+    origenActual = "credito";
    txtRucVentaCredit.requestFocus();// TODO add your handling code here:
     }//GEN-LAST:event_BtnCreditoClienteActionPerformed
 
@@ -3639,7 +3666,7 @@ void Operacion(){
     private javax.swing.JTextField txtDniCliente;
     private javax.swing.JTextField txtIDProduct;
     public static javax.swing.JTextField txtIdCV;
-    private javax.swing.JTextField txtIdCV1;
+    public static javax.swing.JTextField txtIdCV1;
     private javax.swing.JTextField txtIdCliente;
     private javax.swing.JTextField txtIdConfig;
     public static javax.swing.JTextField txtIdPro;

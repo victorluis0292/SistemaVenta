@@ -570,15 +570,13 @@ TotalPagarX();
         MessageFormat header=new MessageFormat(("Crédito :"+nombreCliente+"\n        "
                 + "\ntotal :"+ TotalPagarCreditos));
 MessageFormat footer=new MessageFormat("Page{0,number,integer}");
-//MessageFormat total=new MessageFormat("Total :"+TotalPagar);
-//MessageFormat direccion=new MessageFormat("Total :"+TotalPagar);
+
         try{
 
 TableConsultaCreditCliente.print(JTable.PrintMode.FIT_WIDTH, header, footer);
-//OutputStream file= new FileOutputstream(new File("C://impresiones//nombreCliente.pdf"));
     }catch(java.awt.print.PrinterException e){
-System.err.format("Erreur d'impresion ",e.getMessage());
-}     // TODO add your handling code here:
+System.err.format("Error de impresion ",e.getMessage());
+}     
     }//GEN-LAST:event_PrintBtnActionPerformed
 
     private void txtBuscar3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar3KeyTyped
@@ -782,18 +780,10 @@ System.err.format("Erreur d'impresion ",e.getMessage());
   String sql = "SELECT * FROM detalle_creditocliente WHERE dni LIKE ? OR nombre LIKE ? OR precio LIKE ? OR total LIKE ? OR fecha LIKE ? ORDER BY id ASC";
 
   try {
-      // Usamos una conexión ya establecida en linea hostinguer
-      nuevaConexion = DriverManager.getConnection(  //es en linea
-               "jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000", //es en linea
-              
-      "u722149126_victor", //es en linea
-               "Lolo140516");//es en linea
+    // ✅ Usamos la clase reutilizable Conexion
+        Conexion conexion = new Conexion(); 
+        nuevaConexion = conexion.getConnection(); 
 
-      /* es localmente
-     nuevaConexion = DriverManager.getConnection( // es localmente
-    "jdbc:mysql://localhost:3306/puntedeventa-refresqueriaaixa?serverTimezone=UTC", // es localmente
-    "root", ""// es localmente
-);  */   //es localmente 
       // Preparamos la consulta
       PreparedStatement ps = nuevaConexion.prepareStatement(sql);
       

@@ -7,6 +7,7 @@ package Vista;
 
 import Modelo.Productos;
 import Modelo.ProductosDao;
+import static Vista.Sistema.TableCreditClient;
 import static Vista.Sistema.txtIdPro;
 import java.awt.event.KeyEvent;
 import java.util.ArrayList;
@@ -14,11 +15,14 @@ import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static Vista.Sistema.TableVenta;
 import static Vista.Sistema.txtCodigoVenta;
+import javax.swing.JTable;
 /**
  *
  * @author vic
  */
 public class VentanaCantidadBusqueda extends javax.swing.JFrame {
+    public String origen = "venta"; // por defecto
+
     ProductosDao proDao = new ProductosDao();
     Productos pro = new Productos();
       DefaultTableModel modelo = new DefaultTableModel();
@@ -183,6 +187,7 @@ txtCodigoEntrada.setText(codigo);
 
 
 } 
+
     private void txtCodigoEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoEntradaKeyPressed
 
     }//GEN-LAST:event_txtCodigoEntradaKeyPressed
@@ -203,69 +208,64 @@ txtCodigoEntrada.setText(codigo);
     }//GEN-LAST:event_txtCantidadEntradaActionPerformed
 
     private void txtCantidadEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntradaKeyPressed
-        // TODO add your handling code here:
 
         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        if (!"".equals(txtCantidadEntrada.getText())) {
+            int id = Integer.parseInt(txtIdPro.getText());
+            String descripcion = txtDescripcionEntrada.getText();
+            int cant = Integer.parseInt(txtCantidadEntrada.getText());
+            double precio = Double.parseDouble(txtPrecioEntrada.getText());
+            double total = cant * precio;
+            int stock = Integer.parseInt(txtStockDisponible1.getText());
 
-            //si el campo tiene un nuemero
-           if (!"".equals(txtCantidadEntrada.getText())) {
-                //if ("1".equals(txtCantidadEntrada.getText())) {
-                    int id = Integer.parseInt(txtIdPro.getText());
-                    String descripcion = txtDescripcionEntrada.getText();
-                    int cant = Integer.parseInt(txtCantidadEntrada.getText());
-                    double precio = Double.parseDouble(txtPrecioEntrada.getText());
-                    double total = cant * precio;
-                    int stock = Integer.parseInt(txtStockDisponible1.getText());
-                    // aqui le digo que no importa si el producto ingresado es mayor o menor al stock
-                     //stock = 0;
-                    if (stock >= cant) {
-                   
+            if (stock >= cant) {
+                item = item + 1;
 
-                        // !=  >=   38 != 50 esto estaba antes no dejaba meter una entrada mayor al stock
-                        item = item + 1;
-                        tmp = (DefaultTableModel) TableVenta.getModel();
-                        for (int i = 0; i < TableVenta.getRowCount(); i++) {
-                            if (TableVenta.getValueAt(i, 0).equals(txtDescripcionEntrada.getText())) {
-                          //  if (TableVenta.getValueAt(i, 1).equals(txtDescripcionEntrada.getText())) {
-                                JOptionPane.showMessageDialog(null, "El producto ya esta registrado");
-                                //LimpiarEntrada();
-                                
-                              
-                                return;
+                DefaultTableModel tmp;
+                JTable tablaDestino;
 
-                            }
+                if ("credito".equals(origen)) {
+                    tmp = (DefaultTableModel) TableCreditClient.getModel();
+                    tablaDestino = TableCreditClient;
+
+                    for (int i = 0; i < tablaDestino.getRowCount(); i++) {
+                        if (tablaDestino.getValueAt(i, 0).equals(descripcion)) {
+                            JOptionPane.showMessageDialog(null, "El producto ya está registrado en crédito");
+                            return;
                         }
-                        ArrayList lista = new ArrayList();
-                        lista.add(item);
-                        lista.add(id);
-                        lista.add(descripcion);
-                        lista.add(cant);
-                        lista.add(precio);
-                        lista.add(total);
-                        Object[] O = new Object[5];
-                        O[0] = lista.get(1);
-                        O[1] = lista.get(2);
-                        O[2] = lista.get(3);
-                        O[3] = lista.get(4);
-                        O[4] = lista.get(5);
-                        tmp.addRow(O);
-                        TableVenta.setModel(tmp);
-                          txtCodigoVenta.requestFocus();
-                      //  LimpiarEntrada();
-                       // TotalPagarEntrada();
-                      //  LimparVenta();
-  dispose();
-                        txtCodigoEntrada.requestFocus();
-
-                    } else {
-                        JOptionPane.showMessageDialog(null, "Stock no disponible");
-
                     }
                 } else {
-                    JOptionPane.showMessageDialog(null, "Ingrese cantidad");
+                    tmp = (DefaultTableModel) TableVenta.getModel();
+                    tablaDestino = TableVenta;
+
+                    for (int i = 0; i < tablaDestino.getRowCount(); i++) {
+                        if (tablaDestino.getValueAt(i, 0).equals(descripcion)) {
+                            JOptionPane.showMessageDialog(null, "El producto ya está registrado");
+                            return;
+                        }
+                    }
                 }
-           txtCodigoEntrada.requestFocus();
+
+                Object[] fila = new Object[5];
+                fila[0] = id;
+                fila[1] = descripcion;
+                fila[2] = cant;
+                fila[3] = precio;
+                fila[4] = total;
+
+                tmp.addRow(fila);
+                tablaDestino.setModel(tmp);
+
+                dispose(); // cerrar la ventana actual
+                txtCodigoEntrada.requestFocus();
+            } else {
+                JOptionPane.showMessageDialog(null, "Stock no disponible");
             }
+        } else {
+            JOptionPane.showMessageDialog(null, "Ingrese cantidad");
+        }
+        txtCodigoEntrada.requestFocus();
+    }
       
     }//GEN-LAST:event_txtCantidadEntradaKeyPressed
 
@@ -275,12 +275,7 @@ txtCodigoEntrada.setText(codigo);
     }//GEN-LAST:event_txtCantidadEntradaKeyReleased
 
     private void txtCantidadEntradaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntradaKeyTyped
- //String  valor = txtCantidadEntrada.getText();
-   //int valor = Integer.parseInt(txtCantidadEntrada.getText());
-   // consulta.sedDato(Integer.parseInt(txtcodigo.getText()));
-    //  txtPrecioEntrada.setText(valor);
-     // txtPrecioEntrada.setText(valor+"");
-       //Operacion();         // TODO add your handling code here:
+
     }//GEN-LAST:event_txtCantidadEntradaKeyTyped
 
     private void formKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_formKeyPressed

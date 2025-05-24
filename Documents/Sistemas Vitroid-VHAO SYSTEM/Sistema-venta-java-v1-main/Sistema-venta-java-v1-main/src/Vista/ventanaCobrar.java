@@ -400,7 +400,7 @@ private void RegistrarVenta() {
     }
   
    
-   public void pagarenter(){
+  /* public void pagarenter(){
       if (!"".equals(txtPaga.getText())) {
 
             // if (!"".equals(txtNombreClienteventa.getText())) {
@@ -435,6 +435,52 @@ private void RegistrarVenta() {
     /**
      * @param args the command line arguments
      */
+   public void pagarenter() {
+    if (!"".equals(txtPaga.getText())) {
+        try {
+            // Obtener el monto pagado por el cliente
+            double paga = Double.parseDouble(txtPaga.getText());
+
+            // Obtener el total de la venta
+            double total = Double.parseDouble(lblTotal.getText());
+
+            // Verificar si el monto pagado es menor que el total
+            if (paga < total) {
+                // Mostrar alerta si no alcanza (sin mostrar cuánto falta)
+                JOptionPane.showMessageDialog(null, 
+                    "El monto pagado es menor al total.",
+                    "Pago insuficiente", 
+                    JOptionPane.WARNING_MESSAGE);
+                txtPaga.requestFocus(); // Regresar el foco al campo de pago
+                return; // Detener la ejecución
+            }
+
+            // Si el monto es suficiente, continuar con el proceso de venta
+            RegistrarVenta();
+            RegistrarDetalle();
+            ActualizarStock();
+
+            // Limpiar campos y tabla
+            LimpiarTableVenta();
+            LimpiarCobro();
+            txtCodigoVenta.requestFocus();
+            this.dispose(); // Cerrar ventana si aplica
+
+        } catch (NumberFormatException e) {
+            // Si el valor ingresado no es un número válido
+            JOptionPane.showMessageDialog(null, 
+                "Por favor ingrese un monto válido.",
+                "Error de formato",
+                JOptionPane.ERROR_MESSAGE);
+            txtPaga.requestFocus();
+        }
+
+    } else {
+        // Si no se ingresó ningún valor
+        JOptionPane.showMessageDialog(null, "Paga con $ ?");
+        txtPaga.requestFocus();
+    }
+}
     public static void main(String args[]  ) throws ClassNotFoundException, InstantiationException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
         
         
