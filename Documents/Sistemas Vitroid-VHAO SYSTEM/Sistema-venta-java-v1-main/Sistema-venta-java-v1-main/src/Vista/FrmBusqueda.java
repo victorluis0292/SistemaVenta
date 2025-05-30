@@ -10,7 +10,6 @@ import Modelo.Productos;
 import Modelo.ProductosDao;
 import static Vista.Sistema.TableProducto;
 import static Vista.Sistema.TableVenta;
-import static Vista.Sistema.jTabbedPane1;
 import static Vista.Sistema.lblEnviaTotal;
 import static Vista.Sistema.modelo3;
 import static Vista.Sistema.modelo4;
@@ -41,6 +40,7 @@ import javax.swing.table.TableRowSorter;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import javax.swing.Timer;
+import static Vista.Sistema.Menu;
 
 
 /**

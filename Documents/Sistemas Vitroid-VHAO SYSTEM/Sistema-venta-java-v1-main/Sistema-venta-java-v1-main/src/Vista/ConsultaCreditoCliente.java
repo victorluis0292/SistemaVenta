@@ -16,7 +16,6 @@ import Modelo.VentaDao;
 import static Vista.Sistema.LabelVendedor;
 import static Vista.Sistema.TableCreditClient;
 import static Vista.Sistema.TableVenta;
-import static Vista.Sistema.jTabbedPane1;
 import static Vista.Sistema.txtCodigoPro;
 import static Vista.Sistema.txtCodigoVenta;
 import static Vista.Sistema.txtCodigoVentaCreditClient;
@@ -44,6 +43,7 @@ import javax.swing.JTable;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.awt.*;
+import static Vista.Sistema.Menu;
 /**
  *
  * @author vic
@@ -618,16 +618,24 @@ System.err.format("Error de impresion ",e.getMessage());
 
     private void btnCobrarCreditoActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarCreditoActionPerformed
 
-       if (TableConsultaCreditCliente.getRowCount() > 0) {
-           
-             ventanaCobrarCredito cobrar = new ventanaCobrarCredito();
-             cobrar.sedDato(Integer.parseInt(txtRucVentaCredit.getText()));
-        cobrar.setVisible(true);
-     
-       } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
-          
-       }
+        if (TableConsultaCreditCliente.getRowCount() > 0) {
+        String rucTexto = txtRucVentaCredit.getText().trim();
+
+        if (!rucTexto.isEmpty()) {
+            try {
+                int ruc = Integer.parseInt(rucTexto);
+                ventanaCobrarCredito cobrar = new ventanaCobrarCredito();
+                cobrar.sedDato(ruc);
+                cobrar.setVisible(true);
+            } catch (NumberFormatException e) {
+                JOptionPane.showMessageDialog(null, "El RUC debe ser un número válido.");
+            }
+        } else {
+            JOptionPane.showMessageDialog(null, "El campo RUC está vacío.");
+        }
+    } else {
+        JOptionPane.showMessageDialog(null, "No hay productos en la venta.");
+    }
     }//GEN-LAST:event_btnCobrarCreditoActionPerformed
 
     private void txtCantidadVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadVentaKeyTyped
@@ -721,6 +729,10 @@ System.err.format("Error de impresion ",e.getMessage());
         //</editor-fold>
         //</editor-fold>
         //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
+        //</editor-fold>
 
         /* Create and display the form */
         java.awt.EventQueue.invokeLater(new Runnable() {
@@ -764,95 +776,93 @@ System.err.format("Error de impresion ",e.getMessage());
   } 
            this.dispose();
        
-   jTabbedPane1.setSelectedIndex(0);    
+   Menu.setSelectedIndex(0);    
        } 
      
-  public void listar() {
-      // codigo en linea
-   DefaultTableModel modelo = new DefaultTableModel();
-  Connection nuevaConexion = null;
-   // Mostrar el loader
-  
-  // El trim sirve para remover espacios
-  String cadena = txtBuscar3.getText().trim();
-  
-  // Usamos parámetros para evitar inyecciones SQL y mejorar la eficiencia
-  String sql = "SELECT * FROM detalle_creditocliente WHERE dni LIKE ? OR nombre LIKE ? OR precio LIKE ? OR total LIKE ? OR fecha LIKE ? ORDER BY id ASC";
+public void listar() {
+    DefaultTableModel modelo = new DefaultTableModel();
+    Connection nuevaConexion = null;
 
-  try {
-    // ✅ Usamos la clase reutilizable Conexion
-        Conexion conexion = new Conexion(); 
-        nuevaConexion = conexion.getConnection(); 
+    // Obtenemos el texto de búsqueda sin espacios
+    String cadena = txtBuscar3.getText().trim();
 
-      // Preparamos la consulta
-      PreparedStatement ps = nuevaConexion.prepareStatement(sql);
-      
-      // Creamos el término de búsqueda con los comodines '%'
-      String searchTerm = "%" + cadena + "%";
-      
-      // Parametrizamos la consulta
-      ps.setString(1, searchTerm);
-      ps.setString(2, searchTerm);
-      ps.setString(3, searchTerm);
-      ps.setString(4, searchTerm);
-      ps.setString(5, searchTerm);
-      
-      // Ejecutamos la consulta
-      ResultSet rs = ps.executeQuery();
-      
-      // Configuramos las columnas de la tabla
-      modelo.setColumnIdentifiers(new Object[]{"id", "id_pro", "nombre", "cantidad", "precio", "total", "fecha", "dni"});
-      
-      // Llenamos el modelo con los resultados de la consulta
-      while (rs.next()) {
-          modelo.addRow(new Object[]{
-              rs.getString("id"),
-              rs.getString("id_pro"),
-              rs.getString("nombre"),
-              rs.getString("cantidad"),
-              rs.getString("precio"),
-              rs.getString("total"),
-              rs.getString("fecha"),
-              rs.getString("dni")
-          });
-      }
+    // SQL corregido: búsqueda exacta por DNI y otras columnas con LIKE
+    String sql = "SELECT * FROM detalle_creditocliente " +
+                 "WHERE dni = ? OR nombre LIKE ? OR precio LIKE ? OR total LIKE ? OR fecha LIKE ? " +
+                 "ORDER BY id ASC";
 
-      // Establecemos el modelo en la tabla y configuramos el tamaño de las columnas
-      TableConsultaCreditCliente.setModel(modelo);
-      TableConsultaCreditCliente.getColumnModel().getColumn(0).setPreferredWidth(0); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(0).setResizable(false); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(1).setPreferredWidth(0); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(1).setResizable(false);
-      TableConsultaCreditCliente.getColumnModel().getColumn(2).setPreferredWidth(500); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(2).setResizable(false);
-      TableConsultaCreditCliente.getColumnModel().getColumn(3).setPreferredWidth(80); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(3).setResizable(false);
-      TableConsultaCreditCliente.getColumnModel().getColumn(4).setPreferredWidth(100); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(4).setResizable(false);
-      TableConsultaCreditCliente.getColumnModel().getColumn(5).setPreferredWidth(80); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(5).setResizable(false);
-      TableConsultaCreditCliente.getColumnModel().getColumn(6).setPreferredWidth(140); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(6).setResizable(false);
-      TableConsultaCreditCliente.getColumnModel().getColumn(7).setPreferredWidth(80); 
-      TableConsultaCreditCliente.getColumnModel().getColumn(7).setResizable(false);
-      
-      // Ajustamos la altura de las filas
-      TableConsultaCreditCliente.setRowHeight(30);
-      
-  } catch (Exception e) {
-      JOptionPane.showMessageDialog(null, "Error al cargar los productos: " + e.getMessage());
-  } finally {
-      try {
-          if (nuevaConexion != null && !nuevaConexion.isClosed()) {
-              nuevaConexion.close();
-          }
-      } catch (SQLException e) {
-          e.printStackTrace();
-      }
-      
-  }
+    try {
+        Conexion conexion = new Conexion();
+        nuevaConexion = conexion.getConnection();
+
+        PreparedStatement ps = nuevaConexion.prepareStatement(sql);
+
+        // ✅ Primer parámetro: DNI exacto (sin comodines)
+        ps.setString(1, cadena);
+
+        // ✅ Resto de los parámetros con comodines para búsqueda parcial
+        String searchTerm = "%" + cadena + "%";
+        ps.setString(2, searchTerm);
+        ps.setString(3, searchTerm);
+        ps.setString(4, searchTerm);
+        ps.setString(5, searchTerm);
+
+        ResultSet rs = ps.executeQuery();
+
+        // Definimos las columnas
+        modelo.setColumnIdentifiers(new Object[]{
+            "id", "id_pro", "nombre", "cantidad", "precio", "total", "fecha", "dni"
+        });
+
+        // Llenamos el modelo con los resultados
+        while (rs.next()) {
+            modelo.addRow(new Object[]{
+                rs.getString("id"),
+                rs.getString("id_pro"),
+                rs.getString("nombre"),
+                rs.getString("cantidad"),
+                rs.getString("precio"),
+                rs.getString("total"),
+                rs.getString("fecha"),
+                rs.getString("dni")
+            });
+        }
+
+        // Cargamos el modelo en la tabla
+        TableConsultaCreditCliente.setModel(modelo);
+
+        // Configuración de columnas (puedes ajustarlo a gusto)
+        TableConsultaCreditCliente.getColumnModel().getColumn(0).setPreferredWidth(0);
+        TableConsultaCreditCliente.getColumnModel().getColumn(0).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(1).setPreferredWidth(0);
+        TableConsultaCreditCliente.getColumnModel().getColumn(1).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(2).setPreferredWidth(500);
+        TableConsultaCreditCliente.getColumnModel().getColumn(2).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(3).setPreferredWidth(80);
+        TableConsultaCreditCliente.getColumnModel().getColumn(3).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(4).setPreferredWidth(100);
+        TableConsultaCreditCliente.getColumnModel().getColumn(4).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(5).setPreferredWidth(80);
+        TableConsultaCreditCliente.getColumnModel().getColumn(5).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(6).setPreferredWidth(140);
+        TableConsultaCreditCliente.getColumnModel().getColumn(6).setResizable(false);
+        TableConsultaCreditCliente.getColumnModel().getColumn(7).setPreferredWidth(80);
+        TableConsultaCreditCliente.getColumnModel().getColumn(7).setResizable(false);
+
+        TableConsultaCreditCliente.setRowHeight(30);
+
+    } catch (Exception e) {
+        JOptionPane.showMessageDialog(null, "Error al cargar los productos: " + e.getMessage());
+    } finally {
+        try {
+            if (nuevaConexion != null && !nuevaConexion.isClosed()) {
+                nuevaConexion.close();
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
 }
-
      
          
       void EliminarRegistro(){

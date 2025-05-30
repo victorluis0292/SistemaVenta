@@ -1,6 +1,7 @@
 
 package Vista;
 
+import Modelo.Conexion;
 import Modelo.LoginDAO;
 import Modelo.login;
 import java.awt.Desktop;
@@ -11,6 +12,7 @@ import javax.swing.JOptionPane;
 import Modelo.licenciadeprograma;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.sql.Connection;
 
 
 public class Login extends javax.swing.JFrame {
@@ -22,7 +24,7 @@ public class Login extends javax.swing.JFrame {
         txtCorreo.setText("victorluishernandez92@gmail.com");
         txtPass.setText("");
     }
-    public void validar(){
+public void validar() {
     String correo = txtCorreo.getText();
     String pass = String.valueOf(txtPass.getPassword());
 
@@ -31,41 +33,45 @@ public class Login extends javax.swing.JFrame {
 
         if (lg.getCorreo() != null && lg.getPass() != null) {
 
-            // 🔐 Verificar la licencia antes de continuar
+            // 🛡️ Verificar la validez de la licencia antes de continuar
             if (!licenciadeprograma.licenciaValida()) {
-                JOptionPane.showMessageDialog(null, "❌ La licencia ha expirado. Contacta al desarrollador.");
-                System.exit(0); // Bloquear el sistema
+                JOptionPane.showMessageDialog(null,
+                  "❌ Producto caducado. Contacta al programador.\n" +
+                  "📞 WhatsApp: 5524902980\n" +
+                  "⚠️ Error al conectar con la base de datos.");
+
+                try {
+                    Thread.sleep(3000);
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+
+                System.exit(0);
             }
 
-            // ✅ Si todo está bien, continuar al sistema
+            // ✅ Si hay internet, mostrar los días restantes
+            if (licenciadeprograma.hayInternet()) {
+                long dias = licenciadeprograma.diasRestantes();
+                if (dias >= 0) {
+                    JOptionPane.showMessageDialog(null,
+                        "🔐 versión de prueba activa. Días restantes: " + dias,
+                        "Licencia", JOptionPane.INFORMATION_MESSAGE);
+                }
+            }
+
+            // ✅ Acceso permitido, abrir el sistema
             Sistema sis = new Sistema(lg);
             sis.setVisible(true);
             dispose();
 
         } else {
-            JOptionPane.showMessageDialog(null, "Correo o la Contraseña incorrecta");
+            JOptionPane.showMessageDialog(null, "Correo o Contraseña incorrectos");
         }
+    } else {
+        JOptionPane.showMessageDialog(null, "Por favor ingresa usuario y contraseña");
     }
 }
-    //original
-  /*  public void validar(){
-        String correo = txtCorreo.getText();
-        String pass = String.valueOf(txtPass.getPassword());
-        if (!"".equals(correo) || !"".equals(pass)) {
-            
-            lg = login.log(correo, pass);
-            if (lg.getCorreo()!= null && lg.getPass() != null) {
-                Sistema sis = new Sistema(lg);
-                sis.setVisible(true);
-                
-                dispose();
-                
-            }else{
-                JOptionPane.showMessageDialog(null, "Correo o la Contraseña incorrecta");
-            }
-        }
-    }
-  */
+    
     @SuppressWarnings("unchecked")
     // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
@@ -245,7 +251,7 @@ private boolean tieneConexion() {
         URL url = new URL("http://paypal.me/victorluishernandez");
         HttpURLConnection conexion = (HttpURLConnection) url.openConnection();
         conexion.setRequestMethod("HEAD");
-        conexion.setConnectTimeout(3000); // 3 segundos
+        conexion.setConnectTimeout(8000); // 3 segundos
         conexion.connect();
         int responseCode = conexion.getResponseCode();
         return (200 <= responseCode && responseCode <= 399);

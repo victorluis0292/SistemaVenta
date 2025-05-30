@@ -47,8 +47,12 @@ import javax.print.attribute.*;  //caja registradora
 import java.io.*; 
 import static Modelo.AbrirCajaEfectivo.main;
 import java.awt.BorderLayout;
+import java.awt.Color;
+import java.awt.Cursor;
+import java.awt.Font;
 import java.awt.KeyEventPostProcessor;
 import java.awt.KeyboardFocusManager;
+import static java.awt.SystemColor.menu;
 import java.awt.event.ActionEvent;
 import java.text.ParseException;
 import javax.swing.AbstractAction;
@@ -66,7 +70,11 @@ import javax.swing.SwingUtilities;
  * @author USUARIO
  */
 
- 
+ import Vista.EstilosBotones;
+import static java.awt.SystemColor.menu;
+import javax.swing.JButton;
+
+
  
 
 public final class Sistema extends javax.swing.JFrame {
@@ -74,7 +82,6 @@ public final class Sistema extends javax.swing.JFrame {
 
 //public static String modoOperacion = "CREDITO";
 
-   
  
 
      public static DefaultTableModel modelo2;
@@ -124,17 +131,33 @@ public final class Sistema extends javax.swing.JFrame {
     public Sistema() {
         initComponents();
          btnBusccarPro.setMnemonic(KeyEvent.VK_X);   
-    
+  
+  
     }
     
     public Sistema (login priv){
-        
+       
        
         initComponents();
-     jTabbedPane1.addChangeListener(new javax.swing.event.ChangeListener() {
-    public void stateChanged(javax.swing.event.ChangeEvent evt) {
-        int selectedIndex = jTabbedPane1.getSelectedIndex();
+            // Crear botón
+      
 
+        // Aplicar estilo con tu clase personalizada
+
+        // Agregar botón a la ventana
+        //add(menu);
+     Menu.addChangeListener(new javax.swing.event.ChangeListener() {
+    public void stateChanged(javax.swing.event.ChangeEvent evt) {
+        int selectedIndex = Menu.getSelectedIndex();
+   
+        
+        
+        
+        
+        
+        
+        
+        
         if (selectedIndex == 2) {
             origenActual = "venta";
             System.out.println("origenActual = venta");
@@ -144,7 +167,9 @@ public final class Sistema extends javax.swing.JFrame {
         }
     }
 });
-      
+              EstilosBotones.aplicarEstilo(menu);
+                EstilosBotones.agregarBotonesAJPanel(jPanel15);
+
         
       
          btnBusccarPro.setMnemonic(KeyEvent.VK_X);  
@@ -368,8 +393,9 @@ public final class Sistema extends javax.swing.JFrame {
         jButton1 = new javax.swing.JButton();
         btnEntrada = new javax.swing.JButton();
         BtnCreditoCliente = new javax.swing.JButton();
+        BtnCorte = new javax.swing.JButton();
         jLabel2 = new javax.swing.JLabel();
-        jTabbedPane1 = new javax.swing.JTabbedPane();
+        Menu = new javax.swing.JTabbedPane();
         jPanel2 = new javax.swing.JPanel();
         jLabel3 = new javax.swing.JLabel();
         jLabel4 = new javax.swing.JLabel();
@@ -540,6 +566,10 @@ public final class Sistema extends javax.swing.JFrame {
         jLabel46 = new javax.swing.JLabel();
         jButton2 = new javax.swing.JButton();
         btnGenerarVentaCredit = new javax.swing.JButton();
+        jPanel18 = new javax.swing.JPanel();
+        jLabel47 = new javax.swing.JLabel();
+        jPanel15 = new javax.swing.JPanel();
+        menu = new javax.swing.JButton();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
         setMinimumSize(new java.awt.Dimension(1070, 660));
@@ -685,6 +715,18 @@ public final class Sistema extends javax.swing.JFrame {
             }
         });
 
+        BtnCorte.setBackground(new java.awt.Color(153, 153, 153));
+        BtnCorte.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
+        BtnCorte.setForeground(new java.awt.Color(255, 255, 255));
+        BtnCorte.setText("CORTE");
+        BtnCorte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
+        BtnCorte.setFocusable(false);
+        BtnCorte.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                BtnCorteActionPerformed(evt);
+            }
+        });
+
         javax.swing.GroupLayout jPanel1Layout = new javax.swing.GroupLayout(jPanel1);
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
@@ -708,6 +750,7 @@ public final class Sistema extends javax.swing.JFrame {
                         .addComponent(jLabel1)))
                 .addContainerGap(71, Short.MAX_VALUE))
             .addComponent(BtnCreditoCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(BtnCorte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -736,16 +779,18 @@ public final class Sistema extends javax.swing.JFrame {
                 .addComponent(btnEntrada, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
                 .addComponent(BtnCreditoCliente, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 246, Short.MAX_VALUE))
+                .addPreferredGap(javax.swing.LayoutStyle.ComponentPlacement.RELATED)
+                .addComponent(BtnCorte, javax.swing.GroupLayout.PREFERRED_SIZE, 40, javax.swing.GroupLayout.PREFERRED_SIZE)
+                .addGap(0, 199, Short.MAX_VALUE))
         );
 
         getContentPane().add(jPanel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(0, 0, 200, 780));
 
         jLabel2.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/encabezado.png"))); // NOI18N
-        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 1120, 130));
+        getContentPane().add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 0, 1030, 120));
 
-        jTabbedPane1.setBackground(new java.awt.Color(255, 255, 255));
-        jTabbedPane1.setPreferredSize(new java.awt.Dimension(865, 660));
+        Menu.setBackground(new java.awt.Color(255, 255, 255));
+        Menu.setPreferredSize(new java.awt.Dimension(865, 660));
 
         jPanel2.setBackground(new java.awt.Color(102, 255, 204));
         jPanel2.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -1030,7 +1075,7 @@ public final class Sistema extends javax.swing.JFrame {
         });
         jPanel2.add(txtIDProduct, new org.netbeans.lib.awtextra.AbsoluteConstraints(510, 10, 150, 30));
 
-        jTabbedPane1.addTab("1", jPanel2);
+        Menu.addTab("1", jPanel2);
 
         jPanel3.setBackground(new java.awt.Color(255, 255, 255));
         jPanel3.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1193,7 +1238,7 @@ public final class Sistema extends javax.swing.JFrame {
 
         jPanel3.add(jPanel9, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 270, 330));
 
-        jTabbedPane1.addTab("2", jPanel3);
+        Menu.addTab("2", jPanel3);
 
         jPanel4.setBackground(new java.awt.Color(255, 255, 255));
         jPanel4.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1342,7 +1387,7 @@ public final class Sistema extends javax.swing.JFrame {
 
         jPanel4.add(jPanel10, new org.netbeans.lib.awtextra.AbsoluteConstraints(10, 50, 260, 320));
 
-        jTabbedPane1.addTab("3", jPanel4);
+        Menu.addTab("3", jPanel4);
 
         jPanel5.addKeyListener(new java.awt.event.KeyAdapter() {
             public void keyReleased(java.awt.event.KeyEvent evt) {
@@ -1581,7 +1626,7 @@ public final class Sistema extends javax.swing.JFrame {
 
         jPanel5.add(jScrollPane10, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, 790, 330));
 
-        jTabbedPane1.addTab("4", jPanel5);
+        Menu.addTab("4", jPanel5);
 
         jPanel6.setBackground(new java.awt.Color(255, 255, 102));
         jPanel6.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1623,7 +1668,7 @@ public final class Sistema extends javax.swing.JFrame {
         jLabel16.setText("Historial Ventas");
         jPanel6.add(jLabel16, new org.netbeans.lib.awtextra.AbsoluteConstraints(300, 50, 280, -1));
 
-        jTabbedPane1.addTab("5", jPanel6);
+        Menu.addTab("5", jPanel6);
 
         jPanel7.setBackground(new java.awt.Color(255, 255, 255));
         jPanel7.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
@@ -1696,7 +1741,7 @@ public final class Sistema extends javax.swing.JFrame {
         jLabel21.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/empresa.png"))); // NOI18N
         jPanel7.add(jLabel21, new org.netbeans.lib.awtextra.AbsoluteConstraints(440, 100, 410, 290));
 
-        jTabbedPane1.addTab("6", jPanel7);
+        Menu.addTab("6", jPanel7);
 
         jPanel12.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
@@ -1804,7 +1849,7 @@ public final class Sistema extends javax.swing.JFrame {
 
         jPanel12.add(jScrollPane6, new org.netbeans.lib.awtextra.AbsoluteConstraints(310, 40, 540, 380));
 
-        jTabbedPane1.addTab("7", jPanel12);
+        Menu.addTab("7", jPanel12);
 
         jPanel14.setBackground(new java.awt.Color(204, 204, 204));
         jPanel14.setMinimumSize(new java.awt.Dimension(1000, 1000));
@@ -1927,7 +1972,7 @@ public final class Sistema extends javax.swing.JFrame {
         jPanel14.add(TotalEntrada, new org.netbeans.lib.awtextra.AbsoluteConstraints(960, 400, -1, -1));
         jPanel14.add(Midate1, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 70, 210, 30));
 
-        jTabbedPane1.addTab("1", jPanel14);
+        Menu.addTab("1", jPanel14);
 
         jPanel17.setBackground(new java.awt.Color(255, 255, 255));
         jPanel17.addKeyListener(new java.awt.event.KeyAdapter() {
@@ -2135,9 +2180,45 @@ public final class Sistema extends javax.swing.JFrame {
         });
         jPanel17.add(btnGenerarVentaCredit, new org.netbeans.lib.awtextra.AbsoluteConstraints(930, 570, -1, 45));
 
-        jTabbedPane1.addTab("1", jPanel17);
+        Menu.addTab("1", jPanel17);
 
-        getContentPane().add(jTabbedPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 95, 1120, 650));
+        jPanel18.setBackground(new java.awt.Color(255, 255, 255));
+        jPanel18.addKeyListener(new java.awt.event.KeyAdapter() {
+            public void keyPressed(java.awt.event.KeyEvent evt) {
+                jPanel18KeyPressed(evt);
+            }
+        });
+        jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
+
+        jLabel47.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
+        jLabel47.setForeground(new java.awt.Color(255, 102, 102));
+        jLabel47.setText("Corte");
+        jPanel18.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 0, -1, 30));
+
+        javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
+        jPanel15.setLayout(jPanel15Layout);
+        jPanel15Layout.setHorizontalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 770, Short.MAX_VALUE)
+        );
+        jPanel15Layout.setVerticalGroup(
+            jPanel15Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 340, Short.MAX_VALUE)
+        );
+
+        jPanel18.add(jPanel15, new org.netbeans.lib.awtextra.AbsoluteConstraints(150, 160, 770, 340));
+
+        Menu.addTab("1", jPanel18);
+
+        getContentPane().add(Menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(200, 95, 1120, 650));
+
+        menu.setText("menu");
+        menu.addActionListener(new java.awt.event.ActionListener() {
+            public void actionPerformed(java.awt.event.ActionEvent evt) {
+                menuActionPerformed(evt);
+            }
+        });
+        getContentPane().add(menu, new org.netbeans.lib.awtextra.AbsoluteConstraints(1230, 20, 80, 40));
 
         pack();
     }// </editor-fold>//GEN-END:initComponents
@@ -2149,14 +2230,14 @@ public final class Sistema extends javax.swing.JFrame {
         btnEditarCliente.setEnabled(false);
         btnEliminarCliente.setEnabled(false);
         LimpiarCliente();
-        jTabbedPane1.setSelectedIndex(1);
+        Menu.setSelectedIndex(1);
     }//GEN-LAST:event_btnClientesActionPerformed
 
     private void btnProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnProveedorActionPerformed
         // TODO add your handling code here:
         LimpiarTable();
         ListarProveedor();
-        jTabbedPane1.setSelectedIndex(2);
+        Menu.setSelectedIndex(2);
         btnEditarProveedor.setEnabled(true);
         btnEliminarProveedor.setEnabled(true);
         LimpiarProveedor();
@@ -2166,7 +2247,7 @@ public final class Sistema extends javax.swing.JFrame {
         // TODO add your handling code here:
         LimpiarTable();
         ListarProductos();
-        jTabbedPane1.setSelectedIndex(3);
+        Menu.setSelectedIndex(3);
         btnEditarpro.setEnabled(false);
         btnEliminarPro.setEnabled(false);
         btnGuardarpro.setEnabled(true);
@@ -2175,25 +2256,25 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void btnNuevaVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevaVentaActionPerformed
         // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(0);
+        Menu.setSelectedIndex(0);
          txtCodigoVenta.requestFocus();
     }//GEN-LAST:event_btnNuevaVentaActionPerformed
 
     private void btnConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnConfigActionPerformed
         // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(5);
+        Menu.setSelectedIndex(5);
     }//GEN-LAST:event_btnConfigActionPerformed
 
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
         // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(4);
+        Menu.setSelectedIndex(4);
         LimpiarTable();
         ListarVentas();
     }//GEN-LAST:event_btnVentasActionPerformed
 
     private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton1ActionPerformed
         // TODO add your handling code here:
-        jTabbedPane1.setSelectedIndex(6);
+        Menu.setSelectedIndex(6);
         LimpiarTable();
         ListarUsuarios();
     }//GEN-LAST:event_jButton1ActionPerformed
@@ -2808,7 +2889,7 @@ private void abrirVentanaCobrar() {
     }//GEN-LAST:event_txtCodigoVentaKeyPressed
 
     private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
-   jTabbedPane1.setSelectedIndex(7);        // TODO add your handling code here:
+   Menu.setSelectedIndex(7);        // TODO add your handling code here:
     }//GEN-LAST:event_btnEntradaActionPerformed
 
     private void txtIdConfigActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtIdConfigActionPerformed
@@ -3075,7 +3156,7 @@ if (TableVenta.getRowCount() > 0) {
             } 
              LimpiarTableVenta();
        } 
-            jTabbedPane1.setSelectedIndex(8);
+            Menu.setSelectedIndex(8);
             TotalPagarCreditoCliente();
        } else {
             JOptionPane.showMessageDialog(null, "Noy productos en la tabla");
@@ -3358,7 +3439,7 @@ FrmBusqueda BuscarProd = new FrmBusqueda();
     }//GEN-LAST:event_btnBusccarPro1ActionPerformed
 
     private void BtnCreditoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCreditoClienteActionPerformed
-  jTabbedPane1.setSelectedIndex(8); 
+  Menu.setSelectedIndex(8); 
  
     origenActual = "credito";
    txtRucVentaCredit.requestFocus();// TODO add your handling code here:
@@ -3451,6 +3532,20 @@ TotalPagarCreditoCliente();
     private void jPanel2KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel2KeyTyped
   
     }//GEN-LAST:event_jPanel2KeyTyped
+
+    private void jPanel18KeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_jPanel18KeyPressed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_jPanel18KeyPressed
+
+    private void BtnCorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCorteActionPerformed
+Menu.setSelectedIndex(9);         // TODO add your handling code here:
+    }//GEN-LAST:event_BtnCorteActionPerformed
+
+    private void menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuActionPerformed
+  // Crear y mostrar el diálogo modal de opciones
+    MenuOpcionesForm ventana = new MenuOpcionesForm(this, true);
+    ventana.setVisible(true);
+    }//GEN-LAST:event_menuActionPerformed
    private void filtrar(){
 
    try{
@@ -3513,9 +3608,11 @@ void Operacion(){
 
 
     // Variables declaration - do not modify//GEN-BEGIN:variables
+    private javax.swing.JButton BtnCorte;
     private javax.swing.JButton BtnCreditoCliente;
     public static javax.swing.JLabel LabelVendedor;
-    private com.toedter.calendar.JDateChooser Midate;
+    public static javax.swing.JTabbedPane Menu;
+    public com.toedter.calendar.JDateChooser Midate;
     private com.toedter.calendar.JDateChooser Midate1;
     private javax.swing.JTable TableCliente;
     public static javax.swing.JTable TableCreditClient;
@@ -3604,6 +3701,7 @@ void Operacion(){
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
+    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel53;
@@ -3623,7 +3721,9 @@ void Operacion(){
     private javax.swing.JPanel jPanel12;
     private javax.swing.JPanel jPanel13;
     private javax.swing.JPanel jPanel14;
+    private javax.swing.JPanel jPanel15;
     public static javax.swing.JPanel jPanel17;
+    public static javax.swing.JPanel jPanel18;
     public static javax.swing.JPanel jPanel2;
     private javax.swing.JPanel jPanel3;
     private javax.swing.JPanel jPanel4;
@@ -3640,12 +3740,12 @@ void Operacion(){
     private javax.swing.JScrollPane jScrollPane6;
     private javax.swing.JScrollPane jScrollPane7;
     private javax.swing.JScrollPane jScrollPane8;
-    public static javax.swing.JTabbedPane jTabbedPane1;
     public static javax.swing.JLabel lblEnviaTotal;
     public static javax.swing.JLabel lblTotalCredit;
     private javax.swing.JLabel lblcambio;
     private javax.swing.JLabel lblcambio1;
     private javax.swing.JLabel lblcambioCredit;
+    private javax.swing.JButton menu;
     private javax.swing.JLabel tipo;
     public static javax.swing.JTextField txtBuscar;
     private javax.swing.JTextField txtCantPro;
