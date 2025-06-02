@@ -44,6 +44,10 @@ import javax.swing.table.DefaultTableModel;
 import javax.swing.*;
 import java.awt.*;
 import static Vista.Sistema.Menu;
+import java.awt.print.PrinterException;
+import javax.print.attribute.PrintRequestAttributeSet;
+import javax.print.attribute.HashPrintRequestAttributeSet;
+import javax.print.attribute.standard.JobName;
 /**
  *
  * @author vic
@@ -563,20 +567,28 @@ TotalPagarX();
     }//GEN-LAST:event_formWindowActivated
 
     private void PrintBtnActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_PrintBtnActionPerformed
+     String nombreCliente = this.nombreCliente;
+    double totalPagarCreditos = this.TotalPagarCreditos;
 
-        
-        
-        
-        MessageFormat header=new MessageFormat(("Crédito :"+nombreCliente+"\n        "
-                + "\ntotal :"+ TotalPagarCreditos));
-MessageFormat footer=new MessageFormat("Page{0,number,integer}");
+    String totalFormateado = new java.text.DecimalFormat("0.00").format(totalPagarCreditos);
 
-        try{
+    MessageFormat header = new MessageFormat("Crédito: " + nombreCliente + "    Total: " + totalFormateado);
+    MessageFormat footer = new MessageFormat("Página {0}");
 
-TableConsultaCreditCliente.print(JTable.PrintMode.FIT_WIDTH, header, footer);
-    }catch(java.awt.print.PrinterException e){
-System.err.format("Error de impresion ",e.getMessage());
-}     
+    try {
+        boolean success = TableConsultaCreditCliente.print(
+            JTable.PrintMode.FIT_WIDTH,
+            header,
+            footer
+        );
+
+        if (!success) {
+            System.err.println("La impresión fue cancelada o falló.");
+        }
+    } catch (PrinterException ex) {
+        ex.printStackTrace();
+        JOptionPane.showMessageDialog(this, "Error de impresión: " + ex.getMessage(), "Error", JOptionPane.ERROR_MESSAGE);
+    }
     }//GEN-LAST:event_PrintBtnActionPerformed
 
     private void txtBuscar3KeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtBuscar3KeyTyped

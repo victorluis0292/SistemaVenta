@@ -20,7 +20,7 @@ public class AbrirCajaEfectivo {
      public static void main(String[] args) {
         try {
             // Nombre exacto de la impresora térmica en el sistema
-            String printerName = "EPSON L3210 Series";  
+            String printerName = "POS-58";  
 
             // Comando ESC/POS para abrir la caja de dinero (con casting explícito)
             byte[] openDrawerCommand = {27, 112, 0, (byte) 25, (byte) 250};

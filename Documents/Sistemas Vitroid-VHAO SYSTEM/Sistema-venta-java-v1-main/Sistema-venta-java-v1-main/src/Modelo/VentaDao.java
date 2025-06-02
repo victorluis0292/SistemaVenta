@@ -30,7 +30,8 @@ import java.util.Date;
 import java.util.List;
 import javax.swing.JLabel;
 import javax.swing.filechooser.FileSystemView;
-
+import Modelo.Conexion; // IMPORTANTE: usa tu clase
+import java.sql.Statement;
 public class VentaDao {
     Connection con;
     Conexion cn = new Conexion();
@@ -53,7 +54,7 @@ public class VentaDao {
         }
         return id;
     }
-    
+     
    public int RegistrarVenta(Venta v) throws ParseException {
     String sql = "INSERT INTO ventas (cliente, vendedor, total, fecha) VALUES (?, ?, ?, ?)";
     SimpleDateFormat formatoEntrada = new SimpleDateFormat("dd/MM/yyyy");
@@ -80,7 +81,9 @@ java.sql.Date fechaSQL = new java.sql.Date(fechaUtil.getTime());
     }
     return r;
 }
-    public int RegistrarDetalle(Detalle Dv){
+ 
+
+   public int RegistrarDetalle(Detalle Dv){
        String sql = "INSERT INTO detalle (id_pro, cantidad, precio, id_venta) VALUES (?,?,?,?)";
         try {
             con = cn.getConnection();
@@ -101,7 +104,7 @@ java.sql.Date fechaSQL = new java.sql.Date(fechaUtil.getTime());
         }
         return r;
     }
-    
+   
     
     
     
@@ -440,9 +443,6 @@ public void pdfV(int idventa, int Cliente, double total, String usuario) {
         System.out.println(e.toString());
     }
 }
-    // public void pdfV(int id, int cliente, JLabel TotalPagar, String text) {
-     //   throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    //}
 
-    
+
 }

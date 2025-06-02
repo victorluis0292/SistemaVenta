@@ -131,7 +131,7 @@ public final class Sistema extends javax.swing.JFrame {
     public Sistema() {
         initComponents();
          btnBusccarPro.setMnemonic(KeyEvent.VK_X);   
-  
+         llenarProveedor();
   
     }
     
@@ -298,6 +298,7 @@ public final class Sistema extends javax.swing.JFrame {
         TableUsuarios.setModel(modelo);
 
     }
+    /* ooriginal
     public void ListarProductos() {
         List<Productos> ListarPro = proDao.ListarProductos();
         modelo = (DefaultTableModel) TableProducto.getModel();
@@ -333,8 +334,54 @@ public final class Sistema extends javax.swing.JFrame {
          // alto de la fila
          TableProducto.setRowHeight(30);
     }
-
+*/
     
+public void ListarProductos() {
+    List<Productos> ListarPro = proDao.ListarProductos();
+    modelo = (DefaultTableModel) TableProducto.getModel();
+
+    // Cambiamos a 7 columnas porque ahora agregamos el id proveedor
+    Object[] ob = new Object[7];
+
+    // Limpiar filas anteriores (importante para no duplicar filas)
+    modelo.setRowCount(0);
+
+    for (int i = 0; i < ListarPro.size(); i++) {
+        ob[0] = ListarPro.get(i).getId();
+        ob[1] = ListarPro.get(i).getCodigo();
+        ob[2] = ListarPro.get(i).getNombre();
+        ob[3] = ListarPro.get(i).getProveedorPro();   // Nombre proveedor (para mostrar)
+        ob[4] = ListarPro.get(i).getStock();
+        ob[5] = ListarPro.get(i).getPrecio();
+        ob[6] = ListarPro.get(i).getProveedor();      // ID proveedor (para usar internamente)
+        modelo.addRow(ob);
+    }
+    TableProducto.setModel(modelo);
+    TableProducto.setAutoCreateRowSorter(true);
+    sorter = new TableRowSorter<>(modelo);
+    TableProducto.setRowSorter(sorter);
+
+    // ancho de columnas
+    TableProducto.getColumnModel().getColumn(0).setPreferredWidth(50); 
+    TableProducto.getColumnModel().getColumn(0).setResizable(false); 
+    TableProducto.getColumnModel().getColumn(1).setPreferredWidth(150); 
+    TableProducto.getColumnModel().getColumn(1).setResizable(false);
+    TableProducto.getColumnModel().getColumn(2).setPreferredWidth(400); 
+    TableProducto.getColumnModel().getColumn(2).setResizable(false);
+    TableProducto.getColumnModel().getColumn(3).setPreferredWidth(100); 
+    TableProducto.getColumnModel().getColumn(3).setResizable(false);
+    TableProducto.getColumnModel().getColumn(4).setPreferredWidth(50); 
+    TableProducto.getColumnModel().getColumn(4).setResizable(false);
+    TableProducto.getColumnModel().getColumn(5).setPreferredWidth(100); 
+    TableProducto.getColumnModel().getColumn(5).setResizable(false);
+    TableProducto.getColumnModel().getColumn(6).setPreferredWidth(0);  // Hacer invisible la columna id proveedor
+    TableProducto.getColumnModel().getColumn(6).setMinWidth(0);
+    TableProducto.getColumnModel().getColumn(6).setMaxWidth(0);
+    TableProducto.getColumnModel().getColumn(6).setResizable(false);
+
+    // alto de la fila
+    TableProducto.setRowHeight(30);
+}
 
 
     
@@ -1598,11 +1645,11 @@ public final class Sistema extends javax.swing.JFrame {
 
             },
             new String [] {
-                "ID", "CODIGO", "DESCRIPCIÓN", "PROVEEDOR", "STOCK", "PRECIO"
+                "ID", "CODIGO", "DESCRIPCIÓN", "PROVEEDOR", "STOCK", "PRECIO", "IdProveedor"
             }
         ) {
             boolean[] canEdit = new boolean [] {
-                false, false, false, false, false, false
+                false, false, false, false, false, false, true
             };
 
             public boolean isCellEditable(int rowIndex, int columnIndex) {
@@ -2333,7 +2380,11 @@ public final class Sistema extends javax.swing.JFrame {
             JOptionPane.showMessageDialog(null, "Selecciona una fila"); 
         }else{
             v = Vdao.BuscarVenta(Integer.parseInt(txtIdVenta.getText()));
-            Vdao.pdfV(v.getId(), v.getCliente(), v.getTotal(), v.getVendedor());
+            //Vdao.pdfV(v.getId(), v.getCliente(), v.getTotal(), v.getVendedor());
+Vdao.pdfV(v.getId(), v.getCliente(), v.getTotal(), v.getVendedor());
+
+//Vdao.pdfV(v.getId(), v.getVendedor(), "Gracias por su compra");
+
         }
     }//GEN-LAST:event_btnPdfVentasActionPerformed
 
@@ -2344,7 +2395,10 @@ public final class Sistema extends javax.swing.JFrame {
 
     private void btnNuevoProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProActionPerformed
         // TODO add your handling code here:
+        
         LimpiarProductos();
+              
+    
         btnGuardarpro.setEnabled(true);
     }//GEN-LAST:event_btnNuevoProActionPerformed
 
@@ -2604,37 +2658,6 @@ public final class Sistema extends javax.swing.JFrame {
     }
     }//GEN-LAST:event_btnGraficarActionPerformed
 
-    private void btnGenerarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaActionPerformed
-        // TODO add your handling code here:
-
-       if (TableVenta.getRowCount() > 0) {
-            //original
-              
-              if (!"".equals(txtPaga1.getText())) {
-            
-            if (!"".equals(txtNombreClienteventa.getText())) {
-           
-                RegistrarVenta();
-                RegistrarDetalle();
-                ActualizarStock();
-                LimpiarTableVenta();
-               // LimpiarClienteventa();    se omitio  de momento
-                LimparVenta();
-                LimpiarCobro();
-                txtCodigoVenta.requestFocus();
-          } else {
-               JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
-           }
-               } else {
-               JOptionPane.showMessageDialog(null, "Paga con $ ? ");
-               txtPaga1.requestFocus();
-           }
-       } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la venta");
-       }  
-
-    }//GEN-LAST:event_btnGenerarVentaActionPerformed
-
     private void txtRucVentaKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaKeyTyped
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRucVentaKeyTyped
@@ -2776,7 +2799,7 @@ private void inicializarTeclas() {
         @Override
         public void actionPerformed(ActionEvent e) {
             abrirVentanaCobrar(); // Llama al método que abre la ventana de cobro
-            AbrirCajaEfectivo.main(null);
+           // AbrirCajaEfectivo.main(null);
         }
     });
 
@@ -3167,7 +3190,7 @@ if (TableVenta.getRowCount() > 0) {
  
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
  abrirVentanaCobrar();       
- //     AbrirCajaEfectivo.main(null); // Llama la función para abrir la caja  
+      //AbrirCajaEfectivo.main(null); // Llama la función para abrir la caja  
     }//GEN-LAST:event_btnCobrarActionPerformed
 
     private void btnCobrarMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_btnCobrarMouseClicked
@@ -3197,17 +3220,47 @@ if (TableVenta.getRowCount() > 0) {
     }//GEN-LAST:event_txtBuscarActionPerformed
 
     private void TableProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableProductoMouseClicked
-        // TODO add your handling code here:
-         btnEditarpro.setEnabled(true);
-      btnEliminarPro.setEnabled(true);
-      btnGuardarpro.setEnabled(false);
-      int fila = TableProducto.rowAtPoint(evt.getPoint());
-      txtIdproducto.setText(TableProducto.getValueAt(fila, 0).toString());
-      txtCodigoPro.setText(TableProducto.getValueAt(fila, 1).toString());
-      txtDesPro.setText(TableProducto.getValueAt(fila, 2).toString());
-      txtCantPro.setText(TableProducto.getValueAt(fila, 4).toString());
-      txtPrecioPro.setText(TableProducto.getValueAt(fila, 5).toString());
-     
+   // Obtener la fila en la que se hizo clic según la posición del mouse
+    int fila = TableProducto.rowAtPoint(evt.getPoint());
+
+    // Validar que la fila sea válida (no clic fuera de filas)
+    if (fila < 0) {
+        return; // Si no es válida, salir del método para evitar errores
+    }
+
+    // Habilitar botones para editar y eliminar, deshabilitar botón guardar
+    btnEditarpro.setEnabled(true);
+    btnEliminarPro.setEnabled(true);
+    btnGuardarpro.setEnabled(false);
+
+    // Llenar los campos de texto con los valores de la fila seleccionada
+    txtIdproducto.setText(TableProducto.getValueAt(fila, 0).toString());
+    txtCodigoPro.setText(TableProducto.getValueAt(fila, 1).toString());
+    txtDesPro.setText(TableProducto.getValueAt(fila, 2).toString());
+    txtCantPro.setText(TableProducto.getValueAt(fila, 4).toString());
+    txtPrecioPro.setText(TableProducto.getValueAt(fila, 5).toString());
+
+    // Declarar variable para guardar el id del proveedor
+    int idProveedor = -1;
+
+    try {
+        // Intentar convertir el valor de la columna 6 a entero (id proveedor)
+        idProveedor = Integer.parseInt(TableProducto.getValueAt(fila, 6).toString());
+    } catch (NumberFormatException e) {
+        // Si la conversión falla, mostrar error en consola y salir
+        System.out.println("Error: El proveedor no es un número válido.");
+        return;
+    }
+
+    // Buscar en el combo box el item cuyo id coincida con el idProveedor
+    for (int i = 0; i < cbxProveedorPro.getItemCount(); i++) {
+        Combo item = (Combo) cbxProveedorPro.getItemAt(i);
+        if (item.getId() == idProveedor) {
+            // Seleccionar ese índice en el combo box
+            cbxProveedorPro.setSelectedIndex(i);
+            break; // Salir del ciclo una vez encontrado
+        }
+    }
     
     }//GEN-LAST:event_TableProductoMouseClicked
 
@@ -3546,6 +3599,10 @@ Menu.setSelectedIndex(9);         // TODO add your handling code here:
     MenuOpcionesForm ventana = new MenuOpcionesForm(this, true);
     ventana.setVisible(true);
     }//GEN-LAST:event_menuActionPerformed
+
+    private void btnGenerarVentaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaActionPerformed
+        // TODO add your handling code here:
+    }//GEN-LAST:event_btnGenerarVentaActionPerformed
    private void filtrar(){
 
    try{
@@ -3818,7 +3875,7 @@ void Operacion(){
     private void LimpiarProductos() {
         txtIdPro.setText("");
         txtCodigoPro.setText("");
-        cbxProveedorPro.setSelectedItem(null);
+        //cbxProveedorPro.setSelectedItem(null);
         txtDesPro.setText("");
         txtCantPro.setText("");
         txtPrecioPro.setText("");
@@ -3972,8 +4029,12 @@ void Operacion(){
         }
         int cliente = Integer.parseInt(txtIdCV.getText());
         Vdao.pdfV(id, cliente, TotalPagar, LabelVendedor.getText());
+        
     }
-    
+  
+ 
+
+
     
       private void RegistrarDetalleEntrada() {
        int id = Vdao.IdVenta();
@@ -4118,11 +4179,11 @@ void Operacion(){
         txtPass.setText("");
     }
     private void llenarProveedor(){
-        List<Proveedor> lista = PrDao.ListarProveedor();
-        for (int i = 0; i < lista.size(); i++) {
-            int id = lista.get(i).getId();
-            String nombre = lista.get(i).getNombre();
-            cbxProveedorPro.addItem(new Combo(id, nombre));
-        }
+           cbxProveedorPro.removeAllItems(); // Limpia los ítems anteriores
+    cbxProveedorPro.addItem(new Combo(0, "Seleccione")); // Ítem por defecto
+    List<Proveedor> lista = PrDao.ListarProveedor();
+    for (Proveedor p : lista) {
+        cbxProveedorPro.addItem(new Combo(p.getId(), p.getNombre()));
+    }
     }
 }

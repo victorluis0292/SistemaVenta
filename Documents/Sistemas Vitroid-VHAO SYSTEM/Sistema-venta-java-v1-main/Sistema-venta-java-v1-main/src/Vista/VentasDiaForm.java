@@ -75,6 +75,8 @@ Midate.getDateEditor().getUiComponent().setFont(new java.awt.Font("Tahoma", java
                 if (modelo.getRowCount() == 0) {
                     // Mostrar empty state cuando no hay datos
                     jScrollPane1.setViewportView(panelEmptyState);
+                    jScrollPane1.revalidate();
+jScrollPane1.repaint();
                     TotalVenta.setText("0.00");
                 } else {
                     // Mostrar tabla con datos
@@ -125,11 +127,19 @@ Midate.getDateEditor().getUiComponent().setFont(new java.awt.Font("Tahoma", java
 
         // Crear panel empty state con imagen y texto
         panelEmptyState = new JPanel(new BorderLayout());
-        JLabel emptyStateLabel = new JLabel("Sin movimientos por el momento", SwingConstants.CENTER);
+        JLabel emptyStateLabel = new JLabel("Sin movimientos por el momento.", SwingConstants.CENTER);
         emptyStateLabel.setFont(new java.awt.Font("Tahoma", Font.BOLD, 20));
 
         // Cargar imagen desde recursos (debes tener la imagen en /img/grillosindatos.png dentro del classpath)
-        URL imgUrl = getClass().getResource("/img/grillosindatos.png");
+  URL imgUrl = getClass().getResource("/img/grillosindatos.png");
+if (imgUrl == null) {
+    System.out.println("No se encontró la imagen en /img/grillosindatos.png");
+} else {
+    ImageIcon icon = new ImageIcon(imgUrl);
+    emptyStateLabel.setIcon(icon);
+    emptyStateLabel.setHorizontalTextPosition(SwingConstants.CENTER);
+    emptyStateLabel.setVerticalTextPosition(SwingConstants.BOTTOM);
+}
         if (imgUrl != null) {
             emptyStateLabel.setIcon(new ImageIcon(imgUrl));
             emptyStateLabel.setHorizontalTextPosition(SwingConstants.CENTER);
