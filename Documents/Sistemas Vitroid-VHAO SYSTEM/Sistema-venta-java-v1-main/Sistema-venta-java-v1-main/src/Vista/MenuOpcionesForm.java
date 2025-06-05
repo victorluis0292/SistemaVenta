@@ -5,15 +5,16 @@
  */
 package Vista;
 
+
+import Controlador.MovimientosCajaController;
 import java.awt.BorderLayout;
 import java.awt.GridLayout;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
-import javax.swing.JOptionPane;
 import javax.swing.JPanel;
-import javax.swing.UIManager;
+import javax.swing.WindowConstants;
 
 /**
  *
@@ -21,7 +22,7 @@ import javax.swing.UIManager;
  */
 public class MenuOpcionesForm extends javax.swing.JDialog {
 
-    private JButton btnMovimientosCaja;
+     private JButton btnMovimientosCaja;
     private JButton btnCambiarCaja;
     private JButton btnArqueoCaja;
     private JButton btnCorteCaja;
@@ -43,32 +44,38 @@ public class MenuOpcionesForm extends javax.swing.JDialog {
 
         initComponents();
     }
-       private void initComponents() {
+     private void initComponents() {
         panelBotones = new JPanel(new GridLayout(3, 3, 15, 15));
         panelBotones.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
 
-        // Inicializar botones con texto
-       btnMovimientosCaja = new JButton("<html><center>Movimientos<br>de caja</center></html>");
-       btnMovimientosCaja.setHorizontalTextPosition(JButton.CENTER);
-        btnCambiarCaja = new JButton("Cambiar caja");
-        btnArqueoCaja = new JButton("Arqueo de caja");
-        btnCorteCaja = new JButton("Corte de caja");
-        btnVentasDia = new JButton("Ventas del día");
-        btnProveedores = new JButton("Proveedores");
-        btnReportes = new JButton("Reportes");
-        btnConfiguracion = new JButton("Configuración");
-        btnSalir = new JButton("Salir");
-
-        // Agregar íconos (ajusta las rutas de tus íconos aquí)
+        // Inicializar botones con texto e íconos
+        btnMovimientosCaja = new JButton("<html><center>Movimientos<br>de caja</center></html>");
         btnMovimientosCaja.setIcon(loadIcon("/Img/movimientos.png"));
         btnMovimientosCaja.setVerticalTextPosition(JButton.BOTTOM);
+        btnMovimientosCaja.setHorizontalTextPosition(JButton.CENTER);
+
+        btnCambiarCaja = new JButton("Cambiar caja");
         btnCambiarCaja.setIcon(loadIcon("/Icons/cambiar_caja.png"));
+
+        btnArqueoCaja = new JButton("Arqueo de caja");
         btnArqueoCaja.setIcon(loadIcon("/Icons/arqueo.png"));
+
+        btnCorteCaja = new JButton("Corte de caja");
         btnCorteCaja.setIcon(loadIcon("/Icons/corte.png"));
+
+        btnVentasDia = new JButton("Ventas del día");
         btnVentasDia.setIcon(loadIcon("/Icons/ventas.png"));
+
+        btnProveedores = new JButton("Proveedores");
         btnProveedores.setIcon(loadIcon("/Icons/proveedores.png"));
+
+        btnReportes = new JButton("Reportes");
         btnReportes.setIcon(loadIcon("/Icons/reportes.png"));
+
+        btnConfiguracion = new JButton("Configuración");
         btnConfiguracion.setIcon(loadIcon("/Icons/configuracion.png"));
+
+        btnSalir = new JButton("Salir");
         btnSalir.setIcon(loadIcon("/Icons/salir.png"));
 
         // Agregar botones al panel
@@ -85,55 +92,63 @@ public class MenuOpcionesForm extends javax.swing.JDialog {
         // Añadir el panel al diálogo
         getContentPane().add(panelBotones, BorderLayout.CENTER);
 
-        // Eventos
-      btnMovimientosCaja.addActionListener(e -> {
-    this.dispose();  // Cierra el diálogo MenuOpcionesForm
-    MovimientosCaja mc = new MovimientosCaja();
-    mc.setLocationRelativeTo(null); // Centrar el nuevo JFrame (por si no lo hiciste en su constructor)
-    mc.setVisible(true);
-});
+        // Eventos para los botones
+
+        btnMovimientosCaja.addActionListener(e -> {
+            // Ocultar menú actual
+            this.setVisible(false);
+
+            // Crear y mostrar MovimientosCaja
+            MovimientosCaja mc = new MovimientosCaja();
+            new MovimientosCajaController(mc);
+            mc.setLocationRelativeTo(null);
+            mc.setDefaultCloseOperation(WindowConstants.DISPOSE_ON_CLOSE);
+
+            // Cuando MovimientosCaja se cierre, mostrar menú otra vez
+           // mc.addWindowListener(new java.awt.event.WindowAdapter() {
+             //   @Override
+               // public void windowClosed(java.awt.event.WindowEvent e) {
+                 //   MenuOpcionesForm.this.setVisible(true);
+                //}
+            //});
+
+            mc.setVisible(true);
+        });
 
         btnCambiarCaja.addActionListener(e -> {
-            
-            JOptionPane.showMessageDialog(this, "Cambiar caja aún no disponible.");
-            // new CambiarCaja().setVisible(true); // Descomenta cuando tengas este formulario
+            javax.swing.JOptionPane.showMessageDialog(this, "Cambiar caja aún no disponible.");
         });
 
         btnArqueoCaja.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Arqueo de caja aún no disponible.");
-            // new ArqueoCaja().setVisible(true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Arqueo de caja aún no disponible.");
         });
 
         btnCorteCaja.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Corte de caja aún no disponible.");
-            // new CorteCaja().setVisible(true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Corte de caja aún no disponible.");
         });
 
         btnVentasDia.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Ventas del día aún no disponible.");
-            // new VentasDia().setVisible(true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Ventas del día aún no disponible.");
         });
 
         btnProveedores.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Proveedores aún no disponible.");
-            // new Proveedores().setVisible(true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Proveedores aún no disponible.");
         });
 
         btnReportes.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Reportes aún no disponible.");
-            // new Reportes().setVisible(true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Reportes aún no disponible.");
         });
 
         btnConfiguracion.addActionListener(e -> {
-            JOptionPane.showMessageDialog(this, "Configuración aún no disponible.");
-            // new Configuracion().setVisible(true);
+            javax.swing.JOptionPane.showMessageDialog(this, "Configuración aún no disponible.");
         });
 
         btnSalir.addActionListener(e -> {
             dispose(); // Cierra el diálogo
         });
     }
-        private ImageIcon loadIcon(String path) {
+       
+   private ImageIcon loadIcon(String path) {
         java.net.URL imgURL = getClass().getResource(path);
         if (imgURL != null) {
             return new ImageIcon(imgURL);
@@ -182,17 +197,17 @@ public class MenuOpcionesForm extends javax.swing.JDialog {
     /**
      * @param args the command line arguments
      */
+ 
     public static void main(String args[]) {
-       /* Set the Nimbus look and feel */
         try {
-            for (UIManager.LookAndFeelInfo info : UIManager.getInstalledLookAndFeels()) {
+            for (javax.swing.UIManager.LookAndFeelInfo info : javax.swing.UIManager.getInstalledLookAndFeels()) {
                 if ("Nimbus".equals(info.getName())) {
-                    UIManager.setLookAndFeel(info.getClassName());
+                    javax.swing.UIManager.setLookAndFeel(info.getClassName());
                     break;
                 }
             }
         } catch (Exception ex) {
-            // Si falla, ignora y usa el look and feel por defecto
+            // Ignorar, usar look and feel por defecto
         }
 
         java.awt.EventQueue.invokeLater(() -> {

@@ -72,14 +72,21 @@ import java.util.Date;
 import java.text.ParseException;
 import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
+import javax.swing.BorderFactory;
+import javax.swing.ImageIcon;
 import javax.swing.InputMap;
 import javax.swing.JButton;
 import javax.swing.JComponent;
 import javax.swing.JDialog;
+import javax.swing.JLabel;
 import javax.swing.JRootPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.KeyStroke;
+import javax.swing.SwingConstants;
+import javax.swing.SwingUtilities;
+import javax.swing.SwingWorker;
+import Modelo.LoaderDialog;
 
 /**
  *
@@ -385,55 +392,99 @@ private void RegistrarVenta() {
      * @param args the command line arguments
      */
   
-  public void pagarenter() {
+
+public void pagarenter() {
     if (!"".equals(txtPaga.getText())) {
         try {
-            // 1) Obtener el monto pagado por el cliente y el total de la venta
             double pago = Double.parseDouble(txtPaga.getText());
             double total = Double.parseDouble(lblTotal.getText());
 
-            // 2) Verificar si el pago es suficiente
+            // Verificar que el pago sea suficiente
             if (pago < total) {
-                JOptionPane.showMessageDialog(null,
-                    "El monto pagado es menor al total.",
-                    "Pago insuficiente",
-                    JOptionPane.WARNING_MESSAGE);
+                JOptionPane.showMessageDialog(null, "El monto pagado es menor al total.",
+                        "Pago insuficiente", JOptionPane.WARNING_MESSAGE);
                 txtPaga.requestFocus();
                 return;
             }
 
-            // 3) Registrar la venta
-            RegistrarVenta();      // Este método debe llenar y guardar el objeto Venta
-            RegistrarDetalle();    // Registra cada línea del detalle en la tabla "detalle"
-            ActualizarStock();     // Actualiza el stock en base a la venta
+            // Mostrar loader animado
 
-            // 4) Calcular el cambio
-            double cambio = pago - total;
+JDialog loader = new LoaderDialog().mostrarLoader(this);
 
-            // 5) Obtener el ID de venta recién generado
-            int idVenta = Vdao.IdVenta();
-           // 1) Abrir la caja registradora
-      AbrirCajaEfectivo.main(null); // Llama la función para abrir la caja  
 
-            // 6) Generar el ticket (pasa idVenta, pago y cambio)
-            String ticket = ImprimirTicket.generarTicketReal(idVenta, pago, cambio);
-// 7.1) Enviar a imprimir el ticket
-            ImprimirTicket.imprimir(ticket);
-            // 7.0) Mostrar el ticket en un diálogo modal que cierra con Enter o Esc
-            mostrarTicketDialog(ticket);
-            
+            final String[] ticketGenerado = new String[1];
 
-            // 8) Limpiar interfaz
-            LimpiarTableVenta();
-            LimpiarCobro();
-            txtCodigoVenta.requestFocus();
-            this.dispose();
+            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+                @Override
+                protected Void doInBackground() {
+                    try {
+                        // Registrar la venta en la base de datos
+                        RegistrarVenta();
+
+                        // Registrar detalle de la venta
+                        RegistrarDetalle();
+
+                        // Actualizar el stock de productos
+                        ActualizarStock();
+
+                        double cambio = pago - total;
+
+                        // Obtener el ID de la venta recién registrada
+                        int idVenta = Vdao.IdVenta();
+
+                        // Abrir la caja registradora
+                        AbrirCajaEfectivo.main(null);
+
+                        // Generar el ticket para imprimir
+                        String ticket = ImprimirTicket.generarTicketReal(idVenta, pago, cambio);
+
+                        // Imprimir el ticket en la impresora térmica
+                        ImprimirTicket.imprimir(ticket);
+
+                        ticketGenerado[0] = ticket;
+
+                        // Limpiar la interfaz de usuario para la próxima venta
+                        LimpiarTableVenta();
+                        LimpiarCobro();
+
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        JOptionPane.showMessageDialog(null,
+                                "Ocurrió un error durante el proceso de pago.",
+                                "Error", JOptionPane.ERROR_MESSAGE);
+                    }
+                    return null;
+                }
+
+                @Override
+                protected void done() {
+                    // Cerrar el loader
+                    loader.dispose();
+
+                    try {
+                        // Pequeña pausa para que el loader desaparezca suavemente
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+
+                    // Mostrar el ticket en el hilo de la interfaz gráfica
+                    SwingUtilities.invokeLater(() -> {
+                        if (ticketGenerado[0] != null) {
+                            mostrarTicketDialog(ticketGenerado[0]);
+                        }
+                        txtCodigoVenta.requestFocus();
+                        dispose();
+                    });
+                }
+            };
+
+            worker.execute();
 
         } catch (NumberFormatException e) {
             JOptionPane.showMessageDialog(null,
-                "Por favor ingrese un monto válido.",
-                "Error de formato",
-                JOptionPane.ERROR_MESSAGE);
+                    "Por favor ingrese un monto válido.",
+                    "Error de formato", JOptionPane.ERROR_MESSAGE);
             txtPaga.requestFocus();
         }
     } else {
@@ -441,6 +492,10 @@ private void RegistrarVenta() {
         txtPaga.requestFocus();
     }
 }
+
+   
+  
+
 
     public static void main(String args[]  ) throws ClassNotFoundException, InstantiationException, NoSuchMethodException, IllegalAccessException, IllegalArgumentException, InvocationTargetException {
   /* Set the Nimbus look and feel */

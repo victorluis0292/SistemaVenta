@@ -35,8 +35,8 @@ public class EstilosBotones {
    public static void agregarBotonesAJPanel(JPanel panel) {
     // Crear botones
     JButton btn1 = new JButton("Ventas del día");
-    JButton btn2 = new JButton("Retiro de Efectivo");
-    JButton btn3 = new JButton("Opción 3");
+    JButton btn2 = new JButton("Movimientos de caja  Ingreso | Egreso");
+    JButton btn3 = new JButton("Reporte General");
     JButton btn4 = new JButton("Opción 4");
 
     // Aplicar estilos
@@ -54,13 +54,15 @@ public class EstilosBotones {
 
     btn2.addActionListener(e -> {
         // 👉 Abrir formulario de retiro de efectivo
-        //RetiroEfectivo ventana = new RetiroEfectivo();
-        //ventana.setVisible(true);
-        JOptionPane.showMessageDialog(panel, "Retiro de Efectivo  aún no disponible.");
+       verMovimientosCaja ventana = new verMovimientosCaja();
+        ventana.setVisible(true);
+     
     });
 
     btn3.addActionListener(e -> {
-        JOptionPane.showMessageDialog(panel, "Opción 3 aún no disponible.");
+         // 👉 Abrir formulario de retiro de efectivo
+       ReporteGeneral ventana = new ReporteGeneral();
+        ventana.setVisible(true);
     });
 
     btn4.addActionListener(e -> {
