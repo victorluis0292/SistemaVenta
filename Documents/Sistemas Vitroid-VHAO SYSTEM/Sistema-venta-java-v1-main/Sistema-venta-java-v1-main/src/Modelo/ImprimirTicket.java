@@ -58,15 +58,23 @@ public class ImprimirTicket {
         try {
             // 1) Obtener nombre del negocio desde config
             String nombreNegocio = "Mi Negocio";
+            String direccion = "Mi Dirección";
+            String telefono = "Mi telefono";
             try (Statement st = con.createStatement();
-                 ResultSet rs = st.executeQuery("SELECT nombre FROM config LIMIT 1")) {
+                 ResultSet rs = st.executeQuery("SELECT nombre,direccion,telefono  FROM config LIMIT 1")) {
                 if (rs.next()) {
                     nombreNegocio = rs.getString("nombre");
+                    direccion  = rs.getString("direccion");
+                    telefono  = rs.getString("telefono");
                 }
             } catch (SQLException e) {
                 e.printStackTrace();
             }
+            //int anchoTicket = 32; // o el ancho de tu ticket en caracteres
+
             sb.append("     ").append(nombreNegocio).append("\n");
+            sb.append(centrarConSaltos(direccion, 32));
+            sb.append("Telefono: ").append(telefono).append("\n");
             sb.append("    ----------------------\n");
             sb.append("Venta ID: ").append(idVenta).append("\n");
 
@@ -162,4 +170,47 @@ public class ImprimirTicket {
 
         return sb.toString();
     }
+
+private static String centrarConSaltos(String texto, int ancho) {
+    StringBuilder resultado = new StringBuilder();
+    String[] lineas = texto.split("\n");
+    for (String linea : lineas) {
+        if (linea.length() > ancho) {
+            int start = 0;
+            while (start < linea.length()) {
+                int end = Math.min(start + ancho, linea.length());
+                // No partir palabra
+                if (end < linea.length() && linea.charAt(end) != ' ') {
+                    int lastSpace = linea.lastIndexOf(' ', end);
+                    if (lastSpace > start) {
+                        end = lastSpace;
+                    }
+                }
+                String sub = linea.substring(start, end).trim();
+                int espaciosIzquierda = (ancho - sub.length()) / 2;
+                resultado.append(repetirCaracter(' ', espaciosIzquierda)).append(sub).append("\n");
+                start = end;
+                while (start < linea.length() && linea.charAt(start) == ' ') start++;
+            }
+        } else {
+            int espaciosIzquierda = (ancho - linea.length()) / 2;
+            resultado.append(repetirCaracter(' ', espaciosIzquierda)).append(linea).append("\n");
+        }
+    }
+    return resultado.toString();
+}
+
+private static String repetirCaracter(char c, int veces) {
+    StringBuilder sb = new StringBuilder();
+    for (int i = 0; i < veces; i++) {
+        sb.append(c);
+    }
+    return sb.toString();
+}
+
+
+
+
+
+
 }

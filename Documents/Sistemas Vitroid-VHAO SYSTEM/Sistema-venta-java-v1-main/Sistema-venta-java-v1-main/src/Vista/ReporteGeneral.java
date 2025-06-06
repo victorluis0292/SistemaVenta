@@ -9,6 +9,8 @@ import java.text.SimpleDateFormat;
 import java.time.LocalDate;
 import java.time.temporal.WeekFields;
 import java.util.Locale;
+import Estilos.Estilos;
+
 /**
  *
  * @author vic
@@ -27,7 +29,10 @@ public class ReporteGeneral extends javax.swing.JFrame {
         setDefaultCloseOperation(DISPOSE_ON_CLOSE);
         initComponents();
         cargarDatos();
-
+        Estilos.estiloEtiquetaGreen(lblVentas);
+        Estilos.estiloEtiquetaGreen(valorVentas);
+        Estilos.estiloEtiquetaRed(lblEgresos);
+        Estilos.estiloEtiquetaRed(valorEgresos);
         midate.getDateEditor().addPropertyChangeListener(evt -> {
             if ("date".equals(evt.getPropertyName())) {
                 cargarDatos();
@@ -44,9 +49,9 @@ private void initComponents() {
         String[] tipos = {"Día", "Semana", "Mes", "Año"};
         tipoReporteCombo = new JComboBox<>(tipos);
 
-        lblVentas = new JLabel("Ventas:");
+        lblVentas = new JLabel("Has Vendido:");
         lblIngresos = new JLabel("Ingresos:");
-        lblEgresos = new JLabel("Egresos:");
+        lblEgresos = new JLabel("Has Gastado:");
         lblTotal = new JLabel("Total en caja:");
 
         valorVentas = new JLabel("0.00");
@@ -121,9 +126,9 @@ private void initComponents() {
 
         double totalFinal = totalVentas + totalIngresos - totalEgresos;
 
-        valorVentas.setText(String.format("%.2f", totalVentas));
+        valorVentas.setText("$" + String.format("%.2f", totalVentas));
         valorIngresos.setText(String.format("%.2f", totalIngresos));
-        valorEgresos.setText(String.format("%.2f", totalEgresos));
+        valorEgresos.setText("$" +String.format("%.2f", totalEgresos));
         valorTotal.setText(String.format("%.2f", totalFinal));
     }
   // Métodos para obtener ventas

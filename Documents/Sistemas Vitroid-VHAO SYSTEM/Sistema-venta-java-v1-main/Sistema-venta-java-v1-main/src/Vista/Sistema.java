@@ -614,7 +614,6 @@ public void ListarProductos() {
         jButton2 = new javax.swing.JButton();
         btnGenerarVentaCredit = new javax.swing.JButton();
         jPanel18 = new javax.swing.JPanel();
-        jLabel47 = new javax.swing.JLabel();
         jPanel15 = new javax.swing.JPanel();
         menu = new javax.swing.JButton();
 
@@ -653,7 +652,7 @@ public void ListarProductos() {
         btnClientes.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnClientes.setForeground(new java.awt.Color(255, 255, 255));
         btnClientes.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/Clientes.png"))); // NOI18N
-        btnClientes.setText("Clientes");
+        btnClientes.setText("Clientes Activos");
         btnClientes.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnClientes.setFocusable(false);
         btnClientes.addActionListener(new java.awt.event.ActionListener() {
@@ -679,7 +678,7 @@ public void ListarProductos() {
         btnProductos.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnProductos.setForeground(new java.awt.Color(255, 255, 255));
         btnProductos.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/producto.png"))); // NOI18N
-        btnProductos.setText("Productos");
+        btnProductos.setText("Catalogo de Productos");
         btnProductos.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnProductos.setFocusable(false);
         btnProductos.addMouseListener(new java.awt.event.MouseAdapter() {
@@ -697,7 +696,7 @@ public void ListarProductos() {
         btnVentas.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         btnVentas.setForeground(new java.awt.Color(255, 255, 255));
         btnVentas.setIcon(new javax.swing.ImageIcon(getClass().getResource("/Img/compras.png"))); // NOI18N
-        btnVentas.setText("Ventas");
+        btnVentas.setText("Historial de Ventas");
         btnVentas.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         btnVentas.setFocusable(false);
         btnVentas.addActionListener(new java.awt.event.ActionListener() {
@@ -765,7 +764,7 @@ public void ListarProductos() {
         BtnCorte.setBackground(new java.awt.Color(153, 153, 153));
         BtnCorte.setFont(new java.awt.Font("Tahoma", 0, 16)); // NOI18N
         BtnCorte.setForeground(new java.awt.Color(255, 255, 255));
-        BtnCorte.setText("CORTE");
+        BtnCorte.setText("Corte de caja");
         BtnCorte.setCursor(new java.awt.Cursor(java.awt.Cursor.DEFAULT_CURSOR));
         BtnCorte.setFocusable(false);
         BtnCorte.addActionListener(new java.awt.event.ActionListener() {
@@ -778,26 +777,31 @@ public void ListarProductos() {
         jPanel1.setLayout(jPanel1Layout);
         jPanel1Layout.setHorizontalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(btnNuevaVenta, javax.swing.GroupLayout.DEFAULT_SIZE, 200, Short.MAX_VALUE)
+            .addComponent(btnNuevaVenta, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnClientes, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnProveedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(btnProductos, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnVentas, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnConfig, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(LabelVendedor, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(jButton1, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addComponent(btnEntrada, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(BtnCreditoCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+            .addComponent(BtnCorte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
             .addGroup(jPanel1Layout.createSequentialGroup()
                 .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
                     .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(74, 74, 74)
-                        .addComponent(tipo))
-                    .addGroup(jPanel1Layout.createSequentialGroup()
-                        .addGap(48, 48, 48)
-                        .addComponent(jLabel1)))
-                .addContainerGap(71, Short.MAX_VALUE))
-            .addComponent(BtnCreditoCliente, javax.swing.GroupLayout.Alignment.TRAILING, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
-            .addComponent(BtnCorte, javax.swing.GroupLayout.DEFAULT_SIZE, javax.swing.GroupLayout.DEFAULT_SIZE, Short.MAX_VALUE)
+                        .addGroup(jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(74, 74, 74)
+                                .addComponent(tipo))
+                            .addGroup(jPanel1Layout.createSequentialGroup()
+                                .addGap(48, 48, 48)
+                                .addComponent(jLabel1)))
+                        .addGap(0, 0, Short.MAX_VALUE))
+                    .addGroup(javax.swing.GroupLayout.Alignment.TRAILING, jPanel1Layout.createSequentialGroup()
+                        .addGap(0, 0, Short.MAX_VALUE)
+                        .addComponent(btnProductos, javax.swing.GroupLayout.PREFERRED_SIZE, 199, javax.swing.GroupLayout.PREFERRED_SIZE)))
+                .addContainerGap())
         );
         jPanel1Layout.setVerticalGroup(
             jPanel1Layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
@@ -2237,11 +2241,6 @@ public void ListarProductos() {
         });
         jPanel18.setLayout(new org.netbeans.lib.awtextra.AbsoluteLayout());
 
-        jLabel47.setFont(new java.awt.Font("Tahoma", 1, 14)); // NOI18N
-        jLabel47.setForeground(new java.awt.Color(255, 102, 102));
-        jLabel47.setText("Corte");
-        jPanel18.add(jLabel47, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 0, -1, 30));
-
         javax.swing.GroupLayout jPanel15Layout = new javax.swing.GroupLayout(jPanel15);
         jPanel15.setLayout(jPanel15Layout);
         jPanel15Layout.setHorizontalGroup(
@@ -2362,7 +2361,9 @@ public void ListarProductos() {
         if (!"".equals(txtRucConfig.getText()) || !"".equals(txtNombreConfig.getText()) || !"".equals(txtTelefonoConfig.getText()) || !"".equals(txtDireccionConfig.getText())) {
             conf.setRuc(txtRucConfig.getText());
             conf.setNombre(txtNombreConfig.getText());
-            conf.setTelefono(txtTelefonoConfig.getText());
+
+            conf.setTelefono(txtTelefonoConfig.getText().trim());
+
             conf.setDireccion(txtDireccionConfig.getText());
             conf.setMensaje(txtMensaje.getText());
             conf.setId(Integer.parseInt(txtIdConfig.getText()));
@@ -3758,7 +3759,6 @@ void Operacion(){
     private javax.swing.JLabel jLabel44;
     private javax.swing.JLabel jLabel45;
     private javax.swing.JLabel jLabel46;
-    private javax.swing.JLabel jLabel47;
     private javax.swing.JLabel jLabel48;
     private javax.swing.JLabel jLabel5;
     private javax.swing.JLabel jLabel53;

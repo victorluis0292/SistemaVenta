@@ -1,5 +1,6 @@
 package Vista;
-
+import Estilos.Estilos;
+import com.toedter.calendar.JDateChooser; // estilo calendar
 
 import Modelo.Conexion;
 import com.toedter.calendar.JDateChooser;
@@ -21,8 +22,14 @@ public class verMovimientosCaja extends javax.swing.JFrame {
      */
   public verMovimientosCaja() {
         initComponents();
+        Estilos.estiloTabla(TablaEgresos);
+         Estilos.estiloEtiqueta(MontoTotalIngresosV);
+          Estilos.estiloEtiqueta(TotalMontoIngresos);
+           Estilos.estiloEtiqueta(MontoTotalV);
+          Estilos.estiloEtiqueta(TotalMonto);
+          Estilos.estiloCalendario(Midate);
         cargarDatos();
-
+ 
         // Listener para recargar datos al cambiar la fecha
         Midate.getDateEditor().addPropertyChangeListener(evt -> {
             if ("date".equals(evt.getPropertyName())) {
@@ -32,7 +39,8 @@ public class verMovimientosCaja extends javax.swing.JFrame {
     }
   private void cargarDatos() {
         DefaultTableModel modelo = new DefaultTableModel();
-        modelo.addColumn("Gasto");
+        modelo.addColumn("Tipo");
+        modelo.addColumn("Operacion");
         modelo.addColumn("Monto");
         modelo.addColumn("Concepto");
         modelo.addColumn("Nota");
@@ -60,12 +68,16 @@ public class verMovimientosCaja extends javax.swing.JFrame {
                 while (rs.next()) {
                     String tipo = rs.getString("tipo");
                     String gasto = rs.getString("gasto");
+                    if (gasto == null || gasto.trim().isEmpty()) {
+                        gasto = "N/A";
+                    }
                     String concepto = rs.getString("concepto");
                     String nota = rs.getString("nota");
                     double monto = rs.getDouble("monto");
                     Timestamp fecha = rs.getTimestamp("fecha");
 
                     modelo.addRow(new Object[]{
+                           tipo,                  // <--- aquí agregas tipo
                             gasto,
                             String.format("%.2f", monto),
                             concepto,
@@ -94,6 +106,7 @@ public class verMovimientosCaja extends javax.swing.JFrame {
     private void initComponents() {
         jScrollPane1 = new JScrollPane();
         TablaEgresos = new JTable();
+       
         Midate = new JDateChooser();
         MontoTotalV = new JLabel();
         TotalMonto = new JLabel();
@@ -105,7 +118,7 @@ public class verMovimientosCaja extends javax.swing.JFrame {
 
         TablaEgresos.setModel(new DefaultTableModel(
                 new Object[][]{},
-                new String[]{"Gasto", "Monto", "Concepto", "Nota", "Fecha"}
+                new String[]{"Tipo","Gasto", "Monto", "Concepto", "Nota", "Fecha"}
         ));
         jScrollPane1.setViewportView(TablaEgresos);
 

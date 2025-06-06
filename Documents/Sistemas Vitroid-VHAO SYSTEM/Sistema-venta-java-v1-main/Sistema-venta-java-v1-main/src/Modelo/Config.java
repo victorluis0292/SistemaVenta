@@ -5,7 +5,9 @@ public class Config {
     private int id;
     private String ruc;
     private String nombre;
+    //private int telefono;
     private String telefono;
+
     private String direccion;
     private String mensaje;
     
@@ -46,13 +48,17 @@ public class Config {
         this.nombre = nombre;
     }
 
-    public String getTelefono() {
-        return telefono;
-    }
 
+    public String getTelefono() {
+    return telefono;
+}
+
+   // public void setTelefono(int telefono) {
+     //   this.telefono = telefono;
+    //}
     public void setTelefono(String telefono) {
-        this.telefono = telefono;
-    }
+    this.telefono = telefono;
+}
 
     public String getDireccion() {
         return direccion;

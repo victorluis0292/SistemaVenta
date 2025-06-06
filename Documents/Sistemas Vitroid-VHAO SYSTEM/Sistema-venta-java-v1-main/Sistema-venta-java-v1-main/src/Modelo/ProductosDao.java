@@ -187,12 +187,15 @@ public class ProductosDao {
        String sql = "UPDATE config SET ruc=?, nombre=?, telefono=?, direccion=?, mensaje=? WHERE id=?";
        try {
            ps = con.prepareStatement(sql);
+           System.out.println("RUC a guardar: '" + conf.getRuc() + "' (length: " + conf.getRuc().length() + ")");
+
            ps.setString(1, conf.getRuc());
            ps.setString(2, conf.getNombre());
            ps.setString(3, conf.getTelefono());
            ps.setString(4, conf.getDireccion());
            ps.setString(5, conf.getMensaje());
            ps.setInt(6, conf.getId());
+
            ps.execute();
            return true;
        } catch (SQLException e) {

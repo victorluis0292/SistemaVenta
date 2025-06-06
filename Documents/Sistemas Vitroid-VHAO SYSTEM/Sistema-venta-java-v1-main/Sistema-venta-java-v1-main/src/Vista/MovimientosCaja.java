@@ -58,8 +58,8 @@ public class MovimientosCaja extends javax.swing.JFrame {
 
 private void initComponents() {
         // Botones para cambiar panel
-        btnVerIngresos = new JButton("Ver Ingresos");
-        btnVerEgresos = new JButton("Ver Egresos");
+        btnVerIngresos = new JButton("Ingresos");
+        btnVerEgresos = new JButton("Egresos");
 
         JPanel panelBotones = new JPanel();
         panelBotones.add(btnVerIngresos);
@@ -106,11 +106,11 @@ private void initComponents() {
         txtNotaEgreso = new JTextField();
 
         JLabel lblGastoEgreso = new JLabel("Tipo de gasto:");
-        cmbGastoEgreso = new JComboBox<>(new String[]{"Gastos generales","Proveedor", "Compra de materiales", "Servicios", "Otro"});
+        cmbGastoEgreso = new JComboBox<>(new String[]{"Proveedor","Gastos generales", "Compra de materiales", "Servicios", "Otro"});
 
         btnGuardarEgreso = new JButton("Guardar Egreso");
 
-        panelEgresos.add(new JLabel("Gasto:"));
+        panelEgresos.add(new JLabel("Operacion:"));
         panelEgresos.add(cmbGastoEgreso);
         panelEgresos.add(lblMontoEgreso);
         panelEgresos.add(txtMontoEgreso);
