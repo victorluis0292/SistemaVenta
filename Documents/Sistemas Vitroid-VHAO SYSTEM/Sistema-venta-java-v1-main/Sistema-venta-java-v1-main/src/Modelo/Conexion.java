@@ -12,7 +12,7 @@ public class Conexion {
     public Connection getConnection() {
         try {
             
-         // Configuración para conexión remota (en Hostinger)
+         // Configuración para conexión remota (en Hostinger
           //185.212.71.153  la ip viejita
           //193.203.166.21  la ip nueva
             String myBD = "jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000";
