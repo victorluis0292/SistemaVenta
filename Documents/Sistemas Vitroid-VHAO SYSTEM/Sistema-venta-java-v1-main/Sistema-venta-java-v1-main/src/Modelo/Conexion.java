@@ -17,7 +17,7 @@ public class Conexion {
           //193.203.166.21  la ip nueva
             String myBD = "jdbc:mysql://193.203.166.21/u722149126_tienditaaixa?useSSL=false&serverTimezone=UTC&connectTimeout=10000";
              con = DriverManager.getConnection(myBD, "u722149126_victor", "Lolo140516");
-             //Mensaje en consola si la conexión es exitosa
+             //Mensaje en consola si la conexión es exitos
          System.out.println("Conexión exitosa."); 
       
             
