@@ -1,0 +1,92 @@
+2025-06-13T12:13:05.667 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:13:51.565 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:15:54.648 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:16:27.976 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:39:34.931 - Error al inicializar pool de conexiones: Failed to initialize pool: Access denied for user 'root'@'localhost' (using password: YES)
+2025-06-13T12:39:48.023 - Error al inicializar pool de conexiones: Failed to initialize pool: Access denied for user 'root'@'localhost' (using password: YES)
+2025-06-13T12:52:41.752 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T12:52:59.537 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T12:56:12.761 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T13:00:16.869 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T13:01:00.069 - Error al inicializar pool de conexiones: Uncompilable source code - cannot find symbol
+  symbol:   variable CONFIGURACIÓN
+  location: class Modelo.Conexion
+2025-06-16T00:14:15.989 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-17T13:38:46.708 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-18T02:13:32.947 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:14:32.118 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:15:08.311 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:19:52.554 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-19T00:35:26.130 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-19T09:04:44.818 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-19T09:04:55.669 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-19T09:05:02.859 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-20T17:45:10.902 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21T01:13:58.882 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T00:18:46.833 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T00:19:17.294 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:37:47.567 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:38:15.279 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:38:28.452 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:39:00.544 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-26T01:24:59.951 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T00:20:35.078 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T11:07:18.344 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-07-01T11:07:29.273 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-07-01T19:10:45.649 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T19:11:28.173 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T19:11:44.976 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-02T01:06:55.597 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:07:12.601 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:09:25.052 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:13:46.722 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:15:42.074 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:17:44.121 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:21:05.639 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:23:10.882 - Error al inicializar pool de conexiones: config.local.properties.txt (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:38:48.543 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:39:18.339 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:41:50.051 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:43:44.741 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:46:07.850 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:47:27.741 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
