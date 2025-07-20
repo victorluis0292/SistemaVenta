@@ -38,7 +38,7 @@ props.load(input);
         config.setJdbcUrl(jdbcUrl);
         config.setUsername(dbUser);
         config.setPassword(dbPassword);
-
+//
         // --- CONFIGURACIÓN DEL POOL ---
         config.setMaximumPoolSize(10);
         config.setMinimumIdle(2);
