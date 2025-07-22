@@ -33,8 +33,10 @@ import javax.swing.filechooser.FileSystemView;
 import Modelo.Conexion; // IMPORTANTE: usa tu clase
 import com.itextpdf.text.pdf.draw.LineSeparator;
 import java.sql.Statement;
+import java.sql.Timestamp;
 import java.text.NumberFormat;
 import java.util.Locale;
+
 public class VentaDao {
     Connection con;
     Conexion cn = new Conexion();
@@ -162,15 +164,11 @@ public int IdVenta() {
         
 public boolean eliminarCreditosDelCliente(int dni) {
     String sql1 = "DELETE FROM detalle_creditocliente WHERE dni = ?";
-    String sql2 = "DELETE FROM abonos_credito WHERE dni = ?";
     try (Connection con = Conexion.getConnection()) {
         PreparedStatement ps1 = con.prepareStatement(sql1);
-        PreparedStatement ps2 = con.prepareStatement(sql2);
         ps1.setInt(1, dni);
-        ps2.setInt(1, dni);
         int rows1 = ps1.executeUpdate();
-        int rows2 = ps2.executeUpdate();
-        return rows1 > 0 || rows2 > 0; // Si borra algo de cualquiera, devuelve true
+        return rows1 > 0; // Devuelve true si borró algo
     } catch (SQLException e) {
         System.err.println("Error al eliminar créditos: " + e.getMessage());
         return false;
@@ -296,80 +294,18 @@ public int obtenerDniPorIdCliente(int idCliente) {
         }
         return cl;
          }
-public boolean registrarAbono(int idVenta, String fecha, double monto, String tipoPago, String nota, int dni) {
-    String sql = "INSERT INTO abonos_credito (id_venta, fecha, monto, tipo_pago, nota, dni) VALUES (?, ?, ?, ?, ?, ?)";
-    try (Connection con = cn.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-        
-        ps.setInt(1, idVenta);
-        ps.setString(2, fecha);
-        ps.setDouble(3, monto);
-        ps.setString(4, tipoPago);  // puedes pasar null o un valor, según necesites
-        ps.setString(5, nota);
-        ps.setInt(6, dni);
-
-        int filas = ps.executeUpdate();
-        return filas > 0;
-    } catch (SQLException e) {
-        System.out.println("Error al registrar abono: " + e.getMessage());
-        return false;
-    }
-}
-public boolean insertarAbono(int idVenta, String dni, double abono) {
-    String sql = "INSERT INTO abonos_credito (id_venta, dni, monto_abonado, fecha) VALUES (?, ?, ?, NOW())";
-
-    try (Connection con = Conexion.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-
-        ps.setInt(1, idVenta);
-        ps.setString(2, dni);
-        ps.setDouble(3, abono);
-
-        return ps.executeUpdate() > 0;
-    } catch (SQLException ex) {
-        ex.printStackTrace();
-        return false;
-    }
-}
-public void eliminarAbonosPorDni(String dni) {
-    String sql = "DELETE FROM abonos_credito WHERE dni = ?";
-    try (Connection con = Conexion.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
-        ps.setString(1, dni);
-        ps.executeUpdate();
-    } catch (SQLException e) {
-        System.err.println("Error al eliminar abonos por DNI: " + e.getMessage());
-    }
-}
 
 
-public int registrarDetalleAbonoCredito(int idVenta, int idCliente, double monto, String fecha) {
-    int filasAfectadas = 0;
-    String sql = "INSERT INTO detalle_creditocliente (id_pro, cantidad, precio, total, id_venta, cliente, nombre, dni, fecha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-    try (Connection con = Conexion.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+ 
 
-        ps.setInt(1, 0); // id_pro = 0 o null para abono
-        ps.setInt(2, 1); // cantidad 1
-        ps.setDouble(3, -monto); // precio negativo para representar abono
-        ps.setDouble(4, -monto); // total negativo
-        ps.setInt(5, idVenta);
-        ps.setString(6, ""); // cliente (si es String)
-        ps.setString(7, "ABONO"); // descripción
-        ps.setInt(8, obtenerDniPorIdCliente(idCliente)); // dni del cliente
-        ps.setString(9, fecha);
 
-        filasAfectadas = ps.executeUpdate();
-
-    } catch (SQLException e) {
-        System.err.println("Error al registrar detalle abono crédito: " + e.getMessage());
-    }
-    return filasAfectadas;
-}
 
 public void pdfV(int idventa, int Cliente, double total, String usuario) {
     try {
+        // Preparar conexión
+        con = cn.getConnection();
+
         // Buscar venta y formatear fecha
         Venta venta = BuscarVenta(idventa);
         String fechaDB = venta.getFecha();
@@ -383,7 +319,7 @@ public void pdfV(int idventa, int Cliente, double total, String usuario) {
             e.printStackTrace();
         }
 
-        // Crear archivo con nombre dinámico
+        // Crear archivo
         String url = FileSystemView.getFileSystemView().getDefaultDirectory().getPath();
         String nombreArchivo = "venta_" + idventa + ".pdf";
         File salida = new File(url + File.separator + nombreArchivo);
@@ -414,7 +350,6 @@ public void pdfV(int idventa, int Cliente, double total, String usuario) {
 
         String mensaje = "";
         try {
-            con = cn.getConnection();
             ps = con.prepareStatement("SELECT * FROM config");
             rs = ps.executeQuery();
             if (rs.next()) {
@@ -435,7 +370,7 @@ public void pdfV(int idventa, int Cliente, double total, String usuario) {
         doc.add(new LineSeparator());
         doc.add(Chunk.NEWLINE);
 
-        // Cliente
+        // Datos del cliente
         doc.add(new Paragraph("DATOS DEL CLIENTE", negritaAzul));
         doc.add(Chunk.NEWLINE);
 
@@ -444,7 +379,7 @@ public void pdfV(int idventa, int Cliente, double total, String usuario) {
         clienteTabla.setWidths(new float[]{50f, 25f, 25f});
         clienteTabla.getDefaultCell().setBorder(0);
 
-        // Encabezados
+        // Encabezados cliente
         clienteTabla.addCell(new PdfPCell(new Phrase("Nombre", negritaAzul)){{ setBorder(0); }});
         clienteTabla.addCell(new PdfPCell(new Phrase("Teléfono", negritaAzul)){{ setBorder(0); }});
         clienteTabla.addCell(new PdfPCell(new Phrase("Dirección", negritaAzul)){{ setBorder(0); }});
@@ -471,7 +406,7 @@ public void pdfV(int idventa, int Cliente, double total, String usuario) {
         doc.add(new LineSeparator());
         doc.add(Chunk.NEWLINE);
 
-        // Tabla de productos
+        // Tabla productos
         PdfPTable tabla = new PdfPTable(4);
         tabla.setWidthPercentage(100);
         tabla.setWidths(new float[]{10f, 50f, 15f, 15f});
@@ -519,8 +454,88 @@ public void pdfV(int idventa, int Cliente, double total, String usuario) {
         doc.add(tabla);
         doc.add(Chunk.NEWLINE);
         doc.add(new LineSeparator());
+/*
+        // -------- ABONOS --------
+        AbonoDao abonoDao = new AbonoDao(); // ← AÑADE ESTO
+        List<Abono> abonos = abonoDao.obtenerAbonosPorVenta(idventa);
+        System.out.println("Abonos encontrados para venta " + idventa + ": " + abonos.size());
 
-        // Total
+        if (!abonos.isEmpty()) {
+            doc.add(Chunk.NEWLINE);
+            doc.add(new Paragraph("ABONOS REALIZADOS:", negritaAzul));
+            double totalAbonado = 0;
+            SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+
+            for (Abono abono : abonos) {
+                String textoAbono = "Fecha: " + formatoFecha.format(abono.getFecha()) + " - Monto: " + moneda.format(abono.getMonto());
+                System.out.println("Abono: " + abono.getMonto() + ", Fecha: " + formatoFecha.format(abono.getFecha()));
+                doc.add(new Paragraph(textoAbono, normal));
+                totalAbonado += abono.getMonto();
+            }
+
+            double restante = total - totalAbonado;
+            doc.add(new Paragraph("Total abonado: " + moneda.format(totalAbonado), totalFont));
+            //doc.add(new Paragraph("Restante por pagar: " + moneda.format(restante), totalFont));
+            doc.add(Chunk.NEWLINE);
+            doc.add(new LineSeparator());
+        }
+*/
+// -------- ABONOS (DISEÑO MEJORADO) --------
+AbonoDao abonoDao = new AbonoDao();
+List<Abono> abonos = abonoDao.obtenerAbonosPorVenta(idventa);
+System.out.println("Abonos encontrados para venta " + idventa + ": " + abonos.size());
+
+if (!abonos.isEmpty()) {
+    doc.add(Chunk.NEWLINE);
+
+    // 1. Crear una tabla para alinear el contenido a la derecha
+    // La primera columna es un espaciador; la segunda tiene el contenido.
+    PdfPTable tablaAbonos = new PdfPTable(2);
+    tablaAbonos.setWidthPercentage(100);
+    tablaAbonos.setWidths(new float[]{65f, 35f}); // Ajusta estos valores si necesitas moverlo más
+
+    // Celda vacía que usaremos como espaciador en la columna izquierda
+    PdfPCell celdaEspaciadora = new PdfPCell();
+    celdaEspaciadora.setBorder(Rectangle.NO_BORDER);
+
+    // 2. Añadir el título "ABONOS REALIZADOS"
+    tablaAbonos.addCell(celdaEspaciadora); // Columna 1: Espacio
+    PdfPCell celdaTituloAbonos = new PdfPCell(new Phrase("ABONOS REALIZADOS:", negritaAzul));
+    celdaTituloAbonos.setBorder(Rectangle.NO_BORDER);
+    celdaTituloAbonos.setHorizontalAlignment(Element.ALIGN_LEFT); // Alineado a la izquierda DENTRO de su celda
+    tablaAbonos.addCell(celdaTituloAbonos); // Columna 2: Contenido
+
+    double totalAbonado = 0;
+    SimpleDateFormat formatoFecha = new SimpleDateFormat("dd-MM-yyyy");
+
+    // 3. Añadir el detalle de cada abono en un bucle
+    for (Abono abono : abonos) {
+        String textoAbono = "Fecha: " + formatoFecha.format(abono.getFecha()) + " - Monto: " + moneda.format(abono.getMonto());
+        totalAbonado += abono.getMonto();
+
+        tablaAbonos.addCell(celdaEspaciadora); // Columna 1: Espacio
+        PdfPCell celdaTextoAbono = new PdfPCell(new Phrase(textoAbono, normal));
+        celdaTextoAbono.setBorder(Rectangle.NO_BORDER);
+        celdaTextoAbono.setHorizontalAlignment(Element.ALIGN_LEFT); // Alineado a la izquierda DENTRO de su celda
+        tablaAbonos.addCell(celdaTextoAbono); // Columna 2: Contenido
+    }
+
+    // 4. Añadir la línea para "Total abonado"
+    tablaAbonos.addCell(celdaEspaciadora); // Columna 1: Espacio
+    PdfPCell celdaTotalAbonado = new PdfPCell(new Phrase("Total abonado: " + moneda.format(totalAbonado), totalFont));
+    celdaTotalAbonado.setBorder(Rectangle.NO_BORDER);
+    celdaTotalAbonado.setHorizontalAlignment(Element.ALIGN_LEFT); // Alineado a la izquierda DENTRO de su celda
+    tablaAbonos.addCell(celdaTotalAbonado); // Columna 2: Contenido
+    
+    // 5. Añadir la tabla completa al documento
+    doc.add(tablaAbonos);
+    doc.add(Chunk.NEWLINE);
+    doc.add(new LineSeparator());
+}
+
+
+
+        // Total venta
         Paragraph totalParrafo = new Paragraph("Total: " + moneda.format(total), totalFont);
         totalParrafo.setAlignment(Element.ALIGN_RIGHT);
         doc.add(totalParrafo);
@@ -539,7 +554,7 @@ public void pdfV(int idventa, int Cliente, double total, String usuario) {
 
         Desktop.getDesktop().open(salida);
 
-    } catch (DocumentException | IOException e) {
+    } catch (DocumentException | IOException | SQLException e) {
         e.printStackTrace();
     }
 }

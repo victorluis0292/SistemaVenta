@@ -18,7 +18,7 @@ import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-
+import Modelo.AbonoDao; 
 public final class ventanaCobrar extends JDialog {
     private boolean cobroRealizado = false;
     private JTable TableConsultaCreditCliente;
@@ -162,10 +162,12 @@ public final class ventanaCobrar extends JDialog {
             agregarPago("Efectivo", montoUsado, 0.00);
 
             // Finalizar si ya se completó el total
-            if (getSaldoPendiente() <= 0) {
-                txtPaga.setEditable(false);
-                procesarVentaFinal();
-            }
+           if (getSaldoPendiente() <= 0) {
+    txtPaga.setEditable(false);
+    procesarVentaFinal();
+
+ 
+}
 
             txtPaga.setText(""); // Limpiar campo al final
         } catch (NumberFormatException | ArithmeticException e) {
@@ -254,19 +256,25 @@ public final class ventanaCobrar extends JDialog {
                     VentaDao ventaDao = new VentaDao();
                     DefaultTableModel modeloCredito = (DefaultTableModel) TableConsultaCreditCliente.getModel();
 
-                    for (int i = 0; i < modeloCredito.getRowCount(); i++) {
-                        Detalle detalle = new Detalle();
+                  for (int i = 0; i < modeloCredito.getRowCount(); i++) {
+    String concepto = modeloCredito.getValueAt(i, 2).toString().toLowerCase(); // nombre o descripción
 
-                        detalle.setId_pro(Integer.parseInt(modeloCredito.getValueAt(i, 1).toString()));
-                        System.out.println("Valor de modeloCredito.getValueAt(" + i + ", 1): " + modeloCredito.getValueAt(i, 1));
+    // Evitar registrar abonos como si fueran productos
+    if (concepto.contains("abono")) {
+        System.out.println("⛔ Fila " + i + " ignorada por ser abono: " + concepto);
+        continue;
+    }
 
-                        detalle.setCantidad(Integer.parseInt(modeloCredito.getValueAt(i, 3).toString()));
-                        detalle.setPrecio(Double.parseDouble(modeloCredito.getValueAt(i, 4).toString()));
-                        detalle.setId(idVenta); // id_venta
+    Detalle detalle = new Detalle();
+    detalle.setId_pro(Integer.parseInt(modeloCredito.getValueAt(i, 1).toString()));
+    detalle.setCantidad(Integer.parseInt(modeloCredito.getValueAt(i, 3).toString()));
+    detalle.setPrecio(Double.parseDouble(modeloCredito.getValueAt(i, 4).toString()));
+    detalle.setId(idVenta);
 
-                        int filas = ventaDao.RegistrarDetalle(detalle);
-                        System.out.println("Detalle registrado en tabla 'detalle', filas afectadas: " + filas);
-                    }
+    int filas = ventaDao.RegistrarDetalle(detalle);
+    System.out.println("✅ Producto registrado (fila " + i + "): " + concepto + ", filas afectadas: " + filas);
+}
+
                 } else {
                     // En venta normal también puedes registrar detalles desde Sistema.TableVenta (si quieres)
                     // Pero supongo que tu servicio ya hace esto. Si no, agrega aquí la lógica para registrar detalles.
@@ -309,58 +317,66 @@ public final class ventanaCobrar extends JDialog {
         }
 
         @Override
-        protected void done() {
-            System.out.println("🟢 done() ejecutado");
-            loader.dispose();
+     
+protected void done() {
+    System.out.println("🟢 done() ejecutado");
+    loader.dispose();
 
-            try {
-                if (esCredito) {
-                    System.out.println("Venta a crédito detectada, intentando eliminar créditos...");
+    try {
+        if (esCredito) {
+            System.out.println("Venta a crédito detectada, intentando eliminar créditos...");
 
-                    int idCliente = Integer.parseInt(Sistema.txtIdCV.getText());
-                    int dni = new VentaDao().obtenerDniPorIdCliente(idCliente);
+            int idCliente = Integer.parseInt(Sistema.txtIdCV.getText());
+            int dni = new VentaDao().obtenerDniPorIdCliente(idCliente);
 
-                    System.out.println("DNI obtenido: " + dni);
+            System.out.println("DNI obtenido: " + dni);
 
-                    if (dni != -1) {
-                        boolean eliminado = new VentaDao().eliminarCreditosDelCliente(dni);
-                        System.out.println("¿Se eliminaron los créditos? " + eliminado);
-                    } else {
-                        System.out.println("❌ No se pudo obtener el DNI del cliente.");
-                    }
-                } else {
-                    System.out.println("No es venta a crédito, no se elimina crédito. Tipo pago final fue: '" + tipoPagoFinal + "'");
-                }
+            if (dni != -1) {
+                boolean eliminado = new VentaDao().eliminarCreditosDelCliente(dni);
+                System.out.println("¿Se eliminaron los créditos? " + eliminado);
 
-                if (ticket != null && !ticket.isEmpty()) {
+                // ✅ Actualizar abonos aplicados a 1 (desde 0)
+                AbonoDao abonoDao = new AbonoDao();
+               // boolean abonosActualizados = abonoDao.actualizarAbonosAplicados(dni);
+                boolean abonosActualizados = abonoDao.actualizarAbonosAplicados(dni, idVenta);
 
-                    // Abrir caja solo si NO es crédito
-                    if (!esCredito) {
-                        AbrirCajaEfectivo.main(null);
-                        System.out.println("1.- Caja de efectivo abierta");
-                    }
-
-                    // Imprimir ticket
-                    ImprimirTicket.imprimir(ticket);
-                    System.out.println("2.- Ticket enviado a impresora");
-
-                    // Mostrar vista previa
-                    mostrarTicketDialogSoloInformativo(ticket);
-                    System.out.println("3.- Vista previa mostrada");
-                }
-
-                // Limpiar tabla y campos
-                DefaultTableModel tmp = (DefaultTableModel) Sistema.TableVenta.getModel();
-                tmp.setRowCount(0);
-                Sistema.lblEnviaTotal.setText("");
-                dispose();
-                txtCodigoVenta.requestFocus();
-
-            } catch (Exception e) {
-                System.err.println("❌ Error en done(): " + e.getMessage());
-                e.printStackTrace();
+                System.out.println("¿Se actualizaron los abonos a aplicados? " + abonosActualizados);
+            } else {
+                System.out.println("❌ No se pudo obtener el DNI del cliente.");
             }
+        } else {
+            System.out.println("No es venta a crédito, no se elimina crédito. Tipo pago final fue: '" + tipoPagoFinal + "'");
         }
+
+        if (ticket != null && !ticket.isEmpty()) {
+
+            // Abrir caja solo si NO es crédito
+            if (!esCredito) {
+                AbrirCajaEfectivo.main(null);
+                System.out.println("1.- Caja de efectivo abierta");
+            }
+
+            // Imprimir ticket
+            ImprimirTicket.imprimir(ticket);
+            System.out.println("2.- Ticket enviado a impresora");
+
+            // Mostrar vista previa
+            mostrarTicketDialogSoloInformativo(ticket);
+            System.out.println("3.- Vista previa mostrada");
+        }
+
+        // Limpiar tabla y campos
+        DefaultTableModel tmp = (DefaultTableModel) Sistema.TableVenta.getModel();
+        tmp.setRowCount(0);
+        Sistema.lblEnviaTotal.setText("");
+        dispose();
+        txtCodigoVenta.requestFocus();
+
+    } catch (Exception e) {
+        System.err.println("❌ Error en done(): " + e.getMessage());
+        e.printStackTrace();
+    }
+}
 
     };
 

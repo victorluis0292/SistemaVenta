@@ -1,5 +1,6 @@
 package Vista;
 
+import Modelo.AbonoDao;
 import javax.swing.*;
 import java.awt.*;
 import Modelo.VentaDao;
@@ -63,7 +64,7 @@ public class VentanaAbono extends JDialog {
             JComponent.WHEN_IN_FOCUSED_WINDOW);
     }
 
-   private void registrarAbono() {
+ private void registrarAbono() {
     String montoTexto = txtMontoAbono.getText().trim();
     String notaTexto = txtNota.getText().trim();
 
@@ -91,12 +92,12 @@ public class VentanaAbono extends JDialog {
         return;
     }
 
-    String fecha = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     String tipoPago = "ABONO";
 
     try {
-        VentaDao dao = new VentaDao();
-        boolean exito = dao.registrarAbono(idVenta, fecha, monto, tipoPago, notaTexto, Integer.parseInt(dni));
+        AbonoDao abonoDao = new AbonoDao();
+        // Llamar registrarAbono sin fecha, según tu AbonoDao
+        boolean exito = abonoDao.registrarAbono(idVenta, monto, notaTexto, tipoPago, Integer.parseInt(dni));
 
         if (exito) {
             JOptionPane.showMessageDialog(this, "Abono registrado correctamente.");

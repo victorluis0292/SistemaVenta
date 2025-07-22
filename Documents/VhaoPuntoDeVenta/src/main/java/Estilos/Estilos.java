@@ -14,6 +14,7 @@ import javax.swing.table.JTableHeader;
 import javax.swing.*;
 import java.awt.geom.RoundRectangle2D;
 import javax.swing.table.DefaultTableCellRenderer;
+import javax.swing.table.TableColumnModel;
 public class Estilos {
 
     public static void estiloBoton(JButton boton) {
@@ -39,8 +40,8 @@ public static void estiloTablas(JTable tabla) {
     header.setFont(new Font("Arial", Font.BOLD, 17));
     header.setBackground(new Color(0, 102, 204));
     header.setForeground(Color.WHITE);
+    ajustarAnchosPorNombre(tabla);
 
-    // Usa renderizador respetando completamente la selección
     DefaultTableCellRenderer renderer = new DefaultTableCellRenderer() {
         @Override
         public Component getTableCellRendererComponent(JTable table, Object value,
@@ -48,7 +49,12 @@ public static void estiloTablas(JTable tabla) {
                                                        int row, int column) {
             Component c = super.getTableCellRendererComponent(table, value, isSelected, hasFocus, row, column);
 
-            if (isSelected) {
+            String nombre = table.getValueAt(row, 2).toString();
+
+            if (nombre.equalsIgnoreCase("ABONO REALIZADO")) {
+                c.setBackground(new Color(204, 255, 229)); // verde claro
+                c.setFont(c.getFont().deriveFont(Font.BOLD));
+            } else if (isSelected) {
                 c.setBackground(table.getSelectionBackground());
                 c.setForeground(table.getSelectionForeground());
             } else {
@@ -60,7 +66,6 @@ public static void estiloTablas(JTable tabla) {
         }
     };
 
-    // Aplica el renderizador a cada columna explícitamente (evita problemas con nuevos modelos)
     for (int i = 0; i < tabla.getColumnModel().getColumnCount(); i++) {
         tabla.getColumnModel().getColumn(i).setCellRenderer(renderer);
     }
@@ -77,11 +82,60 @@ public static void estiloTablas(JTable tabla) {
     }
 }
 
+public static void ajustarAnchosPorNombre(JTable tabla) {
+    TableColumnModel columnModel = tabla.getColumnModel();
+    
+    // Recorre todas las columnas que tiene la tabla
+    for (int i = 0; i < tabla.getColumnCount(); i++) {
+        // Obtiene el nombre de la columna en la posición actual
+        String nombreColumna = tabla.getColumnName(i);
+        
+        // Usamos un switch para asignar el ancho según el nombre
+        switch (nombreColumna) {
+            case "Nombre":
+                columnModel.getColumn(i).setPreferredWidth(300);
+                break;
+            case "Fecha":
+                columnModel.getColumn(i).setPreferredWidth(150);
+                break;
+            case "ID":
+                columnModel.getColumn(i).setPreferredWidth(60);
+                break;
+            case "ID Prod":
+                columnModel.getColumn(i).setPreferredWidth(70);
+                break;
+            case "Cantidad":
+            case "Precio":
+            case "Total":
+            case "DNI":
+                columnModel.getColumn(i).setPreferredWidth(80);
+                break;
+            // Puedes añadir más casos para otras columnas si lo necesitas
+        }
+    }
+}
+
 
     public static void estiloEtiqueta(JLabel etiqueta) {
-        etiqueta.setFont(new Font("Arial", Font.PLAIN, 14));
+        etiqueta.setFont(new Font("Arial", Font.PLAIN, 16));
         etiqueta.setForeground(Color.DARK_GRAY);
     }
+    
+    public static void estiloEtiqueta2(JLabel etiqueta) {
+        etiqueta.setFont(new Font("Arial", Font.BOLD, 18));
+        etiqueta.setForeground(Color.DARK_GRAY);
+    }
+    //para campos no editables
+  public static void estiloEtiqueta3(JTextField campo) {
+     campo.setFont(new Font("Segoe UI", Font.BOLD, 22));  // Aquí está en negrita
+    campo.setForeground(Color.BLACK);
+    campo.setBackground(Color.WHITE);  // Fondo blanco aunque no sea editable
+    campo.setBorder(BorderFactory.createLineBorder(Color.GRAY));
+    campo.setCaretColor(Color.BLACK);
+    // Esto ayuda a que no cambie el color cuando está no editable
+    campo.setOpaque(true);
+}
+
      public static void estiloEtiquetaGreen(JLabel etiqueta) {
            etiqueta.setFont(new Font("Segoe UI", Font.BOLD, 18));
     etiqueta.setForeground(new Color(34, 139, 34)); // Verde moderno
@@ -138,6 +192,8 @@ public static void estiloTablas(JTable tabla) {
      
      
      }
+
+    
          // Panel reutilizable con fondo blanco, curvatura y sombra suave
     public static class PanelConEstilo extends JPanel {
 

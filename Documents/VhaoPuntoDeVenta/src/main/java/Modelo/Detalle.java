@@ -1,6 +1,8 @@
 
 package Modelo;
 
+import java.math.BigDecimal;
+
 public class Detalle {
     private int id;
     private int id_pro;
@@ -12,7 +14,8 @@ public class Detalle {
     private String cliente;
      private int dni;//se agrego para creditocliente
     private String fecha;//se agrego para creditocliente
-   
+       private String descripcion;
+    private BigDecimal subtotal;
     
     public Detalle(){
         
@@ -111,4 +114,19 @@ public class Detalle {
     }
     
   
+    public String getDescripcion() {
+        return descripcion;
+    }
+
+    public void setDescripcion(String descripcion) {
+        this.descripcion = descripcion;
+    }
+
+    public BigDecimal getSubtotal() {
+        return subtotal;
+    }
+
+    public void setSubtotal(BigDecimal subtotal) {
+        this.subtotal = subtotal;
+    }
 }

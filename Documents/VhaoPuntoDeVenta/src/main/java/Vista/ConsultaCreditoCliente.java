@@ -20,6 +20,7 @@ public class ConsultaCreditoCliente extends JFrame {
     private JTextField txtTotalCredito;
     private JTextField txtRuc;
     private JTextField txtNombre;
+    private JLabel lblCliente;
 
     private JButton btnCobrarCredito;
     private JButton btnAbonar;
@@ -93,15 +94,25 @@ public class ConsultaCreditoCliente extends JFrame {
         // Ocultar los componentes sólo después de crearlos y agregarlos
         lblBuscar.setVisible(false);
         txtBuscar3.setVisible(false);
-
+        
+   
+        JLabel lblCliente = new JLabel("Cliente:");
+        lblCliente.setBounds(230, 20, 70, 25);  // Posición a la izquierda del JTextField
+        Estilos.estiloEtiqueta2(lblCliente);
+        add(lblCliente);
+        
         txtRuc = new JTextField();
         txtRuc.setBounds(300, 20, 150, 25);
+         Estilos.estiloEtiqueta3(txtRuc);
         txtRuc.setEditable(false);
+        txtRuc.setHorizontalAlignment(JTextField.CENTER);
         add(txtRuc);
 
         txtNombre = new JTextField();
         txtNombre.setBounds(460, 20, 350, 25);
+        Estilos.estiloEtiqueta3(txtNombre);
         txtNombre.setEditable(false);
+        txtNombre.setHorizontalAlignment(JTextField.CENTER);
         add(txtNombre);
 
         // Tabla Productos (detalle_creditocliente)
@@ -120,7 +131,7 @@ public class ConsultaCreditoCliente extends JFrame {
         modeloProductos.addColumn("Fecha");
         modeloProductos.addColumn("DNI");
         Estilos.estiloTablas(tableProductos);
-        
+         
         lblTotalCredito = new JLabel("Crédito Pendiente:");
           Estilos.estiloEtiqueta(lblTotalCredito);
         lblTotalCredito.setBounds(20, 320, 150, 25);
@@ -128,8 +139,10 @@ public class ConsultaCreditoCliente extends JFrame {
 
         txtTotalCredito = new JTextField("0.00");
         txtTotalCredito.setBounds(170, 320, 150, 25);
+        
         txtTotalCredito.setEditable(false);
         txtTotalCredito.setHorizontalAlignment(JTextField.RIGHT);
+        Estilos.estiloEtiqueta3(txtTotalCredito);
         add(txtTotalCredito);
 
         btnAbonar = new JButton("Abonar");
@@ -137,17 +150,19 @@ public class ConsultaCreditoCliente extends JFrame {
         btnAbonar.setBackground(new Color(59, 89, 152));
         btnAbonar.setForeground(Color.WHITE);
         btnAbonar.setFocusPainted(false);
+      
+
         btnAbonar.setFont(new Font("Tahoma", Font.BOLD, 12));
 
-        btnAbonar.addActionListener(e -> {
-            if (dni != null && !dni.isEmpty()) {
-                // Puedes pasar -1 como valor por defecto para idVenta si aún no lo tienes
-                new VentanaAbono(this, tableProductos, txtTotalCredito, -1, idCliente, dni).setVisible(true);
-                cargarDatos();
-            } else {
-                JOptionPane.showMessageDialog(this, "Debe ingresar un DNI válido para continuar.");
-            }
-        });
+       btnAbonar.addActionListener(e -> {
+    if (dni != null && !dni.isEmpty()) {
+        // Aquí usas el idVenta que tienes cargado en la clase (no -1)
+        new VentanaAbono(this, tableProductos, txtTotalCredito, idVenta, idCliente, dni).setVisible(true);
+        cargarDatos();
+    } else {
+        JOptionPane.showMessageDialog(this, "Debe ingresar un DNI válido para continuar.");
+    }
+});
 
         add(btnAbonar);
 
@@ -166,44 +181,45 @@ public class ConsultaCreditoCliente extends JFrame {
         actualizarCreditoPendiente();
     }
 
-    private void listarProductos() {
-        modeloProductos.setRowCount(0);
+ private void listarProductos() {
+    modeloProductos.setRowCount(0);
 
-        String dniABuscar = dni;  // asumimos que 'dni' ya tiene valor en la clase
+    String dniABuscar = dni;  // asumimos que 'dni' ya tiene valor en la clase
 
-        String sql = "SELECT id, id_pro, nombre, cantidad, precio, total, id_venta, cliente, dni, fecha " +
-                "FROM detalle_creditocliente WHERE dni = ? " +
-                "UNION ALL " +
-                "SELECT id, 0 AS id_pro, 'ABONO REALIZADO' AS nombre, 0 AS cantidad, -monto AS precio, -monto AS total, id_venta, NULL AS cliente, dni, fecha " +
-                "FROM abonos_credito WHERE dni = ? " +
-                "ORDER BY fecha ASC, id DESC";
+    String sql = "SELECT id, id_pro, nombre, cantidad, precio, total, fecha, dni " +
+            "FROM detalle_creditocliente WHERE dni = ? " +
+            "UNION ALL " +
+            //"SELECT id, 0 AS id_pro, 'ABONO REALIZADO' AS nombre, 0 AS cantidad, -monto AS precio, -monto AS total, fecha, dni " +
+            "SELECT id, 0 AS id_pro, 'ABONO REALIZADO' AS nombre, 1 AS cantidad, monto AS precio, monto AS total, fecha, dni " +
 
-        try (Connection con = Conexion.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+            "FROM abonos_credito WHERE dni = ? AND aplicado = 0 " +
+            "ORDER BY fecha ASC, id DESC";
 
-            ps.setString(1, dniABuscar);
-            ps.setString(2, dniABuscar);
+    try (Connection con = Conexion.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
 
-            try (ResultSet rs = ps.executeQuery()) {
-                while (rs.next()) {
-                    Object[] fila = new Object[9];
-                    fila[0] = rs.getInt("id");
-                    fila[1] = rs.getInt("id_pro");
-                    fila[2] = rs.getString("nombre");
-                    fila[3] = rs.getInt("cantidad");
-                    fila[4] = rs.getDouble("precio");
-                    fila[5] = rs.getDouble("total");
-                    fila[6] = rs.getInt("id_venta");
-                    fila[7] = rs.getObject("cliente"); // puede ser null
-                    fila[8] = rs.getString("fecha");
-                    modeloProductos.addRow(fila);
-                }
+        ps.setString(1, dniABuscar);
+        ps.setString(2, dniABuscar);
+
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                Object[] fila = new Object[8];
+                fila[0] = rs.getInt("id");
+                fila[1] = rs.getInt("id_pro");
+                fila[2] = rs.getString("nombre");
+                fila[3] = rs.getInt("cantidad");
+                fila[4] = rs.getDouble("precio");
+                fila[5] = rs.getDouble("total");
+                fila[6] = rs.getString("fecha"); // ← Fecha ahora está en la posición 6
+                fila[7] = rs.getString("dni");   // ← DNI ahora está en la posición 7
+                modeloProductos.addRow(fila);
             }
-
-        } catch (SQLException e) {
-            e.printStackTrace();
         }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
     }
+}
 
     private void actualizarCreditoPendiente() {
         double totalProductos = 0;
