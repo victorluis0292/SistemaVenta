@@ -114,8 +114,8 @@ public class ConsultaCreditoCliente extends JFrame {
         txtNombre.setEditable(false);
         txtNombre.setHorizontalAlignment(JTextField.CENTER);
         add(txtNombre);
-
-        // Tabla Productos (detalle_creditocliente)
+//
+        // Tabla Productos (detalle_creditocliente
         modeloProductos = new DefaultTableModel();
         tableProductos = new JTable(modeloProductos);
         scrollProductos = new JScrollPane(tableProductos);
