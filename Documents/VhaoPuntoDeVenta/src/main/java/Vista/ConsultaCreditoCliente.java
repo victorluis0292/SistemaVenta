@@ -212,7 +212,7 @@ public class ConsultaCreditoCliente extends JFrame {
     DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     ZoneId zonaLocal = ZoneId.of("America/Monterrey");
     ZoneId zonaUtc = ZoneId.of("UTC");
-
+//
             while (rs.next()) {
                 Object[] fila = new Object[8];
                 fila[0] = rs.getInt("id");
