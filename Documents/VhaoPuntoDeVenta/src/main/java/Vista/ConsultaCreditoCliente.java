@@ -9,6 +9,10 @@ import java.awt.*;
 import java.awt.event.*;
 import java.sql.*;
 import Estilos.Estilos;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZonedDateTime;
+import java.time.format.DateTimeFormatter;
 public class ConsultaCreditoCliente extends JFrame {
 
     private JTextField txtBuscar3;
@@ -184,16 +188,19 @@ public class ConsultaCreditoCliente extends JFrame {
  private void listarProductos() {
     modeloProductos.setRowCount(0);
 
-    String dniABuscar = dni;  // asumimos que 'dni' ya tiene valor en la clase
+    if (dni == null || dni.trim().isEmpty()) {
+        return; // No hay dni para buscar
+    }
 
-    String sql = "SELECT id, id_pro, nombre, cantidad, precio, total, fecha, dni " +
-            "FROM detalle_creditocliente WHERE dni = ? " +
-            "UNION ALL " +
-            //"SELECT id, 0 AS id_pro, 'ABONO REALIZADO' AS nombre, 0 AS cantidad, -monto AS precio, -monto AS total, fecha, dni " +
-            "SELECT id, 0 AS id_pro, 'ABONO REALIZADO' AS nombre, 1 AS cantidad, monto AS precio, monto AS total, fecha, dni " +
+    String dniABuscar = dni.trim();
 
-            "FROM abonos_credito WHERE dni = ? AND aplicado = 0 " +
-            "ORDER BY fecha ASC, id DESC";
+    String sql = 
+        "SELECT id, id_pro, nombre, cantidad, precio, total, fecha, dni " +
+        "FROM detalle_creditocliente WHERE dni = ? " +
+        "UNION ALL " +
+        "SELECT id, 0 AS id_pro, 'ABONO REALIZADO' AS nombre, 0 AS cantidad, monto AS precio, monto AS total, fecha, dni " +
+        "FROM abonos_credito WHERE dni = ? AND aplicado = 0 " +
+        "ORDER BY fecha ASC, id ASC";
 
     try (Connection con = Conexion.getConnection();
          PreparedStatement ps = con.prepareStatement(sql)) {
@@ -201,7 +208,11 @@ public class ConsultaCreditoCliente extends JFrame {
         ps.setString(1, dniABuscar);
         ps.setString(2, dniABuscar);
 
-        try (ResultSet rs = ps.executeQuery()) {
+       try (ResultSet rs = ps.executeQuery()) {
+    DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd/MM/yyyy");
+    ZoneId zonaLocal = ZoneId.of("America/Monterrey");
+    ZoneId zonaUtc = ZoneId.of("UTC");
+
             while (rs.next()) {
                 Object[] fila = new Object[8];
                 fila[0] = rs.getInt("id");
@@ -210,8 +221,15 @@ public class ConsultaCreditoCliente extends JFrame {
                 fila[3] = rs.getInt("cantidad");
                 fila[4] = rs.getDouble("precio");
                 fila[5] = rs.getDouble("total");
-                fila[6] = rs.getString("fecha"); // ← Fecha ahora está en la posición 6
-                fila[7] = rs.getString("dni");   // ← DNI ahora está en la posición 7
+    Timestamp fechaBD = rs.getTimestamp("fecha");
+        if (fechaBD != null) {
+            LocalDateTime fechaLocal = fechaBD.toLocalDateTime();
+            fila[6] = fechaLocal.format(formatter); // Solo fecha en formato dd/MM/yyyy
+        } else {
+            fila[6] = null;
+        }
+                fila[7] = rs.getString("dni");
+
                 modeloProductos.addRow(fila);
             }
         }
@@ -221,22 +239,30 @@ public class ConsultaCreditoCliente extends JFrame {
     }
 }
 
-    private void actualizarCreditoPendiente() {
-        double totalProductos = 0;
+  private void actualizarCreditoPendiente() {
+    double totalProductos = 0;
+    double totalAbonos = 0;
 
-        // Sumar totales de productos
-        for (int i = 0; i < modeloProductos.getRowCount(); i++) {
-            Object val = modeloProductos.getValueAt(i, 5);
-            if (val != null) {
-                try {
-                    totalProductos += Double.parseDouble(val.toString());
-                } catch (NumberFormatException ignored) {
+    for (int i = 0; i < modeloProductos.getRowCount(); i++) {
+        String nombre = modeloProductos.getValueAt(i, 2).toString();
+        Object val = modeloProductos.getValueAt(i, 5);
+
+        if (val != null) {
+            try {
+                double monto = Double.parseDouble(val.toString());
+
+                if ("ABONO REALIZADO".equalsIgnoreCase(nombre)) {
+                    totalAbonos += monto;
+                } else {
+                    totalProductos += monto;
                 }
-            }
+            } catch (NumberFormatException ignored) {}
         }
-
-        txtTotalCredito.setText(String.format("%.2f", totalProductos));
     }
+
+    double pendiente = totalProductos - totalAbonos;
+    txtTotalCredito.setText(String.format("%.2f", pendiente));
+}
 
     private void cobrarCredito() {
         if (modeloProductos.getRowCount() == 0) {

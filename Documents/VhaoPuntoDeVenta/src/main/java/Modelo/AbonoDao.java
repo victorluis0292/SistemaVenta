@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Timestamp;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -14,15 +15,18 @@ public class AbonoDao {
      * Registra un abono en la base de datos.
      */
 public boolean registrarAbono(int idVenta, double monto, String nota, String tipoPago, int dniCliente) {
-    String sql = "INSERT INTO abonos_credito (id_venta, fecha, monto, tipo_pago, nota, dni, aplicado) VALUES (?, NOW(), ?, ?, ?, ?, 0)";
+    String sql = "INSERT INTO abonos_credito (id_venta, fecha, monto, tipo_pago, nota, dni, aplicado) VALUES (?, ?, ?, ?, ?, ?, 0)";
     try (Connection con = Conexion.getConnection();
          PreparedStatement ps = con.prepareStatement(sql)) {
 
+        Timestamp ahora = new Timestamp(System.currentTimeMillis());
+
         ps.setInt(1, idVenta);
-        ps.setDouble(2, monto);
-        ps.setString(3, tipoPago);
-        ps.setString(4, nota);
-        ps.setInt(5, dniCliente);
+        ps.setTimestamp(2, ahora);
+        ps.setDouble(3, monto);
+        ps.setString(4, tipoPago);
+        ps.setString(5, nota);
+        ps.setInt(6, dniCliente);
 
         return ps.executeUpdate() > 0;
     } catch (SQLException e) {
@@ -30,6 +34,7 @@ public boolean registrarAbono(int idVenta, double monto, String nota, String tip
         return false;
     }
 }
+
 
     /**
      * Cambia el estado de los abonos de una venta a '1' (pagado).

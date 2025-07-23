@@ -202,7 +202,7 @@ public final class ventanaCobrar extends JDialog {
         txtCodigoVenta.requestFocus();
     }
 
-   private void procesarVentaFinal() {
+  private void procesarVentaFinal() {
     System.out.println("👉 procesarVentaFinal llamado");
 
     JDialog loader = new LoaderDialog().mostrarLoader(this);
@@ -210,16 +210,17 @@ public final class ventanaCobrar extends JDialog {
     SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
         int idVenta;
-        String ticket = "";
         boolean esCredito = false;
         String tipoPagoFinal = "";
+        String ticket = "";
+        int idCliente;
 
         @Override
         protected Void doInBackground() throws Exception {
             try {
                 System.out.println("🚀 doInBackground iniciado");
 
-                int cliente = Integer.parseInt(Sistema.txtIdCV.getText());
+                idCliente = Integer.parseInt(Sistema.txtIdCV.getText());
                 String vendedor = Sistema.LabelVendedor.getText();
                 CobroService servicio = new CobroService();
 
@@ -241,7 +242,7 @@ public final class ventanaCobrar extends JDialog {
                 tipoPagoFinal = determinarTipoPagoFinal();
                 System.out.println("Tipo de pago final: '" + tipoPagoFinal + "'");
 
-                idVenta = servicio.procesarVenta(idTurno, cliente, vendedor, Sistema.TableVenta, totalPagar, tipoPagoFinal);
+                idVenta = servicio.procesarVenta(idTurno, idCliente, vendedor, Sistema.TableVenta, totalPagar, tipoPagoFinal);
                 System.out.println("✅ Venta creada con ID: " + idVenta);
 
                 if (idVenta == 0) {
@@ -252,55 +253,30 @@ public final class ventanaCobrar extends JDialog {
                 System.out.println("Flag esCredito: " + esCredito);
 
                 if (esCredito) {
-                    // Registrar detalles en tabla 'detalle' copiando datos de detalle_creditocliente (JTable)
+                    // Registrar detalles desde tabla de crédito
                     VentaDao ventaDao = new VentaDao();
                     DefaultTableModel modeloCredito = (DefaultTableModel) TableConsultaCreditCliente.getModel();
 
-                  for (int i = 0; i < modeloCredito.getRowCount(); i++) {
-    String concepto = modeloCredito.getValueAt(i, 2).toString().toLowerCase(); // nombre o descripción
+                    for (int i = 0; i < modeloCredito.getRowCount(); i++) {
+                        String concepto = modeloCredito.getValueAt(i, 2).toString().toLowerCase();
 
-    // Evitar registrar abonos como si fueran productos
-    if (concepto.contains("abono")) {
-        System.out.println("⛔ Fila " + i + " ignorada por ser abono: " + concepto);
-        continue;
-    }
+                        if (concepto.contains("abono")) {
+                            System.out.println("⛔ Fila " + i + " ignorada por ser abono: " + concepto);
+                            continue;
+                        }
 
-    Detalle detalle = new Detalle();
-    detalle.setId_pro(Integer.parseInt(modeloCredito.getValueAt(i, 1).toString()));
-    detalle.setCantidad(Integer.parseInt(modeloCredito.getValueAt(i, 3).toString()));
-    detalle.setPrecio(Double.parseDouble(modeloCredito.getValueAt(i, 4).toString()));
-    detalle.setId(idVenta);
+                        Detalle detalle = new Detalle();
+                        detalle.setId_pro(Integer.parseInt(modeloCredito.getValueAt(i, 1).toString()));
+                        detalle.setCantidad(Integer.parseInt(modeloCredito.getValueAt(i, 3).toString()));
+                        detalle.setPrecio(Double.parseDouble(modeloCredito.getValueAt(i, 4).toString()));
+                        detalle.setId(idVenta);
 
-    int filas = ventaDao.RegistrarDetalle(detalle);
-    System.out.println("✅ Producto registrado (fila " + i + "): " + concepto + ", filas afectadas: " + filas);
-}
-
-                } else {
-                    // En venta normal también puedes registrar detalles desde Sistema.TableVenta (si quieres)
-                    // Pero supongo que tu servicio ya hace esto. Si no, agrega aquí la lógica para registrar detalles.
+                        int filas = ventaDao.RegistrarDetalle(detalle);
+                        System.out.println("✅ Producto registrado (fila " + i + "): " + concepto + ", filas afectadas: " + filas);
+                    }
                 }
 
-                switch (tipoPagoFinal.toLowerCase()) {
-                    case "efectivo":
-                        double cambio = Math.max(0, ultimoPagoEfectivo - totalPagar);
-                        ticket = ImprimirTicket.generarTicketReal(idVenta, ultimoPagoEfectivo, cambio, tipoPagoFinal);
-                        break;
-                    case "tarjeta":
-                    case "mixto":
-                        double subtotal = totalPagar - totalComision;
-                        ticket = ImprimirTicket.generarTicketReal(idVenta, totalComision, tipoPagoFinal, subtotal);
-                        break;
-       case "credito":
-    double cambioCredito = Math.max(0, ultimoPagoEfectivo - totalPagar);
-    ticket = ImprimirTicket.generarTicketCredito(idVenta, totalPagar, tipoPagoFinal, TableConsultaCreditCliente, ultimoPagoEfectivo, cambioCredito);
-    break;
-
-
-                    default:
-                        cambio = Math.max(0, totalPagado - totalPagar);
-                        ticket = ImprimirTicket.generarTicketReal(idVenta, totalPagado, cambio, tipoPagoFinal);
-                        break;
-                }
+                // ⚠️ Ticket se genera en done(), no aquí
 
             } catch (Exception e) {
                 SwingUtilities.invokeLater(() -> {
@@ -317,67 +293,81 @@ public final class ventanaCobrar extends JDialog {
         }
 
         @Override
-     
-protected void done() {
-    System.out.println("🟢 done() ejecutado");
-    loader.dispose();
+        protected void done() {
+            System.out.println("🟢 done() ejecutado");
+            loader.dispose();
 
-    try {
-        if (esCredito) {
-            System.out.println("Venta a crédito detectada, intentando eliminar créditos...");
+            try {
+                String nombreCliente = new VentaDao().obtenerNombreClientePorId(idCliente);
 
-            int idCliente = Integer.parseInt(Sistema.txtIdCV.getText());
-            int dni = new VentaDao().obtenerDniPorIdCliente(idCliente);
+                if (esCredito) {
+                    System.out.println("Venta a crédito detectada, intentando eliminar créditos...");
 
-            System.out.println("DNI obtenido: " + dni);
+                    int dni = new VentaDao().obtenerDniPorIdCliente(idCliente);
+                    System.out.println("DNI obtenido: " + dni);
 
-            if (dni != -1) {
-                boolean eliminado = new VentaDao().eliminarCreditosDelCliente(dni);
-                System.out.println("¿Se eliminaron los créditos? " + eliminado);
+                    if (dni != -1) {
+                        boolean eliminado = new VentaDao().eliminarCreditosDelCliente(dni);
+                        System.out.println("¿Se eliminaron los créditos? " + eliminado);
 
-                // ✅ Actualizar abonos aplicados a 1 (desde 0)
-                AbonoDao abonoDao = new AbonoDao();
-               // boolean abonosActualizados = abonoDao.actualizarAbonosAplicados(dni);
-                boolean abonosActualizados = abonoDao.actualizarAbonosAplicados(dni, idVenta);
+                        AbonoDao abonoDao = new AbonoDao();
+                        boolean abonosActualizados = abonoDao.actualizarAbonosAplicados(dni, idVenta);
+                        System.out.println("¿Se actualizaron los abonos a aplicados? " + abonosActualizados);
+                    } else {
+                        System.out.println("❌ No se pudo obtener el DNI del cliente.");
+                    }
 
-                System.out.println("¿Se actualizaron los abonos a aplicados? " + abonosActualizados);
-            } else {
-                System.out.println("❌ No se pudo obtener el DNI del cliente.");
+                    // ✅ Generar ticket de crédito aquí
+                    double cambioCredito = Math.max(0, ultimoPagoEfectivo - totalPagar);
+                    ticket = ImprimirTicket.generarTicketCredito(
+                        idVenta, totalPagar, tipoPagoFinal, TableConsultaCreditCliente,
+                        ultimoPagoEfectivo, cambioCredito, nombreCliente
+                    );
+
+                } else {
+                    // ✅ Generar ticket normal según tipo de pago
+                    switch (tipoPagoFinal.toLowerCase()) {
+                        case "efectivo":
+                            double cambio = Math.max(0, ultimoPagoEfectivo - totalPagar);
+                            ticket = ImprimirTicket.generarTicketReal(idVenta, ultimoPagoEfectivo, cambio, tipoPagoFinal);
+                            break;
+                        case "tarjeta":
+                        case "mixto":
+                            double subtotal = totalPagar - totalComision;
+                            ticket = ImprimirTicket.generarTicketReal(idVenta, totalComision, tipoPagoFinal, subtotal);
+                            break;
+                        default:
+                            cambio = Math.max(0, totalPagado - totalPagar);
+                            ticket = ImprimirTicket.generarTicketReal(idVenta, totalPagado, cambio, tipoPagoFinal);
+                            break;
+                    }
+                }
+
+                if (ticket != null && !ticket.isEmpty()) {
+                    if (!esCredito) {
+                        AbrirCajaEfectivo.main(null);
+                        System.out.println("1.- Caja de efectivo abierta");
+                    }
+
+                    ImprimirTicket.imprimir(ticket);
+                    System.out.println("2.- Ticket enviado a impresora");
+
+                    mostrarTicketDialogSoloInformativo(ticket);
+                    System.out.println("3.- Vista previa mostrada");
+                }
+
+                // Limpiar tabla y campos
+                DefaultTableModel tmp = (DefaultTableModel) Sistema.TableVenta.getModel();
+                tmp.setRowCount(0);
+                Sistema.lblEnviaTotal.setText("");
+                dispose();
+                txtCodigoVenta.requestFocus();
+
+            } catch (Exception e) {
+                System.err.println("❌ Error en done(): " + e.getMessage());
+                e.printStackTrace();
             }
-        } else {
-            System.out.println("No es venta a crédito, no se elimina crédito. Tipo pago final fue: '" + tipoPagoFinal + "'");
         }
-
-        if (ticket != null && !ticket.isEmpty()) {
-
-            // Abrir caja solo si NO es crédito
-            if (!esCredito) {
-                AbrirCajaEfectivo.main(null);
-                System.out.println("1.- Caja de efectivo abierta");
-            }
-
-            // Imprimir ticket
-            ImprimirTicket.imprimir(ticket);
-            System.out.println("2.- Ticket enviado a impresora");
-
-            // Mostrar vista previa
-            mostrarTicketDialogSoloInformativo(ticket);
-            System.out.println("3.- Vista previa mostrada");
-        }
-
-        // Limpiar tabla y campos
-        DefaultTableModel tmp = (DefaultTableModel) Sistema.TableVenta.getModel();
-        tmp.setRowCount(0);
-        Sistema.lblEnviaTotal.setText("");
-        dispose();
-        txtCodigoVenta.requestFocus();
-
-    } catch (Exception e) {
-        System.err.println("❌ Error en done(): " + e.getMessage());
-        e.printStackTrace();
-    }
-}
-
     };
 
     worker.execute();

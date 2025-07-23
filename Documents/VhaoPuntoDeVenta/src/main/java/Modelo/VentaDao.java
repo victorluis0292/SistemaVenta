@@ -118,7 +118,7 @@ public int IdVenta() {
 }
 
     
-    
+/*    
   public int RegistrarDetalleCreditocliente(Detalle Dv) {
     int filasAfectadas = 0;
     String sql = "INSERT INTO detalle_creditocliente (id_pro, cantidad, precio, total, id_venta, cliente, nombre, dni, fecha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
@@ -131,10 +131,6 @@ public int IdVenta() {
         ps.setDouble(3, Dv.getPrecio());
         ps.setDouble(4, Dv.getTotal());
         ps.setInt(5, Dv.getId());
-
-        // Verifica si cliente es int o String, ajusta según sea necesario
-        // Por ejemplo, si cliente es int:
-        // ps.setInt(6, Integer.parseInt(Dv.getCliente()));
         ps.setString(6, Dv.getCliente()); // si cliente es String, bien así
 
         ps.setString(7, Dv.getNombre());
@@ -160,8 +156,35 @@ public int IdVenta() {
 
     return filasAfectadas;
 }
+*/
+public int RegistrarDetalleCreditocliente(Detalle Dv) {
+    int filasAfectadas = 0;
+    String sql = "INSERT INTO detalle_creditocliente (id_pro, cantidad, precio, total, id_venta, cliente, nombre, dni, fecha) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)";
 
-        
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, Dv.getId_pro());
+        ps.setInt(2, Dv.getCantidad());
+        ps.setDouble(3, Dv.getPrecio());
+        ps.setDouble(4, Dv.getTotal());
+        ps.setInt(5, Dv.getId());
+        ps.setString(6, Dv.getCliente()); // Si cliente es String
+        ps.setString(7, Dv.getNombre());
+        ps.setInt(8, Dv.getDni());
+
+        // Usar fecha y hora actual del sistema
+        ps.setTimestamp(9, new java.sql.Timestamp(System.currentTimeMillis()));
+
+        filasAfectadas = ps.executeUpdate();
+
+    } catch (SQLException e) {
+        System.out.println("Error en RegistrarDetalleCreditocliente: " + e.toString());
+    }
+
+    return filasAfectadas;
+}
+
 public boolean eliminarCreditosDelCliente(int dni) {
     String sql1 = "DELETE FROM detalle_creditocliente WHERE dni = ?";
     try (Connection con = Conexion.getConnection()) {
@@ -296,6 +319,21 @@ public int obtenerDniPorIdCliente(int idCliente) {
          }
 
 
+public String obtenerNombreClientePorId(int idCliente) {
+    String nombre = "NA";
+    String sql = "SELECT nombre FROM clientes WHERE id = ?";
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idCliente);
+        ResultSet rs = ps.executeQuery();
+        if (rs.next()) {
+            nombre = rs.getString("nombre");
+        }
+    } catch (Exception e) {
+        System.err.println("Error al obtener el nombre del cliente: " + e.getMessage());
+    }
+    return nombre;
+}
 
  
 

@@ -242,7 +242,7 @@ public static String generarTicketReal(int idVenta, double comision, String tipo
 
     return sb.toString();
 }
-public static String generarTicketCredito(int idVenta, double total, String tipoPago, JTable TableConsultaCreditCliente, double pagaCon, double cambio) {
+public static String generarTicketCredito(int idVenta, double total, String tipoPago, JTable TableConsultaCreditCliente, double pagaCon, double cambio, String nombreCliente) {
     StringBuilder ticket = new StringBuilder();
 
     ticket.append("     TIENDITA AIXA\n");
@@ -252,7 +252,7 @@ public static String generarTicketCredito(int idVenta, double total, String tipo
     ticket.append("------------------------------\n");
     ticket.append("Venta ID: ").append(idVenta).append("\n");
     ticket.append("Fecha: ").append(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())).append("\n");
-    ticket.append("Cliente: na\n");
+    ticket.append("Cliente: ").append(nombreCliente).append("\n");
     ticket.append("------------------------------\n");
     ticket.append("Productos:\n");
 
