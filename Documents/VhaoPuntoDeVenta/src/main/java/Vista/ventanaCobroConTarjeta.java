@@ -9,8 +9,6 @@ import Estilos.Estilos;
 import Modelo.Eventos;
 import static Vista.Sistema.txtCodigoVenta;
 
-//public final class ventanaCobroConTarjeta extends JFrame {
-
 public final class ventanaCobroConTarjeta extends JDialog {
     private final JTextField txtMonto = new JTextField();
     private final JLabel lblTotalMasComision = new JLabel();
@@ -20,10 +18,7 @@ public final class ventanaCobroConTarjeta extends JDialog {
     private final double comisionPorc = 0.045;
 
     public ventanaCobroConTarjeta(ventanaCobrar ventana) {
-     
-        
         super(ventana, "Pago con Tarjeta", true);
-
         this.ventanaPrincipal = ventana;
 
         setTitle("Pago con Tarjeta");
@@ -32,7 +27,6 @@ public final class ventanaCobroConTarjeta extends JDialog {
 
         PanelConEstilo panelRaiz = new PanelConEstilo();
         panelRaiz.setLayout(new GridLayout(5, 1, 10, 10));
-       
 
         subtotal = ventanaPrincipal.getSaldoPendiente();
         double comision = calcularComision(subtotal);
@@ -40,7 +34,7 @@ public final class ventanaCobroConTarjeta extends JDialog {
 
         lblTotalMasComision.setText(String.format("Saldo: $%.2f + Comisión: $%.2f = $%.2f", subtotal, comision, totalConComision));
         lblTotalMasComision.setFont(new Font("Arial", Font.BOLD, 14));
-       // panelRaiz.add(lblTotalMasComision);  //ocultar los cálculos de la comisión 
+        // panelRaiz.add(lblTotalMasComision);  // Puedes mostrarlo si quieres
 
         JLabel label = new JLabel("Monto a pagar con tarjeta:");
         label.setFont(new Font("Arial", Font.BOLD, 16));
@@ -49,11 +43,12 @@ public final class ventanaCobroConTarjeta extends JDialog {
         txtMonto.setText(String.format("%.2f", totalConComision));
         txtMonto.setFont(new Font("BOLD", Font.PLAIN, 22));
         panelRaiz.add(txtMonto);
-           new Eventos().aplicarSoloDecimal(txtMonto); // ← ¡Así de limpio!
+
+        new Eventos().aplicarSoloDecimal(txtMonto);
 
         JButton btnAceptar = new JButton("Aceptar");
         btnAceptar.addActionListener(e -> validarYEjecutar());
-     Estilos.estiloBotonVerdeLima(btnAceptar);
+        Estilos.estiloBotonVerdeLima(btnAceptar);
         panelRaiz.add(btnAceptar);
 
         setContentPane(panelRaiz);
@@ -81,7 +76,6 @@ public final class ventanaCobroConTarjeta extends JDialog {
         return Math.round(monto * comisionPorc * 100.0) / 100.0;
     }
 
-    // ✅ Aquí está la validación única que decides entre los dos caminos
     private void validarYEjecutar() {
         try {
             double montoIngresado = Double.parseDouble(txtMonto.getText());
@@ -90,8 +84,10 @@ public final class ventanaCobroConTarjeta extends JDialog {
             double totalConComision = saldoPendiente + comision;
 
             if (Math.abs(montoIngresado - totalConComision) < 0.01) {
+                // Pago total con comisión
                 finalizarVentaConTarjeta();
             } else {
+                // Pago parcial (sin comisión extra sobre pago parcial)
                 procesarPago();
             }
 
@@ -101,7 +97,6 @@ public final class ventanaCobroConTarjeta extends JDialog {
         }
     }
 
-    // 👇 tus métodos originales sin cambios
     private void procesarPago() {
         try {
             double monto = Double.parseDouble(txtMonto.getText());
@@ -119,9 +114,8 @@ public final class ventanaCobroConTarjeta extends JDialog {
             double comision = calcularComision(monto);
 
             JDialog loader = new LoaderDialog().mostrarLoader(this);
-           
-            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
+            SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
                 @Override
                 protected Void doInBackground() {
                     ventanaPrincipal.agregarPago("Tarjeta", monto, comision);
@@ -133,7 +127,7 @@ public final class ventanaCobroConTarjeta extends JDialog {
                     loader.dispose();
                     JOptionPane.showMessageDialog(ventanaCobroConTarjeta.this, "Pago con tarjeta registrado.");
                     dispose();
- ventanaPrincipal.enfocarCampoEfectivo();
+                    ventanaPrincipal.enfocarCampoEfectivo();
                 }
             };
 
@@ -159,7 +153,7 @@ public final class ventanaCobroConTarjeta extends JDialog {
             }
 
             ventanaPrincipal.agregarPago("Tarjeta", saldoPendiente, comision);
-            ventanaPrincipal.finalizarPagoTarjeta(0, 0);
+            ventanaPrincipal.finalizarPagoTarjeta();
             dispose();
             txtCodigoVenta.requestFocus();
 

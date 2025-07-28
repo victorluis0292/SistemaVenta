@@ -198,7 +198,17 @@ public boolean eliminarCreditosDelCliente(int dni) {
     }
 }
 
-
+public boolean eliminarProdCreditoPorId(int id) {
+    String sql = "DELETE FROM detalle_creditocliente WHERE id = ?";
+    try (Connection con = Conexion.getConnection()) {
+          PreparedStatement ps = con.prepareStatement(sql);
+        ps.setInt(1, id);
+        return ps.executeUpdate() > 0;
+  } catch (SQLException e) {
+        System.err.println("Error al eliminar créditos: " + e.getMessage());
+        return false;
+    }
+}
 
 
 

@@ -10,15 +10,16 @@ import Modelo.Detalle;
 import Modelo.Eventos;
 import Modelo.TurnoModel;
 import Modelo.VentaDao;
-//import static Vista.ConsultaCreditoCliente.TableConsultaCreditCliente;
 import static Vista.Sistema.txtCodigoVenta;
+
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
-import Modelo.AbonoDao; 
+import Modelo.AbonoDao;
+
 public final class ventanaCobrar extends JDialog {
     private boolean cobroRealizado = false;
     private JTable TableConsultaCreditCliente;
@@ -45,12 +46,12 @@ public final class ventanaCobrar extends JDialog {
     }
 
     // Constructor para indicar si es venta crédito
-   public ventanaCobrar(JFrame parent, boolean esCredito, JTable TableConsultaCreditCliente) {
-    super(parent, "Pago", true);
-    this.esVentaCredito = esCredito;
-    this.TableConsultaCreditCliente = TableConsultaCreditCliente;
-    initComponentes();
-}
+    public ventanaCobrar(JFrame parent, boolean esCredito, JTable TableConsultaCreditCliente) {
+        super(parent, "Pago", true);
+        this.esVentaCredito = esCredito;
+        this.TableConsultaCreditCliente = TableConsultaCreditCliente;
+        initComponentes();
+    }
 
     private void initComponentes() {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -121,60 +122,56 @@ public final class ventanaCobrar extends JDialog {
         return totalPagado;
     }
 
-    private void cobrarEfectivo() {
-        try {
-            String pagaTexto = txtPaga.getText().replace(",", "");
+  private void cobrarEfectivo() {
+    try {
+        String pagaTexto = txtPaga.getText().replace(",", "");
 
-            if (pagaTexto == null || pagaTexto.isEmpty()) {
-                lblCambio.setText("0.00");
-                JOptionPane.showMessageDialog(this, "Ingresa un monto");
-                txtPaga.requestFocus();
-                return;
-            }
-
-            BigDecimal pago = new BigDecimal(pagaTexto);
-            if (pago.compareTo(BigDecimal.ZERO) <= 0) {
-                JOptionPane.showMessageDialog(this, "Ingrese un monto válido.");
-                return;
-            }
-
-            BigDecimal saldoPendiente = BigDecimal.valueOf(getSaldoPendiente());
-            boolean esMixto = modeloPagos.getRowCount() > 0;
-
-            if (pago.compareTo(saldoPendiente) <= 0 && pago.add(BigDecimal.valueOf(totalPagado)).compareTo(BigDecimal.valueOf(totalPagar)) < 0) {
-                JOptionPane.showMessageDialog(this, "La suma total de los pagos no cubre el total a pagar.");
-                lblCambio.setText("0.00");
-                return;
-            }
-
-            BigDecimal cambio = pago.subtract(saldoPendiente);
-            if (cambio.compareTo(BigDecimal.ZERO) < 0) {
-                cambio = BigDecimal.ZERO;
-            }
-
-            lblCambio.setText(cambio.setScale(2, RoundingMode.HALF_UP).toString());
-
-            // Guardar pago para imprimir correctamente el ticket después
-            ultimoPagoEfectivo = pago.doubleValue();
-
-            // Registrar el pago
-            double montoUsado = Math.min(pago.doubleValue(), saldoPendiente.doubleValue());
-            agregarPago("Efectivo", montoUsado, 0.00);
-
-            // Finalizar si ya se completó el total
-           if (getSaldoPendiente() <= 0) {
-    txtPaga.setEditable(false);
-    procesarVentaFinal();
-
- 
-}
-
-            txtPaga.setText(""); // Limpiar campo al final
-        } catch (NumberFormatException | ArithmeticException e) {
-            lblCambio.setText("Error");
-            JOptionPane.showMessageDialog(this, "Ingrese un monto válido.");
+        if (pagaTexto == null || pagaTexto.isEmpty()) {
+            lblCambio.setText("0.00");
+            JOptionPane.showMessageDialog(this, "Ingresa un monto");
+            txtPaga.requestFocus();
+            return;
         }
+
+        BigDecimal pagoOriginal = new BigDecimal(pagaTexto); // lo que realmente paga el cliente
+
+        if (pagoOriginal.compareTo(BigDecimal.ZERO) <= 0) {
+            JOptionPane.showMessageDialog(this, "Ingrese un monto válido.");
+            return;
+        }
+
+        ultimoPagoEfectivo = pagoOriginal.doubleValue(); // ✅ AQUÍ ya se guarda correctamente
+
+        BigDecimal saldoPendiente = BigDecimal.valueOf(getSaldoPendiente());
+
+        BigDecimal pagoAplicado = pagoOriginal;
+
+        // Si el pago es mayor que el saldo pendiente, se ajusta solo para sumar el saldo restante
+        if (pagoAplicado.compareTo(saldoPendiente) > 0) {
+            pagoAplicado = saldoPendiente;
+        }
+
+        BigDecimal cambio = pagoOriginal.subtract(saldoPendiente);
+        if (cambio.compareTo(BigDecimal.ZERO) < 0) {
+            cambio = BigDecimal.ZERO;
+        }
+
+        lblCambio.setText(cambio.setScale(2, RoundingMode.HALF_UP).toString());
+
+        // Aquí agregamos solo el pago aplicado al total pagado
+        agregarPago("Efectivo", pagoAplicado.doubleValue(), 0.00);
+
+        if (getSaldoPendiente() <= 0) {
+            txtPaga.setEditable(false);
+            procesarVentaFinal();
+        }
+
+        txtPaga.setText("");
+    } catch (NumberFormatException | ArithmeticException e) {
+        lblCambio.setText("Error");
+        JOptionPane.showMessageDialog(this, "Ingrese un monto válido.");
     }
+}
 
     public void agregarPago(String metodo, double monto, double comision) {
         if (comision > 0) {
@@ -197,181 +194,207 @@ public final class ventanaCobrar extends JDialog {
         lblTotal.setText(String.format("%.2f", getSaldoPendiente()));
     }
 
-    public void finalizarPagoTarjeta(double comision, double subtotal) {
+    public void finalizarPagoTarjeta() {
         procesarVentaFinal();
         txtCodigoVenta.requestFocus();
     }
 
-  private void procesarVentaFinal() {
-    System.out.println("👉 procesarVentaFinal llamado");
+    private void procesarVentaFinal() {
+        System.out.println("👉 procesarVentaFinal llamado");
 
-    JDialog loader = new LoaderDialog().mostrarLoader(this);
+        JDialog loader = new LoaderDialog().mostrarLoader(this);
 
-    SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
+        SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
-        int idVenta;
-        boolean esCredito = false;
-        String tipoPagoFinal = "";
-        String ticket = "";
-        int idCliente;
+            int idVenta;
+            boolean esCredito = false;
+            String tipoPagoFinal = "";
+            String ticket = "";
+            int idCliente;
 
-        @Override
-        protected Void doInBackground() throws Exception {
-            try {
-                System.out.println("🚀 doInBackground iniciado");
+            @Override
+            protected Void doInBackground() throws Exception {
+                try {
+                    System.out.println("🚀 doInBackground iniciado");
 
-                idCliente = Integer.parseInt(Sistema.txtIdCV.getText());
-                String vendedor = Sistema.LabelVendedor.getText();
-                CobroService servicio = new CobroService();
+                    idCliente = Integer.parseInt(Sistema.txtIdCV.getText());
+                    String vendedor = Sistema.LabelVendedor.getText();
+                    CobroService servicio = new CobroService();
 
-                TurnoModel turno = TurnoController.getTurnoGlobal();
-                if (turno == null) {
+                    TurnoModel turno = TurnoController.getTurnoGlobal();
+                    if (turno == null) {
+                        SwingUtilities.invokeLater(() -> {
+                            loader.dispose();
+                            JOptionPane.showMessageDialog(ventanaCobrar.this,
+                                    "No hay un turno abierto. No se puede procesar la venta.",
+                                    "Turno no encontrado",
+                                    JOptionPane.WARNING_MESSAGE);
+                        });
+                        return null;
+                    }
+
+                    int idTurno = turno.getId();
+                    System.out.println("✅ ID del turno recibido: " + idTurno);
+
+                    tipoPagoFinal = determinarTipoPagoFinal();
+                    System.out.println("Tipo de pago final: '" + tipoPagoFinal + "'");
+
+                    idVenta = servicio.procesarVenta(idTurno, idCliente, vendedor, Sistema.TableVenta, totalPagar, tipoPagoFinal);
+                    System.out.println("✅ Venta creada con ID: " + idVenta);
+
+                    if (idVenta == 0) {
+                        throw new Exception("No se pudo registrar la venta. ID generado es 0.");
+                    }
+
+                    esCredito = esVentaCredito || tipoPagoFinal.equalsIgnoreCase("credito");
+                    System.out.println("Flag esCredito: " + esCredito);
+
+                    if (esCredito) {
+                        VentaDao ventaDao = new VentaDao();
+                        DefaultTableModel modeloCredito = (DefaultTableModel) TableConsultaCreditCliente.getModel();
+
+                        for (int i = 0; i < modeloCredito.getRowCount(); i++) {
+                            String concepto = modeloCredito.getValueAt(i, 2).toString().toLowerCase();
+
+                            if (concepto.contains("abono")) {
+                                System.out.println("⛔ Fila " + i + " ignorada por ser abono: " + concepto);
+                                continue;
+                            }
+
+                            Detalle detalle = new Detalle();
+                            detalle.setId_pro(Integer.parseInt(modeloCredito.getValueAt(i, 1).toString()));
+                            detalle.setCantidad(Integer.parseInt(modeloCredito.getValueAt(i, 3).toString()));
+                            detalle.setPrecio(Double.parseDouble(modeloCredito.getValueAt(i, 4).toString()));
+                            detalle.setId(idVenta);
+
+                            int filas = ventaDao.RegistrarDetalle(detalle);
+                            System.out.println("✅ Producto registrado (fila " + i + "): " + concepto + ", filas afectadas: " + filas);
+                        }
+                    }
+
+                } catch (Exception e) {
                     SwingUtilities.invokeLater(() -> {
                         loader.dispose();
                         JOptionPane.showMessageDialog(ventanaCobrar.this,
-                                "No hay un turno abierto. No se puede procesar la venta.",
-                                "Turno no encontrado",
-                                JOptionPane.WARNING_MESSAGE);
+                                "Error al procesar la venta: " + e.getMessage(),
+                                "Error",
+                                JOptionPane.ERROR_MESSAGE);
                     });
-                    return null;
+                    e.printStackTrace();
+                    throw e;
                 }
+                return null;
+            }
 
-                int idTurno = turno.getId();
-                System.out.println("✅ ID del turno recibido: " + idTurno);
+            @Override
+            protected void done() {
+                System.out.println("🟢 done() ejecutado");
+                loader.dispose();
 
-                tipoPagoFinal = determinarTipoPagoFinal();
-                System.out.println("Tipo de pago final: '" + tipoPagoFinal + "'");
+                try {
+                    String nombreCliente = new VentaDao().obtenerNombreClientePorId(idCliente);
 
-                idVenta = servicio.procesarVenta(idTurno, idCliente, vendedor, Sistema.TableVenta, totalPagar, tipoPagoFinal);
-                System.out.println("✅ Venta creada con ID: " + idVenta);
+                    if (esCredito) {
+    System.out.println("Venta a crédito detectada, intentando eliminar créditos...");
 
-                if (idVenta == 0) {
-                    throw new Exception("No se pudo registrar la venta. ID generado es 0.");
-                }
+    int dni = new VentaDao().obtenerDniPorIdCliente(idCliente);
+    System.out.println("DNI obtenido: " + dni);
 
-                esCredito = esVentaCredito || tipoPagoFinal.equalsIgnoreCase("credito");
-                System.out.println("Flag esCredito: " + esCredito);
+    if (dni != -1) {
+        boolean eliminado = new VentaDao().eliminarCreditosDelCliente(dni);
+        System.out.println("¿Se eliminaron los créditos? " + eliminado);
 
-                if (esCredito) {
-                    // Registrar detalles desde tabla de crédito
-                    VentaDao ventaDao = new VentaDao();
-                    DefaultTableModel modeloCredito = (DefaultTableModel) TableConsultaCreditCliente.getModel();
+        AbonoDao abonoDao = new AbonoDao();
+        boolean abonosActualizados = abonoDao.actualizarAbonosAplicados(dni, idVenta);
+        System.out.println("¿Se actualizaron los abonos a aplicados? " + abonosActualizados);
+    } else {
+        System.out.println("❌ No se pudo obtener el DNI del cliente.");
+    }
 
-                    for (int i = 0; i < modeloCredito.getRowCount(); i++) {
-                        String concepto = modeloCredito.getValueAt(i, 2).toString().toLowerCase();
+ if (tipoPagoFinal.equalsIgnoreCase("tarjeta")) {
+    double subtotal = totalPagar - totalComision;
+    ticket = ImprimirTicket.generarTicketCreditoConTarjeta(
+        idVenta,
+        nombreCliente,
+        subtotal,
+        totalComision,
+        totalPagar,
+        TableConsultaCreditCliente
+    );
 
-                        if (concepto.contains("abono")) {
-                            System.out.println("⛔ Fila " + i + " ignorada por ser abono: " + concepto);
-                            continue;
+} else if (tipoPagoFinal.equalsIgnoreCase("mixto")) {
+    double subtotal = totalPagar - totalComision;
+    ticket = ImprimirTicket.generarTicketCreditoMixto(
+        idVenta,
+        nombreCliente,
+        subtotal,
+        totalComision,
+        totalPagar,
+              TableConsultaCreditCliente // ✅ AÑADE ESTO
+
+           
+    );
+
+} else {
+    double cambioCredito = Math.max(0, ultimoPagoEfectivo - totalPagar);
+    ticket = ImprimirTicket.generarTicketCredito(
+        idVenta,
+        totalPagar,
+        tipoPagoFinal,
+        TableConsultaCreditCliente,
+        ultimoPagoEfectivo,
+        cambioCredito,
+        nombreCliente
+    );
+}
+ 
+}
+ else {
+                        switch (tipoPagoFinal.toLowerCase()) {
+                            case "efectivo":
+                                double cambio = Math.max(0, ultimoPagoEfectivo - totalPagar);
+                                ticket = ImprimirTicket.generarTicketReal(idVenta, ultimoPagoEfectivo, cambio, tipoPagoFinal);
+                                break;
+                            case "tarjeta":
+                            case "mixto":
+                                double subtotal = totalPagar - totalComision;
+                                ticket = ImprimirTicket.generarTicketReal(idVenta, totalComision, tipoPagoFinal, subtotal);
+                                break;
+                            default:
+                                double cambioDef = Math.max(0, totalPagado - totalPagar);
+                                ticket = ImprimirTicket.generarTicketReal(idVenta, totalPagado, cambioDef, tipoPagoFinal);
+                                break;
+                        }
+                    }
+
+                    if (ticket != null && !ticket.isEmpty()) {
+                        if (!esCredito) {
+                            AbrirCajaEfectivo.main(null);
+                            System.out.println("1.- Caja de efectivo abierta");
                         }
 
-                        Detalle detalle = new Detalle();
-                        detalle.setId_pro(Integer.parseInt(modeloCredito.getValueAt(i, 1).toString()));
-                        detalle.setCantidad(Integer.parseInt(modeloCredito.getValueAt(i, 3).toString()));
-                        detalle.setPrecio(Double.parseDouble(modeloCredito.getValueAt(i, 4).toString()));
-                        detalle.setId(idVenta);
+                        ImprimirTicket.imprimir(ticket);
+                        System.out.println("2.- Ticket enviado a impresora");
 
-                        int filas = ventaDao.RegistrarDetalle(detalle);
-                        System.out.println("✅ Producto registrado (fila " + i + "): " + concepto + ", filas afectadas: " + filas);
+                        mostrarTicketDialogSoloInformativo(ticket);
+                        System.out.println("3.- Vista previa mostrada");
                     }
+
+                    DefaultTableModel tmp = (DefaultTableModel) Sistema.TableVenta.getModel();
+                    tmp.setRowCount(0);
+                    Sistema.lblEnviaTotal.setText("");
+                    dispose();
+                    txtCodigoVenta.requestFocus();
+
+                } catch (Exception e) {
+                    System.err.println("❌ Error en done(): " + e.getMessage());
+                    e.printStackTrace();
                 }
-
-                // ⚠️ Ticket se genera en done(), no aquí
-
-            } catch (Exception e) {
-                SwingUtilities.invokeLater(() -> {
-                    loader.dispose();
-                    JOptionPane.showMessageDialog(ventanaCobrar.this,
-                            "Error al procesar la venta: " + e.getMessage(),
-                            "Error",
-                            JOptionPane.ERROR_MESSAGE);
-                });
-                e.printStackTrace();
-                throw e;
             }
-            return null;
-        }
+        };
 
-        @Override
-        protected void done() {
-            System.out.println("🟢 done() ejecutado");
-            loader.dispose();
-
-            try {
-                String nombreCliente = new VentaDao().obtenerNombreClientePorId(idCliente);
-
-                if (esCredito) {
-                    System.out.println("Venta a crédito detectada, intentando eliminar créditos...");
-
-                    int dni = new VentaDao().obtenerDniPorIdCliente(idCliente);
-                    System.out.println("DNI obtenido: " + dni);
-
-                    if (dni != -1) {
-                        boolean eliminado = new VentaDao().eliminarCreditosDelCliente(dni);
-                        System.out.println("¿Se eliminaron los créditos? " + eliminado);
-
-                        AbonoDao abonoDao = new AbonoDao();
-                        boolean abonosActualizados = abonoDao.actualizarAbonosAplicados(dni, idVenta);
-                        System.out.println("¿Se actualizaron los abonos a aplicados? " + abonosActualizados);
-                    } else {
-                        System.out.println("❌ No se pudo obtener el DNI del cliente.");
-                    }
-
-                    // ✅ Generar ticket de crédito aquí
-                    double cambioCredito = Math.max(0, ultimoPagoEfectivo - totalPagar);
-                    ticket = ImprimirTicket.generarTicketCredito(
-                        idVenta, totalPagar, tipoPagoFinal, TableConsultaCreditCliente,
-                        ultimoPagoEfectivo, cambioCredito, nombreCliente
-                    );
-
-                } else {
-                    // ✅ Generar ticket normal según tipo de pago
-                    switch (tipoPagoFinal.toLowerCase()) {
-                        case "efectivo":
-                            double cambio = Math.max(0, ultimoPagoEfectivo - totalPagar);
-                            ticket = ImprimirTicket.generarTicketReal(idVenta, ultimoPagoEfectivo, cambio, tipoPagoFinal);
-                            break;
-                        case "tarjeta":
-                        case "mixto":
-                            double subtotal = totalPagar - totalComision;
-                            ticket = ImprimirTicket.generarTicketReal(idVenta, totalComision, tipoPagoFinal, subtotal);
-                            break;
-                        default:
-                            cambio = Math.max(0, totalPagado - totalPagar);
-                            ticket = ImprimirTicket.generarTicketReal(idVenta, totalPagado, cambio, tipoPagoFinal);
-                            break;
-                    }
-                }
-
-                if (ticket != null && !ticket.isEmpty()) {
-                    if (!esCredito) {
-                        AbrirCajaEfectivo.main(null);
-                        System.out.println("1.- Caja de efectivo abierta");
-                    }
-
-                    ImprimirTicket.imprimir(ticket);
-                    System.out.println("2.- Ticket enviado a impresora");
-
-                    mostrarTicketDialogSoloInformativo(ticket);
-                    System.out.println("3.- Vista previa mostrada");
-                }
-
-                // Limpiar tabla y campos
-                DefaultTableModel tmp = (DefaultTableModel) Sistema.TableVenta.getModel();
-                tmp.setRowCount(0);
-                Sistema.lblEnviaTotal.setText("");
-                dispose();
-                txtCodigoVenta.requestFocus();
-
-            } catch (Exception e) {
-                System.err.println("❌ Error en done(): " + e.getMessage());
-                e.printStackTrace();
-            }
-        }
-    };
-
-    worker.execute();
-}
+        worker.execute();
+    }
 
     public void enfocarCampoEfectivo() {
         txtPaga.requestFocus();
@@ -396,7 +419,6 @@ public final class ventanaCobrar extends JDialog {
         } else if (hayTarjeta) {
             return "Tarjeta";
         } else if (esVentaCredito) {
-            // Si es venta crédito forzamos el tipo de pago final
             return "Credito";
         } else {
             return "Efectivo";
@@ -415,22 +437,6 @@ public final class ventanaCobrar extends JDialog {
         }
     }
 
-    private double calcularComisionPagos() {
-        double totalComision = 0.0;
-        for (int i = 0; i < modeloPagos.getRowCount(); i++) {
-            String pagoTexto = modeloPagos.getValueAt(i, 1).toString();
-            int index = pagoTexto.indexOf("Comisión $");
-            if (index != -1) {
-                try {
-                    String comisionStr = pagoTexto.substring(index + 10).replace(")", "").trim();
-                    totalComision += Double.parseDouble(comisionStr);
-                } catch (NumberFormatException ignored) {
-                }
-            }
-        }
-        return totalComision;
-    }
-
     private void mostrarTicketDialogSoloInformativo(String ticket) {
         JDialog dialog = new JDialog(this, "Vista previa del ticket", true);
         JTextArea area = new JTextArea(ticket);
@@ -447,7 +453,6 @@ public final class ventanaCobrar extends JDialog {
         dialog.pack();
         dialog.setLocationRelativeTo(this);
 
-        // Cerrar al presionar ENTER
         area.addKeyListener(new KeyAdapter() {
             @Override
             public void keyPressed(KeyEvent e) {
@@ -459,23 +464,24 @@ public final class ventanaCobrar extends JDialog {
 
         dialog.setVisible(true);
     }
+
     public double getPagaConCredito() {
-    try {
-        return Double.parseDouble(txtPaga.getText().trim());
-    } catch (NumberFormatException e) {
-        return 0.00;
+        try {
+            return Double.parseDouble(txtPaga.getText().trim());
+        } catch (NumberFormatException e) {
+            return 0.00;
+        }
     }
-}
 
-public double getCambioCredito() {
-    try {
-        return Double.parseDouble(lblCambio.getText().trim());
-    } catch (NumberFormatException e) {
-        return 0.00;
+    public double getCambioCredito() {
+        try {
+            return Double.parseDouble(lblCambio.getText().trim());
+        } catch (NumberFormatException e) {
+            return 0.00;
+        }
     }
-}
-public boolean isCobroRealizado() {
-    return cobroRealizado;
-}
 
+    public boolean isCobroRealizado() {
+        return cobroRealizado;
+    }
 }

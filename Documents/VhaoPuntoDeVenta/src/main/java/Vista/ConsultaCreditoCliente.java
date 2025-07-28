@@ -2,17 +2,22 @@ package Vista;
 
 import Estilos.Estilos;
 import Modelo.Conexion;
+import Modelo.PdfGeneratorCredito;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
 import java.awt.*;
 import java.awt.event.*;
+import java.io.FileOutputStream;
 import java.sql.*;
-import Estilos.Estilos;
+import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.time.LocalDateTime;
 import java.time.ZoneId;
-import java.time.ZonedDateTime;
 import java.time.format.DateTimeFormatter;
+import Utilidades.TablaBotonEliminarProducto;
+
+
 public class ConsultaCreditoCliente extends JFrame {
 
     private JTextField txtBuscar3;
@@ -28,16 +33,18 @@ public class ConsultaCreditoCliente extends JFrame {
 
     private JButton btnCobrarCredito;
     private JButton btnAbonar;
-
+    private JButton btnPDF;
     private int idVenta;
     private int idCliente;
     private String dni;  // <-- guardamos el dni para pasarlo a VentanaAbono
 
     private JTable tableAbonos;
-
+    //datos para el pdf
+    private String nombreCliente = "";
+private double totalPagarCreditos = 0.0;
     public ConsultaCreditoCliente() {
         setTitle("Consulta Crédito Cliente");
-        setSize(850, 400);
+        setSize(900, 450);
         setLocationRelativeTo(null);
         setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
         setLayout(null);
@@ -78,107 +85,128 @@ public class ConsultaCreditoCliente extends JFrame {
         cargarDatos();
     }
 
-    private void initComponentes() {
-        // Primero crear y añadir componentes
-        JLabel lblBuscar = new JLabel("Buscar:");
-        lblBuscar.setBounds(20, 20, 60, 25);
-        add(lblBuscar);
+  private void initComponentes() {
+    // Crear y añadir componentes visibles
 
-        txtBuscar3 = new JTextField();
-        txtBuscar3.setBounds(80, 20, 200, 25);
-        add(txtBuscar3);
+    JLabel lblBuscar = new JLabel("Buscar:");
+    lblBuscar.setBounds(20, 20, 60, 25);
+    add(lblBuscar);
 
-        txtBuscar3.addKeyListener(new KeyAdapter() {
-            @Override
-            public void keyReleased(KeyEvent e) {
-                cargarDatos();
-            }
-        });
+    txtBuscar3 = new JTextField();
+    txtBuscar3.setBounds(80, 20, 200, 25);
+    add(txtBuscar3);
 
-        // Ocultar los componentes sólo después de crearlos y agregarlos
-        lblBuscar.setVisible(false);
-        txtBuscar3.setVisible(false);
-        
-   
-        JLabel lblCliente = new JLabel("Cliente:");
-        lblCliente.setBounds(230, 20, 70, 25);  // Posición a la izquierda del JTextField
-        Estilos.estiloEtiqueta2(lblCliente);
-        add(lblCliente);
-        
-        txtRuc = new JTextField();
-        txtRuc.setBounds(300, 20, 150, 25);
-         Estilos.estiloEtiqueta3(txtRuc);
-        txtRuc.setEditable(false);
-        txtRuc.setHorizontalAlignment(JTextField.CENTER);
-        add(txtRuc);
+    txtBuscar3.addKeyListener(new KeyAdapter() {
+        @Override
+        public void keyReleased(KeyEvent e) {
+            cargarDatos();
+        }
+    });
 
-        txtNombre = new JTextField();
-        txtNombre.setBounds(460, 20, 350, 25);
-        Estilos.estiloEtiqueta3(txtNombre);
-        txtNombre.setEditable(false);
-        txtNombre.setHorizontalAlignment(JTextField.CENTER);
-        add(txtNombre);
-//
-        // Tabla Productos (detalle_creditocliente
-        modeloProductos = new DefaultTableModel();
-        tableProductos = new JTable(modeloProductos);
-        scrollProductos = new JScrollPane(tableProductos);
-        scrollProductos.setBounds(20, 60, 790, 250);
-        add(scrollProductos);
+    // Ocultar los componentes sólo después de crearlos y agregarlos
+    lblBuscar.setVisible(false);
+    txtBuscar3.setVisible(false);
 
-        modeloProductos.addColumn("ID");
-        modeloProductos.addColumn("ID Prod");
-        modeloProductos.addColumn("Nombre");
-        modeloProductos.addColumn("Cantidad");
-        modeloProductos.addColumn("Precio");
-        modeloProductos.addColumn("Total");
-        modeloProductos.addColumn("Fecha");
-        modeloProductos.addColumn("DNI");
-        Estilos.estiloTablas(tableProductos);
-         
-        lblTotalCredito = new JLabel("Crédito Pendiente:");
-          Estilos.estiloEtiqueta(lblTotalCredito);
-        lblTotalCredito.setBounds(20, 320, 150, 25);
-        add(lblTotalCredito);
+    JLabel lblCliente = new JLabel("Cliente:");
+    lblCliente.setBounds(230, 45, 70, 25);  // Posición a la izquierda del JTextField
+    Estilos.estiloEtiqueta2(lblCliente);
+    add(lblCliente);
 
-        txtTotalCredito = new JTextField("0.00");
-        txtTotalCredito.setBounds(170, 320, 150, 25);
-        
-        txtTotalCredito.setEditable(false);
-        txtTotalCredito.setHorizontalAlignment(JTextField.RIGHT);
-        Estilos.estiloEtiqueta3(txtTotalCredito);
-        add(txtTotalCredito);
+    txtRuc = new JTextField();
+    txtRuc.setBounds(300, 45, 150, 25);
+    Estilos.estiloEtiqueta3(txtRuc);
+    txtRuc.setEditable(false);
+    txtRuc.setHorizontalAlignment(JTextField.CENTER);
+    add(txtRuc);
 
-        btnAbonar = new JButton("Abonar");
-        btnAbonar.setBounds(430, 315, 150, 30);
-        btnAbonar.setBackground(new Color(59, 89, 152));
-        btnAbonar.setForeground(Color.WHITE);
-        btnAbonar.setFocusPainted(false);
-      
+    txtNombre = new JTextField();
+    txtNombre.setBounds(460, 45, 350, 25);
+    Estilos.estiloEtiqueta3(txtNombre);
+    txtNombre.setEditable(false);
+    txtNombre.setHorizontalAlignment(JTextField.CENTER);
+    add(txtNombre);
 
-        btnAbonar.setFont(new Font("Tahoma", Font.BOLD, 12));
+    // --- CREAR botón PDF PRIMERO ---
+    btnPDF = new JButton("PDF");
+    btnPDF.setBounds(760, 8, 80, 25); // Justo encima del txtNombre
+    btnPDF.setBackground(new Color(59, 89, 152));
+    btnPDF.setForeground(Color.WHITE);
+    btnPDF.setFocusPainted(false);
+    btnPDF.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 12));
 
-       btnAbonar.addActionListener(e -> {
-    if (dni != null && !dni.isEmpty()) {
-        // Aquí usas el idVenta que tienes cargado en la clase (no -1)
-        new VentanaAbono(this, tableProductos, txtTotalCredito, idVenta, idCliente, dni).setVisible(true);
-        cargarDatos();
-    } else {
-        JOptionPane.showMessageDialog(this, "Debe ingresar un DNI válido para continuar.");
-    }
+
+    // Listener btnPDF (después de crear el botón)
+ btnPDF.addActionListener(e -> {
+    
+    PdfGeneratorCredito.generarPdfCredito(nombreCliente, totalPagarCreditos, tableProductos.getModel(), this);
+
 });
 
-        add(btnAbonar);
 
-        btnCobrarCredito = new JButton("Cobrar Crédito");
-        btnCobrarCredito.setBounds(590, 315, 220, 30);
-        btnCobrarCredito.setBackground(new Color(0, 153, 76));
-        btnCobrarCredito.setForeground(Color.WHITE);
-        btnCobrarCredito.setFocusPainted(false);
-        btnCobrarCredito.setFont(new Font("Tahoma", Font.BOLD, 12));
-        btnCobrarCredito.addActionListener(e -> cobrarCredito());
-        add(btnCobrarCredito);
-    }
+    add(btnPDF);
+
+    // --- Crear tabla Productos ---
+    modeloProductos = new DefaultTableModel();
+    tableProductos = new JTable(modeloProductos);
+    scrollProductos = new JScrollPane(tableProductos);
+    scrollProductos.setBounds(20, 85, 790, 250);
+    add(scrollProductos);
+
+    modeloProductos.addColumn("ID");
+    modeloProductos.addColumn("ID Prod");
+    modeloProductos.addColumn("Nombre");
+    modeloProductos.addColumn("Cantidad");
+    modeloProductos.addColumn("Precio");
+    modeloProductos.addColumn("Total");
+    modeloProductos.addColumn("Fecha");
+    modeloProductos.addColumn("Num Ext");
+    modeloProductos.addColumn("Eliminar");
+    Estilos.estiloTablas(tableProductos);
+// Agregar botón eliminar a la columna "Eliminar"
+int columnaEliminar = modeloProductos.getColumnCount() - 1;
+tableProductos.getColumnModel().getColumn(columnaEliminar).setCellRenderer(new TablaBotonEliminarProducto.ButtonRenderer());
+tableProductos.getColumnModel().getColumn(columnaEliminar).setCellEditor(new TablaBotonEliminarProducto.ButtonEditor(new JCheckBox(), tableProductos));
+
+    lblTotalCredito = new JLabel("Crédito Pendiente:");
+    Estilos.estiloEtiqueta(lblTotalCredito);
+    lblTotalCredito.setBounds(20, 350, 150, 25);
+    add(lblTotalCredito);
+
+    txtTotalCredito = new JTextField("0.00");
+    txtTotalCredito.setBounds(170, 350, 150, 25);
+    txtTotalCredito.setEditable(false);
+    txtTotalCredito.setHorizontalAlignment(JTextField.RIGHT);
+    Estilos.estiloEtiqueta3(txtTotalCredito);
+    add(txtTotalCredito);
+
+    btnAbonar = new JButton("Abonar");
+    btnAbonar.setBounds(430, 350, 150, 30);
+    btnAbonar.setBackground(new Color(59, 89, 152));
+    btnAbonar.setForeground(Color.WHITE);
+    btnAbonar.setFocusPainted(false);
+   
+btnAbonar.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 12));
+    btnAbonar.addActionListener(e -> {
+        if (dni != null && !dni.isEmpty()) {
+            new VentanaAbono(this, tableProductos, txtTotalCredito, idVenta, idCliente, dni).setVisible(true);
+            cargarDatos();
+        } else {
+            JOptionPane.showMessageDialog(this, "Debe ingresar un DNI válido para continuar.");
+        }
+    });
+
+    add(btnAbonar);
+
+    btnCobrarCredito = new JButton("Cobrar Crédito");
+    btnCobrarCredito.setBounds(590, 350, 220, 30);
+    btnCobrarCredito.setBackground(new Color(0, 153, 76));
+    btnCobrarCredito.setForeground(Color.WHITE);
+    btnCobrarCredito.setFocusPainted(false);
+   
+    btnCobrarCredito.setFont(new java.awt.Font("Tahoma", java.awt.Font.BOLD, 12));
+    btnCobrarCredito.addActionListener(e -> cobrarCredito());
+    add(btnCobrarCredito);
+}
 
     private void cargarDatos() {
         listarProductos();
@@ -194,13 +222,13 @@ public class ConsultaCreditoCliente extends JFrame {
 
     String dniABuscar = dni.trim();
 
-    String sql = 
-        "SELECT id, id_pro, nombre, cantidad, precio, total, fecha, dni " +
-        "FROM detalle_creditocliente WHERE dni = ? " +
-        "UNION ALL " +
-        "SELECT id, 0 AS id_pro, 'ABONO REALIZADO' AS nombre, 0 AS cantidad, monto AS precio, monto AS total, fecha, dni " +
-        "FROM abonos_credito WHERE dni = ? AND aplicado = 0 " +
-        "ORDER BY fecha ASC, id ASC";
+ String sql = 
+    "SELECT id, id_pro, nombre, cantidad, precio, total, fecha, dni " +
+    "FROM detalle_creditocliente WHERE dni = ? " +
+    "UNION ALL " +
+    "SELECT id, 0 AS id_pro, 'ABONO REALIZADO' AS nombre, 1 AS cantidad, monto AS precio, monto AS total, fecha, dni " +
+    "FROM abonos_credito WHERE dni = ? AND aplicado = 0 " +
+    "ORDER BY fecha ASC, id ASC";
 
     try (Connection con = Conexion.getConnection();
          PreparedStatement ps = con.prepareStatement(sql)) {
@@ -261,6 +289,7 @@ public class ConsultaCreditoCliente extends JFrame {
     }
 
     double pendiente = totalProductos - totalAbonos;
+    this.totalPagarCreditos = pendiente;  // <--- Aquí actualizas el atributo
     txtTotalCredito.setText(String.format("%.2f", pendiente));
 }
 
@@ -290,10 +319,11 @@ public class ConsultaCreditoCliente extends JFrame {
         cargarDatos(); // refrescar tabla después del cobro
     }
 
-    public void setDato(int ruc, String nombre) {
-        txtRuc.setText(String.valueOf(ruc));
-        txtNombre.setText(nombre);
-    }
+   public void setDato(int ruc, String nombre) {
+    txtRuc.setText(String.valueOf(ruc));
+    txtNombre.setText(nombre);
+    this.nombreCliente = nombre;
+}
 
     public void setIdVenta(int idVenta) {
         this.idVenta = idVenta;

@@ -209,3 +209,21 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2025-07-11T17:57:32.105 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
 
 The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-25T00:47:39.078 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-25T00:48:00.008 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-25T00:48:31.088 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-26T09:00:37.561 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-26T09:00:55.370 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-26T13:17:50.874 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.

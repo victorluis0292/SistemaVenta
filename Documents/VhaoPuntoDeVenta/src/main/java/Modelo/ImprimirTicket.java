@@ -4,10 +4,14 @@ import Modelo.Conexion;
 import java.sql.*;
 import javax.print.*;
 import java.nio.charset.StandardCharsets;
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.TimeZone;
 import javax.swing.JTable;
+import javax.swing.table.DefaultTableModel;
 
 public class ImprimirTicket {
 
@@ -168,7 +172,7 @@ public static String generarTicketReal(int idVenta, double comision, String tipo
         sb.append("     ").append(nombreNegocio).append("\n");
         sb.append(centrarConSaltos(direccion, 32));
         sb.append("Telefono: ").append(telefono).append("\n");
-        sb.append("    ----------------------\n");
+        sb.append("----------------------\n");
         sb.append("Venta ID: ").append(idVenta).append("\n");
 
         // Fecha y hora actual
@@ -245,16 +249,174 @@ public static String generarTicketReal(int idVenta, double comision, String tipo
 public static String generarTicketCredito(int idVenta, double total, String tipoPago, JTable TableConsultaCreditCliente, double pagaCon, double cambio, String nombreCliente) {
     StringBuilder ticket = new StringBuilder();
 
-    ticket.append("     TIENDITA AIXA\n");
-    ticket.append(" ENCINO BLANCO 427 , PASEOS DEL\n");
-    ticket.append("   ROBLE , CIENEGA DE FLORES\n");
-    ticket.append("Teléfono: 5626893369\n");
-    ticket.append("------------------------------\n");
+    try (Connection con = Conexion.getConnection()) {
+        String nombreNegocio = "Mi Negocio";
+        String direccion = "Mi Dirección";
+        String telefono = "Mi telefono";
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("SELECT nombre,direccion,telefono FROM config LIMIT 1")) {
+            if (rs.next()) {
+                nombreNegocio = rs.getString("nombre");
+                direccion = rs.getString("direccion");
+                telefono = rs.getString("telefono");
+            }
+        }
+
+        ticket.append("     ").append(nombreNegocio).append("\n");
+        ticket.append(centrarConSaltos(direccion, 32));
+        ticket.append("Telefono: ").append(telefono).append("\n");
+        ticket.append("------------------------------\n");
+        ticket.append("Venta ID: ").append(idVenta).append("\n");
+        ticket.append("Fecha: ").append(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())).append("\n");
+        ticket.append("Cliente: ").append(nombreCliente).append("\n");
+        ticket.append("------------------------------\n");
+        ticket.append("Productos:\n");
+
+        for (int i = 0; i < TableConsultaCreditCliente.getRowCount(); i++) {
+            String nombre = TableConsultaCreditCliente.getValueAt(i, 2).toString();
+            String cantidad = TableConsultaCreditCliente.getValueAt(i, 3).toString();
+            String precio = TableConsultaCreditCliente.getValueAt(i, 4).toString();
+            String totalFila = TableConsultaCreditCliente.getValueAt(i, 5).toString();
+
+            ticket.append(nombre).append("\n");
+            ticket.append(cantidad).append("x$").append(precio).append("   $").append(totalFila).append("\n");
+        }
+
+        // Solo una línea separadora después de productos
+        ticket.append("------------------------------\n");
+        ticket.append("Tipo: ").append(tipoPago).append("\n");
+        ticket.append(String.format("TOTAL:       $%7.2f\n", total));
+        ticket.append(String.format("PAGA CON:    $%7.2f\n", pagaCon));
+        ticket.append(String.format("CAMBIO:      $%7.2f\n", cambio));
+        ticket.append("------------------------------\n");
+        ticket.append("¡Gracias por su compra!\n");
+        ticket.append("USAMOS VHAO PUNTO DE VENTAS\n");
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        ticket.append("Error al generar ticket.\n");
+    }
+
+    return ticket.toString();
+}
+
+public static String generarTicketCreditoConTarjeta(int idVenta,String cliente,double subtotal,double comision,double total,JTable tablaProductosYAbonos) {
+  StringBuilder ticket = new StringBuilder();
+DecimalFormat df = new DecimalFormat("#0.00");
+
+    try (Connection con = Conexion.getConnection()) {
+        String nombreNegocio = "Mi Negocio";
+        String direccion = "Mi Dirección";
+        String telefono = "Mi telefono";
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("SELECT nombre,direccion,telefono FROM config LIMIT 1")) {
+            if (rs.next()) {
+                nombreNegocio = rs.getString("nombre");
+                direccion = rs.getString("direccion");
+                telefono = rs.getString("telefono");
+            }
+        }
+
+        ticket.append("     ").append(nombreNegocio).append("\n");
+        ticket.append(centrarConSaltos(direccion, 32));
+        ticket.append("Telefono: ").append(telefono).append("\n");
+        ticket.append("------------------------------\n");
+       
+    // Datos venta
     ticket.append("Venta ID: ").append(idVenta).append("\n");
-    ticket.append("Fecha: ").append(new java.text.SimpleDateFormat("dd/MM/yyyy HH:mm").format(new java.util.Date())).append("\n");
-    ticket.append("Cliente: ").append(nombreCliente).append("\n");
-    ticket.append("------------------------------\n");
-    ticket.append("Productos:\n");
+    
+     // Fecha y hora actual
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT-06:00"));
+        Date ahora = new Date();
+        SimpleDateFormat sdfTicket = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String horaActual = sdfTicket.format(ahora);
+        ticket.append("Fecha: ").append(horaActual).append("\n");
+        ticket.append("Cliente: ").append(cliente).append("\n");
+        ticket.append("----------------------\n");
+
+    // Productos y abonos
+    DefaultTableModel modelo = (DefaultTableModel) tablaProductosYAbonos.getModel();
+
+    // Mostrar productos (filas sin "abono")
+    for (int i = 0; i < modelo.getRowCount(); i++) {
+        String concepto = modelo.getValueAt(i, 2).toString().toLowerCase();
+        if (!concepto.contains("abono")) {
+            String nombre = modelo.getValueAt(i, 2).toString();
+            int cantidad = Integer.parseInt(modelo.getValueAt(i, 3).toString());
+            double precioUnitario = Double.parseDouble(modelo.getValueAt(i, 4).toString());
+            double totalProducto = cantidad * precioUnitario;
+
+            ticket.append(nombre).append("\n");
+            ticket.append(cantidad).append("x$").append(df.format(precioUnitario))
+                  .append("   $").append(df.format(totalProducto)).append("\n");
+        }
+    }
+
+    // Mostrar abonos (filas con "abono") con formato similar a producto
+    for (int i = 0; i < modelo.getRowCount(); i++) {
+        String concepto = modelo.getValueAt(i, 2).toString().toLowerCase();
+        if (concepto.contains("abono")) {
+            double monto = Double.parseDouble(modelo.getValueAt(i, 4).toString());
+            ticket.append("ABONO REALIZADO\n");
+            ticket.append("1x$").append(df.format(monto)).append("   $").append(df.format(monto)).append("\n");
+        }
+    }
+
+    ticket.append("----------------------\n");
+
+    // Totales y comisiones
+    ticket.append("Tipo: Tarjeta\n");
+    ticket.append(String.format("%-12s $%6s\n", "SUBTOTAL:", df.format(subtotal)));
+    ticket.append(String.format("%-12s $%6s\n", "COMISION:", df.format(comision)));
+    ticket.append(String.format("%-12s $%6s\n", "TOTAL:",    df.format(total)));
+
+    ticket.append("----------------------\n");
+    ticket.append("¡Gracias por su compra!\n");
+    ticket.append("USAMOS VHAO PUNTO DE VENTAS\n");
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        ticket.append("Error al generar ticket.\n");
+    }
+
+    return ticket.toString();
+}
+
+
+public static String generarTicketCreditoMixto(int idVenta, String cliente, double subtotal, double comision, double total,JTable TableConsultaCreditCliente   ) {
+    StringBuilder ticket = new StringBuilder();
+DecimalFormat formato = new DecimalFormat("#0.00");
+
+    try (Connection con = Conexion.getConnection()) {
+        String nombreNegocio = "Mi Negocio";
+        String direccion = "Mi Dirección";
+        String telefono = "Mi telefono";
+        try (Statement st = con.createStatement();
+             ResultSet rs = st.executeQuery("SELECT nombre,direccion,telefono FROM config LIMIT 1")) {
+            if (rs.next()) {
+                nombreNegocio = rs.getString("nombre");
+                direccion = rs.getString("direccion");
+                telefono = rs.getString("telefono");
+            }
+        }
+
+        ticket.append("     ").append(nombreNegocio).append("\n");
+        ticket.append(centrarConSaltos(direccion, 32));
+        ticket.append("Telefono: ").append(telefono).append("\n");
+        ticket.append("------------------------------\n");
+       
+    // Datos venta
+    ticket.append("Venta ID: ").append(idVenta).append("\n");
+    
+     // Fecha y hora actual
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT-06:00"));
+        Date ahora = new Date();
+        SimpleDateFormat sdfTicket = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        String horaActual = sdfTicket.format(ahora);
+        ticket.append("Fecha: ").append(horaActual).append("\n");
+        ticket.append("Cliente: ").append(cliente).append("\n");
+        ticket.append("------------------------------\n");
+        ticket.append("Productos:\n");
 
     for (int i = 0; i < TableConsultaCreditCliente.getRowCount(); i++) {
         String nombre = TableConsultaCreditCliente.getValueAt(i, 2).toString();
@@ -265,15 +427,22 @@ public static String generarTicketCredito(int idVenta, double total, String tipo
         ticket.append(nombre).append("\n");
         ticket.append(cantidad).append("x$").append(precio).append("   $").append(totalFila).append("\n");
     }
-
     ticket.append("------------------------------\n");
-    ticket.append("Tipo: ").append(tipoPago).append("\n");
-    ticket.append(String.format("TOTAL:       $%7.2f\n", total));
-    ticket.append(String.format("PAGA CON:    $%7.2f\n", pagaCon));
-    ticket.append(String.format("CAMBIO:      $%7.2f\n", cambio));
+    ticket.append("Tipo: Mixto\n");
+    ticket.append(String.format("%-12s $%6s\n", "SUBTOTAL:", formato.format(subtotal)));
+    ticket.append(String.format("%-12s $%6s\n", "COMISION:", formato.format(comision)));
+    ticket.append(String.format("%-12s $%6s\n", "TOTAL:",    formato.format(total)));
+
+    
+    
     ticket.append("------------------------------\n");
     ticket.append("¡Gracias por su compra!\n");
     ticket.append("USAMOS VHAO PUNTO DE VENTAS\n");
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        ticket.append("Error al generar ticket.\n");
+    }
 
     return ticket.toString();
 }
