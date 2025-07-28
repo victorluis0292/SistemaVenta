@@ -24,7 +24,7 @@ public class Conexion {
     try {
         Properties props = new Properties();
      InputStream input = Conexion.class.getClassLoader().getResourceAsStream("config/config.local.properties");
-
+//
 if (input == null) {
     throw new RuntimeException("No se encontró el archivo config/config.local.properties en el classpath.");
 }
@@ -38,7 +38,7 @@ props.load(input);
         config.setJdbcUrl(jdbcUrl);
         config.setUsername(dbUser);
         config.setPassword(dbPassword);
-// //
+
         // --- CONFIGURACIÓN DEL POOL ---
         config.setMaximumPoolSize(10);
         config.setMinimumIdle(2);
