@@ -78,7 +78,7 @@ public boolean ModificarProductos(Productos pro) {
         ps.setInt(4, pro.getStock());
         ps.setDouble(5, pro.getPrecio());
         ps.setDouble(6, pro.getPreciocompra());
-        ps.setInt(7, pro.getId_empresa()); // FK cosorrecta
+        ps.setInt(7, pro.getId_empresa()); // FK cosorsrecta
 
         ps.executeUpdate();
         return true;
