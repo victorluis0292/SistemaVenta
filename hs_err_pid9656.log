@@ -1,0 +1,168 @@
+#
+# There is insufficient memory for the Java Runtime Environment to continue.
+# Native memory allocation (malloc) failed to allocate 1048576 bytes for AllocateHeap
+# Possible reasons:
+#   The system is out of physical RAM or swap space
+#   The process is running with CompressedOops enabled, and the Java Heap may be blocking the growth of the native heap
+# Possible solutions:
+#   Reduce memory load on the system
+#   Increase physical memory or swap space
+#   Check if swap backing store is full
+#   Decrease Java heap size (-Xmx/-Xms)
+#   Decrease number of Java threads
+#   Decrease Java thread stack sizes (-Xss)
+#   Set larger code cache with -XX:ReservedCodeCacheSize=
+#   JVM is running with Unscaled Compressed Oops mode in which the Java heap is
+#     placed in the first 4GB address space. The Java Heap base address is the
+#     maximum limit for the native heap growth. Please use -XX:HeapBaseMinAddress
+#     to set the Java Heap base and to place the Java Heap above 4GB virtual address.
+# This output file may be truncated or incomplete.
+#
+#  Out of Memory Error (memory/allocation.inline.hpp:61), pid=9656, tid=0x00000000000025a0
+#
+# JRE version:  (8.0_201-b09) (build )
+# Java VM: Java HotSpot(TM) 64-Bit Server VM (25.201-b09 mixed mode windows-amd64 compressed oops)
+# Failed to write core dump. Minidumps are not enabled by default on client versions of Windows
+#
+
+---------------  T H R E A D  ---------------
+
+Current thread (0x0000000002692800):  JavaThread "Unknown thread" [_thread_in_vm, id=9632, stack(0x0000000002580000,0x0000000002680000)]
+
+Stack: [0x0000000002580000,0x0000000002680000]
+[error occurred during error reporting (printing stack bounds), id 0xc0000005]
+
+Native frames: (J=compiled Java code, j=interpreted, Vv=VM code, C=native code)
+
+
+---------------  P R O C E S S  ---------------
+
+Java Threads: ( => current thread )
+
+Other Threads:
+
+=>0x0000000002692800 (exited) JavaThread "Unknown thread" [_thread_in_vm, id=9632, stack(0x0000000002580000,0x0000000002680000)]
+
+VM state:not at safepoint (normal execution)
+
+VM Mutex/Monitor currently owned by a thread: None
+
+heap address: 0x000000008a000000, size: 1888 MB, Compressed Oops mode: 32-bit
+Narrow klass base: 0x0000000000000000, Narrow klass shift: 3
+Compressed class space size: 1073741824 Address: 0x0000000100000000
+
+Heap:
+ PSYoungGen      total 35328K, used 614K [0x00000000d8b00000, 0x00000000db200000, 0x0000000100000000)
+  eden space 30720K, 2% used [0x00000000d8b00000,0x00000000d8b999a8,0x00000000da900000)
+  from space 4608K, 0% used [0x00000000dad80000,0x00000000dad80000,0x00000000db200000)
+  to   space 4608K, 0% used [0x00000000da900000,0x00000000da900000,0x00000000dad80000)
+ ParOldGen       total 80896K, used 0K [0x000000008a000000, 0x000000008ef00000, 0x00000000d8b00000)
+  object space 80896K, 0% used [0x000000008a000000,0x000000008a000000,0x000000008ef00000)
+ Metaspace       used 775K, capacity 4480K, committed 4480K, reserved 1056768K
+  class space    used 76K, capacity 384K, committed 384K, reserved 1048576K
+
+Card table byte_map: [0x0000000011b50000,0x0000000011f10000] byte_map_base: 0x0000000011700000
+
+Marking Bits: (ParMarkBitMap*) 0x0000000060674ce0
+ Begin Bits: [0x0000000012990000, 0x0000000014710000)
+ End Bits:   [0x0000000014710000, 0x0000000016490000)
+
+Polling page: 0x0000000000cb0000
+
+CodeCache: size=245760Kb used=327Kb max_used=327Kb free=245432Kb
+ bounds [0x0000000002790000, 0x0000000002a00000, 0x0000000011790000]
+ total_blobs=57 nmethods=0 adapters=38
+ compilation: enabled
+
+Compilation events (0 events):
+No events
+
+GC Heap History (0 events):
+No events
+
+Deoptimization events (0 events):
+No events
+
+Classes redefined (0 events):
+No events
+
+Internal exceptions (0 events):
+No events
+
+Events (10 events):
+Event: 0.029 loading class java/lang/Short
+Event: 0.030 loading class java/lang/Short done
+Event: 0.030 loading class java/lang/Integer
+Event: 0.030 loading class java/lang/Integer done
+Event: 0.030 loading class java/lang/Long
+Event: 0.030 loading class java/lang/Long done
+Event: 0.031 loading class java/lang/NullPointerException
+Event: 0.031 loading class java/lang/NullPointerException done
+Event: 0.031 loading class java/lang/ArithmeticException
+Event: 0.031 loading class java/lang/ArithmeticException done
+
+
+Dynamic libraries:
+0x00007ff6fdb40000 - 0x00007ff6fdb77000 	C:\Program Files\Java\jdk1.8.0_201\bin\java.exe
+0x00007ff90b990000 - 0x00007ff90bba8000 	C:\WINDOWS\SYSTEM32\ntdll.dll
+0x00007ff90a540000 - 0x00007ff90a604000 	C:\WINDOWS\System32\KERNEL32.DLL
+0x00007ff908f80000 - 0x00007ff909353000 	C:\WINDOWS\System32\KERNELBASE.dll
+0x00007ff90b380000 - 0x00007ff90b431000 	C:\WINDOWS\System32\ADVAPI32.dll
+0x00007ff90b8a0000 - 0x00007ff90b947000 	C:\WINDOWS\System32\msvcrt.dll
+0x00007ff90a490000 - 0x00007ff90a538000 	C:\WINDOWS\System32\sechost.dll
+0x00007ff909390000 - 0x00007ff9093b8000 	C:\WINDOWS\System32\bcrypt.dll
+0x00007ff9099f0000 - 0x00007ff909b08000 	C:\WINDOWS\System32\RPCRT4.dll
+0x00007ff909700000 - 0x00007ff9098b2000 	C:\WINDOWS\System32\USER32.dll
+0x00007ff909360000 - 0x00007ff909386000 	C:\WINDOWS\System32\win32u.dll
+0x00007ff90b440000 - 0x00007ff90b469000 	C:\WINDOWS\System32\GDI32.dll
+0x00007ff908c90000 - 0x00007ff908db3000 	C:\WINDOWS\System32\gdi32full.dll
+0x00007ff908ee0000 - 0x00007ff908f7a000 	C:\WINDOWS\System32\msvcp_win.dll
+0x00007ff908dc0000 - 0x00007ff908ed1000 	C:\WINDOWS\System32\ucrtbase.dll
+0x00007ff8f5b30000 - 0x00007ff8f5dcc000 	C:\WINDOWS\WinSxS\amd64_microsoft.windows.common-controls_6595b64144ccf1df_6.0.22621.6060_none_2712eda17382d24b\COMCTL32.dll
+0x00007ff909640000 - 0x00007ff909671000 	C:\WINDOWS\System32\IMM32.DLL
+0x0000000060bc0000 - 0x0000000060bcc000 	C:\Program Files (x86)\360\Total Security\safemon\SafeWrapper.dll
+0x00007ff8f6d50000 - 0x00007ff8f6dfc000 	C:\Program Files (x86)\360\Total Security\safemon\libzdtp64.dll
+0x00007ff90a790000 - 0x00007ff90b02e000 	C:\WINDOWS\System32\SHELL32.dll
+0x00007ff908b50000 - 0x00007ff908c8f000 	C:\WINDOWS\System32\wintypes.dll
+0x00007ff90a0f0000 - 0x00007ff90a482000 	C:\WINDOWS\System32\combase.dll
+0x00007ff90a720000 - 0x00007ff90a789000 	C:\WINDOWS\System32\SHLWAPI.dll
+0x00007ff9083f0000 - 0x00007ff9083fa000 	C:\WINDOWS\SYSTEM32\VERSION.dll
+0x000000005fd70000 - 0x000000005fe41000 	C:\Program Files\Java\jdk1.8.0_201\jre\bin\msvcr100.dll
+0x000000005fe50000 - 0x00000000606f4000 	C:\Program Files\Java\jdk1.8.0_201\jre\bin\server\jvm.dll
+0x00007ff909630000 - 0x00007ff909638000 	C:\WINDOWS\System32\PSAPI.DLL
+0x00007ff8f6210000 - 0x00007ff8f6219000 	C:\WINDOWS\SYSTEM32\WSOCK32.dll
+0x00007ff901aa0000 - 0x00007ff901ad4000 	C:\WINDOWS\SYSTEM32\WINMM.dll
+0x00007ff90b630000 - 0x00007ff90b6a1000 	C:\WINDOWS\System32\WS2_32.dll
+0x00007ff904450000 - 0x00007ff90445f000 	C:\Program Files\Java\jdk1.8.0_201\jre\bin\verify.dll
+0x00007ff901db0000 - 0x00007ff901dd9000 	C:\Program Files\Java\jdk1.8.0_201\jre\bin\java.dll
+0x00007ff900500000 - 0x00007ff900516000 	C:\Program Files\Java\jdk1.8.0_201\jre\bin\zip.dll
+
+VM Arguments:
+jvm_args: -Dclassworlds.conf=C:\apache-maven-3.9.10\bin\m2.conf -Dmaven.home=C:\apache-maven-3.9.10 -Dlibrary.jansi.path=C:\apache-maven-3.9.10\lib\jansi-native -Dmaven.multiModuleProjectDirectory=C:\Users\vic\Documents\VhaoPuntoDeVenta 
+java_command: org.codehaus.plexus.classworlds.launcher.Launcher -Dexec.args=-Duser.timezone=America/Monterrey -classpath %classpath Vista.Login -Dexec.executable=C:\Program Files\Java\jdk1.8.0_201\bin\java.exe -Dmaven.ext.class.path=C:\Program Files\NetBeans 8.2\java\maven-nblib\netbeans-eventspy.jar -Dfile.encoding=UTF-8 org.codehaus.mojo:exec-maven-plugin:1.2.1:exec
+java_class_path (initial): C:\apache-maven-3.9.10\boot\plexus-classworlds-2.9.0.jar
+Launcher Type: SUN_STANDARD
+
+Environment Variables:
+JAVA_HOME=C:\Program Files\Java\jdk1.8.0_201
+PATH=C:\Program Files\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\Program Files (x86)\Common Files\Intel\Shared Libraries\redist\intel64\compiler;"C:\Program Files\Java\jdk1.8.0_202\bin;C:\Program Files\Java\jre1.8.0_301";C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Users\vic\AppData\Local\Android\Sdk\platforms;C:\Users\vic\AppData\Local\Android\Sdk\platform-tools;C:\Program Files (x86)\QuickTime\QTSystem\;C:\Program Files\dotnet\;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\170\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\Tools\Binn\;C:\Program Files\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Azure Data Studio\bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\150\DTS\Binn\;C:\Program Files\Git\cmd;C:\Program Files\Microsoft SQL Server\Client SDK\ODBC\110\Tools\Binn\;C:\Program Files (x86)\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\Tools\Binn\;C:\Program Files\Microsoft SQL Server\120\DTS\Binn\;C:\apache-maven-3.9.10\bin;C:\Program Files\Java\jdk-21\bin;C:\Program Files (x86)\WiX Toolset v3.14\bin;C:\Users\vic\AppData\Local\Microsoft\WindowsApps;;C:\Users\vic\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\vic\.dotnet\tools;C:\Program Files\Azure Data Studio\bin;C:\intellii\IntelliJ IDEA Community Edition 2025.1.2\bin;
+USERNAME=vic
+OS=Windows_NT
+PROCESSOR_IDENTIFIER=AMD64 Family 23 Model 96 Stepping 1, AuthenticAMD
+
+
+
+---------------  S Y S T E M  ---------------
+
+OS: Windows 10.0 , 64 bit Build 22621 (10.0.22621.5415)
+
+CPU:total 8 (initial active 8) (8 cores per cpu, 1 threads per core) family 23 model 96 stepping 1, cmov, cx8, fxsr, mmx, sse, sse2, sse3, ssse3, sse4.1, sse4.2, popcnt, avx, avx2, aes, clmul, mmxext, 3dnowpref, lzcnt, sse4a, tsc, tscinvbit, tscinv, bmi1
+
+Memory: 4k page, physical 7730500k(834300k free), swap 11635816k(5184k free)
+
+vm_info: Java HotSpot(TM) 64-Bit Server VM (25.201-b09) for windows-amd64 JRE (1.8.0_201-b09), built on Dec 15 2018 18:36:39 by "java_re" with MS VC++ 10.0 (VS2010)
+
+time: Sun Nov 16 02:14:34 2025
+timezone: Hora estándar central (México)
+elapsed time: 0 seconds (0d 0h 0m 0s)
+

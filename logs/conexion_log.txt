@@ -1,0 +1,813 @@
+2025-06-13T12:13:05.667 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:13:51.565 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:15:54.648 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:16:27.976 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:39:34.931 - Error al inicializar pool de conexiones: Failed to initialize pool: Access denied for user 'root'@'localhost' (using password: YES)
+2025-06-13T12:39:48.023 - Error al inicializar pool de conexiones: Failed to initialize pool: Access denied for user 'root'@'localhost' (using password: YES)
+2025-06-13T12:52:41.752 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T12:52:59.537 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T12:56:12.761 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T13:00:16.869 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T13:01:00.069 - Error al inicializar pool de conexiones: Uncompilable source code - cannot find symbol
+  symbol:   variable CONFIGURACIÓN
+  location: class Modelo.Conexion
+2025-06-16T00:14:15.989 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-17T13:38:46.708 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-18T02:13:32.947 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:14:32.118 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:15:08.311 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:19:52.554 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-19T00:35:26.130 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-19T09:04:44.818 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-19T09:04:55.669 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-19T09:05:02.859 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-20T17:45:10.902 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21T01:13:58.882 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T00:18:46.833 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T00:19:17.294 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:37:47.567 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:38:15.279 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:38:28.452 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:39:00.544 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-26T01:24:59.951 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T00:20:35.078 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T11:07:18.344 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-07-01T11:07:29.273 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-07-01T19:10:45.649 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T19:11:28.173 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T19:11:44.976 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-02T01:06:55.597 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:07:12.601 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:09:25.052 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:13:46.722 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:15:42.074 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:17:44.121 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:21:05.639 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:23:10.882 - Error al inicializar pool de conexiones: config.local.properties.txt (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:38:48.543 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:39:18.339 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:41:50.051 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:43:44.741 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:46:07.850 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:47:27.741 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-04T12:07:22.445 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-04T12:32:30.891 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-08T12:56:47.438 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-08T12:57:03.439 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-08T12:57:26.787 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-10T19:13:55.519 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-10T19:18:55.494 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30008ms.
+2025-07-10T19:23:55.495 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-10T19:28:55.484 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-10T19:33:55.479 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-10T19:38:55.501 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-10T19:43:55.495 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-10T19:48:55.501 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-10T19:53:55.483 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T00:37:40.663 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 16755202ms.
+2025-07-11T00:38:10.671 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30005ms.
+2025-07-11T00:38:40.678 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30004ms.
+2025-07-11T00:39:10.681 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:39:40.693 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T00:40:10.701 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30005ms.
+2025-07-11T00:40:40.705 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T00:41:10.718 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T00:41:40.733 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T00:42:10.750 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T00:42:40.762 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T00:43:10.765 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:43:40.777 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T00:44:10.781 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30000ms.
+2025-07-11T00:44:40.790 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30008ms.
+2025-07-11T00:45:10.795 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T00:45:40.807 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T00:46:10.811 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T00:46:40.817 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T00:47:10.827 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30006ms.
+2025-07-11T00:47:40.829 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30000ms.
+2025-07-11T00:48:10.833 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:48:40.848 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T00:49:10.858 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T00:49:40.865 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30004ms.
+2025-07-11T00:50:10.875 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T00:50:40.886 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30008ms.
+2025-07-11T00:51:10.904 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T00:51:40.919 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T00:52:10.933 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T00:52:40.937 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:53:10.952 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T00:53:40.969 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-11T00:54:10.979 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T00:54:40.997 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T00:55:11.016 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T00:55:41.026 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30008ms.
+2025-07-11T00:56:11.037 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T00:56:41.050 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T00:57:11.053 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30000ms.
+2025-07-11T00:57:41.066 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T00:58:11.070 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:58:41.075 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T00:59:11.089 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T00:59:39.297 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-11T00:59:41.100 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T01:00:13.942 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-11T01:00:25.587 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-11T15:06:32.941 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-11T15:11:32.916 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T15:16:32.913 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T15:21:32.913 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T15:26:32.916 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T15:31:32.923 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T15:36:32.926 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T15:41:32.911 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30006ms.
+2025-07-11T15:46:32.907 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T15:51:32.921 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-11T15:56:32.903 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T16:01:32.907 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T16:06:32.915 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T16:11:32.903 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30006ms.
+2025-07-11T16:16:32.899 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T16:21:32.920 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T16:26:32.909 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30004ms.
+2025-07-11T16:31:32.900 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T16:36:32.921 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T16:41:32.917 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T16:46:32.902 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T16:51:32.905 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30006ms.
+2025-07-11T16:56:32.908 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30004ms.
+2025-07-11T17:01:32.920 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T17:06:32.904 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T17:11:32.912 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T17:16:32.914 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30005ms.
+2025-07-11T17:21:32.905 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T17:26:32.898 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T17:31:32.899 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T17:36:32.920 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-11T17:41:32.914 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T17:46:32.917 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T17:51:32.911 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T17:56:32.900 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T17:56:47.063 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-11T17:57:32.105 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-25T00:47:39.078 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-25T00:48:00.008 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-25T00:48:31.088 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-26T09:00:37.561 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-26T09:00:55.370 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-26T13:17:50.874 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-31T01:07:17.428 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-08-01T00:18:26.308 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-02T00:29:55.524 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-04T01:58:21.334 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T01:58:39.483 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T02:48:47.043 - Error al inicializar la conexión con la base de datos:
+Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T02:49:04.429 - Error al inicializar la conexión con la base de datos:
+Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T02:52:47.802 - ? No hay conexión a Internet. Por favor verifica tu red.
+2025-08-04T02:52:55.010 - ? Error al inicializar la conexión: Sin conexión a Internet
+2025-08-04T02:59:09.757 - No hay conexión a Internet. Por favor verifica tu red.
+2025-08-04T02:59:12.125 - Error al inicializar la conexión con la base de datos:
+Sin conexión a Internet
+2025-08-04T02:59:20.090 - No hay conexión a Internet. Por favor verifica tu red.
+2025-08-04T02:59:23.022 - Error al inicializar la conexión con la base de datos:
+Sin conexión a Internet
+2025-08-04T02:59:42.512 - No hay conexión a Internet. Por favor verifica tu red.
+2025-08-04T02:59:44.277 - Error al inicializar la conexión con la base de datos:
+Sin conexión a Internet
+2025-08-04T03:05:47.905 - Error al inicializar la conexión con la base de datos:
+No se encontró el archivo config/config.env.properties
+2025-08-04T03:06:34.486 - Error al inicializar la conexión con la base de datos:
+No se encontró el archivo config/config.env.properties
+2025-08-04T03:10:18.489 - No hay conexión a Internet. Por favor verifica tu red.
+2025-08-04T03:10:20.524 - Error al inicializar la conexión con la base de datos:
+Sin conexión a Internet
+2025-08-04T03:10:27.600 - No hay conexión a Internet. Por favor verifica tu red.
+2025-08-04T03:10:29.661 - Error al inicializar la conexión con la base de datos:
+Sin conexión a Internet
+2025-08-04T03:12:47.071 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T03:13:00.267 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T03:13:28.109 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T03:14:03.031 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T03:15:06.852 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T03:15:32.441 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-08-04T19:22:57.109 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-04T19:25:25.674 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-04T19:25:51.951 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-04T19:31:32.244 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-04T19:34:24.786 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-05T01:00:35.923 - Error al inicializar pool: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-05T01:00:45.230 - Error al inicializar pool: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-06T14:37:16.462 - Error al inicializar pool: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-10T23:32:05.780 - Error al inicializar pool: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-10T23:32:42.372 - Error al inicializar pool: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-10T23:35:12.316 - Error al inicializar pool: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-08-10T23:44:45.523 - Error al inicializar pool: Failed to initialize pool: null,  message from server: "Host 'localhost' is not allowed to connect to this MariaDB server"
+2025-10-17T03:46:45.598 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-20T19:55:26.773 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-20T20:06:10.635 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T00:12:55.009 - Error al inicializar pool: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.zaxxer.hikari.pool.HikariPool.throwPoolInitializationException(HikariPool.java:596)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:582)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at Modelo.Conexion.inicializarPool(Conexion.java:50)
+	at Modelo.Conexion.getConnection(Conexion.java:60)
+	at Modelo.loginDAO.log(loginDAO.java:17)
+	at Vista.Login.loginUsuario(Login.java:291)
+	at Vista.Login.validar(Login.java:226)
+	at Vista.Login.txtPassActionPerformed(Login.java:591)
+	at Vista.Login.access$600(Login.java:41)
+	at Vista.Login$7.actionPerformed(Login.java:486)
+	at javax.swing.JTextField.fireActionPerformed(JTextField.java:508)
+	at javax.swing.JTextField.postActionEvent(JTextField.java:721)
+	at javax.swing.JTextField$NotifyAction.actionPerformed(JTextField.java:836)
+	at javax.swing.SwingUtilities.notifyAction(SwingUtilities.java:1663)
+	at javax.swing.JComponent.processKeyBinding(JComponent.java:2882)
+	at javax.swing.JComponent.processKeyBindings(JComponent.java:2929)
+	at javax.swing.JComponent.processKeyEvent(JComponent.java:2845)
+	at java.awt.Component.processEvent(Component.java:6310)
+	at java.awt.Container.processEvent(Container.java:2236)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2294)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.KeyboardFocusManager.redispatchEvent(KeyboardFocusManager.java:1954)
+	at java.awt.DefaultKeyboardFocusManager.dispatchKeyEvent(DefaultKeyboardFocusManager.java:806)
+	at java.awt.DefaultKeyboardFocusManager.preDispatchKeyEvent(DefaultKeyboardFocusManager.java:1074)
+	at java.awt.DefaultKeyboardFocusManager.typeAheadAssertions(DefaultKeyboardFocusManager.java:945)
+	at java.awt.DefaultKeyboardFocusManager.dispatchEvent(DefaultKeyboardFocusManager.java:771)
+	at java.awt.Component.dispatchEventImpl(Component.java:4760)
+	at java.awt.Container.dispatchEventImpl(Container.java:2294)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.awt.EventQueue$4.run(EventQueue.java:729)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:364)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:476)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	... 49 more
+Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:62)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:105)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:150)
+	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:166)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:89)
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:121)
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:945)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815)
+	... 57 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:153)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:63)
+	... 60 more
+2025-10-21T00:13:02.372 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T00:15:59.286 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T00:26:30.930 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T00:34:13.758 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T00:43:38.084 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T00:59:19.018 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T01:27:57.401 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T01:28:21.353 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T01:48:15.950 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T01:54:31.630 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:04:56.950 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:10:16.706 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:11:43.407 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:15:28.189 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:16:28.579 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:16:58.318 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:20:30.934 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:25:08.618 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:25:29.431 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:27:35.433 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:28:01.691 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:33:13.797 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:34:00.582 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:36:25.836 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:39:36.160 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:43:09.552 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:46:03.119 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:50:11.697 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:51:52.194 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T02:57:16.781 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:00:46.801 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:02:14.957 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:03:11.732 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:03:41.079 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:14:52.557 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:20:05.090 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:26:29.127 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:32:17.447 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:33:08.556 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:34:33.333 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:36:16.958 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:38:09.151 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:46:56.931 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:48:53.173 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:52:50.555 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:54:34.683 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T03:57:35.083 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:05:39.344 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:17:56.889 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:20:40.733 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:21:26.388 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:26:51.374 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:34:37.883 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:36:58.118 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:47:34.854 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:53:28.306 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T04:55:20.239 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T13:08:18.113 - Error al inicializar pool: Failed to initialize pool: Unknown database 'puntodeventalocal-vhaosystem'
+com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Unknown database 'puntodeventalocal-vhaosystem'
+	at com.zaxxer.hikari.pool.HikariPool.throwPoolInitializationException(HikariPool.java:596)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:582)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at Modelo.Conexion.inicializarPool(Conexion.java:50)
+	at Modelo.Conexion.getConnection(Conexion.java:60)
+	at Modelo.loginDAO.log(loginDAO.java:17)
+	at Vista.Login.loginUsuario(Login.java:292)
+	at Vista.Login.validar(Login.java:327)
+	at Vista.Login.txtPassActionPerformed(Login.java:621)
+	at Vista.Login.access$600(Login.java:41)
+	at Vista.Login$7.actionPerformed(Login.java:516)
+	at javax.swing.JTextField.fireActionPerformed(JTextField.java:508)
+	at javax.swing.JTextField.postActionEvent(JTextField.java:721)
+	at javax.swing.JTextField$NotifyAction.actionPerformed(JTextField.java:836)
+	at javax.swing.SwingUtilities.notifyAction(SwingUtilities.java:1663)
+	at javax.swing.JComponent.processKeyBinding(JComponent.java:2882)
+	at javax.swing.JComponent.processKeyBindings(JComponent.java:2929)
+	at javax.swing.JComponent.processKeyEvent(JComponent.java:2845)
+	at java.awt.Component.processEvent(Component.java:6310)
+	at java.awt.Container.processEvent(Container.java:2236)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2294)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.KeyboardFocusManager.redispatchEvent(KeyboardFocusManager.java:1954)
+	at java.awt.DefaultKeyboardFocusManager.dispatchKeyEvent(DefaultKeyboardFocusManager.java:806)
+	at java.awt.DefaultKeyboardFocusManager.preDispatchKeyEvent(DefaultKeyboardFocusManager.java:1074)
+	at java.awt.DefaultKeyboardFocusManager.typeAheadAssertions(DefaultKeyboardFocusManager.java:945)
+	at java.awt.DefaultKeyboardFocusManager.dispatchEvent(DefaultKeyboardFocusManager.java:771)
+	at java.awt.Component.dispatchEventImpl(Component.java:4760)
+	at java.awt.Container.dispatchEventImpl(Container.java:2294)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:758)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:86)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.awt.EventQueue$4.run(EventQueue.java:729)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:76)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:728)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:201)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: java.sql.SQLSyntaxErrorException: Unknown database 'puntodeventalocal-vhaosystem'
+	at com.mysql.cj.jdbc.exceptions.SQLError.createSQLException(SQLError.java:121)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:122)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:364)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:476)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	... 49 more
+2025-10-21T13:17:25.643 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T13:19:24.247 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T13:23:16.200 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T13:33:33.942 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T13:35:01.690 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T13:35:34.912 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T17:47:40.700 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T17:49:07.488 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-21T17:59:43.659 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-22T11:19:02.170 - Error al inicializar pool: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+com.zaxxer.hikari.pool.HikariPool$PoolInitializationException: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.zaxxer.hikari.pool.HikariPool.throwPoolInitializationException(HikariPool.java:596)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:582)
+	at com.zaxxer.hikari.pool.HikariPool.<init>(HikariPool.java:115)
+	at com.zaxxer.hikari.HikariDataSource.<init>(HikariDataSource.java:81)
+	at Modelo.Conexion.inicializarPool(Conexion.java:50)
+	at Modelo.Conexion.getConnection(Conexion.java:60)
+	at Modelo.loginDAO.log(loginDAO.java:17)
+	at Vista.Login.loginUsuario(Login.java:292)
+	at Vista.Login.validar(Login.java:327)
+	at Vista.Login.txtPassActionPerformed(Login.java:621)
+	at Vista.Login.access$600(Login.java:41)
+	at Vista.Login$7.actionPerformed(Login.java:516)
+	at javax.swing.JTextField.fireActionPerformed(JTextField.java:508)
+	at javax.swing.JTextField.postActionEvent(JTextField.java:721)
+	at javax.swing.JTextField$NotifyAction.actionPerformed(JTextField.java:836)
+	at javax.swing.SwingUtilities.notifyAction(SwingUtilities.java:1668)
+	at javax.swing.JComponent.processKeyBinding(JComponent.java:2882)
+	at javax.swing.JComponent.processKeyBindings(JComponent.java:2929)
+	at javax.swing.JComponent.processKeyEvent(JComponent.java:2845)
+	at java.awt.Component.processEvent(Component.java:6316)
+	at java.awt.Container.processEvent(Container.java:2239)
+	at java.awt.Component.dispatchEventImpl(Component.java:4889)
+	at java.awt.Container.dispatchEventImpl(Container.java:2297)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.KeyboardFocusManager.redispatchEvent(KeyboardFocusManager.java:1954)
+	at java.awt.DefaultKeyboardFocusManager.dispatchKeyEvent(DefaultKeyboardFocusManager.java:835)
+	at java.awt.DefaultKeyboardFocusManager.preDispatchKeyEvent(DefaultKeyboardFocusManager.java:1103)
+	at java.awt.DefaultKeyboardFocusManager.typeAheadAssertions(DefaultKeyboardFocusManager.java:974)
+	at java.awt.DefaultKeyboardFocusManager.dispatchEvent(DefaultKeyboardFocusManager.java:800)
+	at java.awt.Component.dispatchEventImpl(Component.java:4760)
+	at java.awt.Container.dispatchEventImpl(Container.java:2297)
+	at java.awt.Window.dispatchEventImpl(Window.java:2746)
+	at java.awt.Component.dispatchEvent(Component.java:4711)
+	at java.awt.EventQueue.dispatchEventImpl(EventQueue.java:760)
+	at java.awt.EventQueue.access$500(EventQueue.java:97)
+	at java.awt.EventQueue$3.run(EventQueue.java:709)
+	at java.awt.EventQueue$3.run(EventQueue.java:703)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:84)
+	at java.awt.EventQueue$4.run(EventQueue.java:733)
+	at java.awt.EventQueue$4.run(EventQueue.java:731)
+	at java.security.AccessController.doPrivileged(Native Method)
+	at java.security.ProtectionDomain$JavaSecurityAccessImpl.doIntersectionPrivilege(ProtectionDomain.java:74)
+	at java.awt.EventQueue.dispatchEvent(EventQueue.java:730)
+	at java.awt.EventDispatchThread.pumpOneEventForFilters(EventDispatchThread.java:205)
+	at java.awt.EventDispatchThread.pumpEventsForFilter(EventDispatchThread.java:116)
+	at java.awt.EventDispatchThread.pumpEventsForHierarchy(EventDispatchThread.java:105)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:101)
+	at java.awt.EventDispatchThread.pumpEvents(EventDispatchThread.java:93)
+	at java.awt.EventDispatchThread.run(EventDispatchThread.java:82)
+Caused by: com.mysql.cj.jdbc.exceptions.CommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at com.mysql.cj.jdbc.exceptions.SQLError.createCommunicationsException(SQLError.java:175)
+	at com.mysql.cj.jdbc.exceptions.SQLExceptionsMapping.translateException(SQLExceptionsMapping.java:64)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:825)
+	at com.mysql.cj.jdbc.ConnectionImpl.<init>(ConnectionImpl.java:446)
+	at com.mysql.cj.jdbc.ConnectionImpl.getInstance(ConnectionImpl.java:239)
+	at com.mysql.cj.jdbc.NonRegisteringDriver.connect(NonRegisteringDriver.java:188)
+	at com.zaxxer.hikari.util.DriverDataSource.getConnection(DriverDataSource.java:138)
+	at com.zaxxer.hikari.pool.PoolBase.newConnection(PoolBase.java:364)
+	at com.zaxxer.hikari.pool.PoolBase.newPoolEntry(PoolBase.java:206)
+	at com.zaxxer.hikari.pool.HikariPool.createPoolEntry(HikariPool.java:476)
+	at com.zaxxer.hikari.pool.HikariPool.checkFailFast(HikariPool.java:561)
+	... 49 more
+Caused by: com.mysql.cj.exceptions.CJCommunicationsException: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance0(Native Method)
+	at sun.reflect.NativeConstructorAccessorImpl.newInstance(NativeConstructorAccessorImpl.java:62)
+	at sun.reflect.DelegatingConstructorAccessorImpl.newInstance(DelegatingConstructorAccessorImpl.java:45)
+	at java.lang.reflect.Constructor.newInstance(Constructor.java:423)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:62)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:105)
+	at com.mysql.cj.exceptions.ExceptionFactory.createException(ExceptionFactory.java:150)
+	at com.mysql.cj.exceptions.ExceptionFactory.createCommunicationsException(ExceptionFactory.java:166)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:89)
+	at com.mysql.cj.NativeSession.connect(NativeSession.java:121)
+	at com.mysql.cj.jdbc.ConnectionImpl.connectOneTryOnly(ConnectionImpl.java:945)
+	at com.mysql.cj.jdbc.ConnectionImpl.createNewIO(ConnectionImpl.java:815)
+	... 57 more
+Caused by: java.net.ConnectException: Connection refused: connect
+	at java.net.DualStackPlainSocketImpl.waitForConnect(Native Method)
+	at java.net.DualStackPlainSocketImpl.socketConnect(DualStackPlainSocketImpl.java:85)
+	at java.net.AbstractPlainSocketImpl.doConnect(AbstractPlainSocketImpl.java:350)
+	at java.net.AbstractPlainSocketImpl.connectToAddress(AbstractPlainSocketImpl.java:206)
+	at java.net.AbstractPlainSocketImpl.connect(AbstractPlainSocketImpl.java:188)
+	at java.net.PlainSocketImpl.connect(PlainSocketImpl.java:172)
+	at java.net.SocksSocketImpl.connect(SocksSocketImpl.java:392)
+	at java.net.Socket.connect(Socket.java:589)
+	at com.mysql.cj.protocol.StandardSocketFactory.connect(StandardSocketFactory.java:153)
+	at com.mysql.cj.protocol.a.NativeSocketConnection.connect(NativeSocketConnection.java:63)
+	... 60 more
+2025-10-22T11:19:14.057 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-22T11:20:38.152 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-22T11:24:51.513 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-22T11:29:35.952 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-22T11:31:13.795 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-22T11:50:58.415 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-22T11:56:06.228 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T00:44:13.239 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T00:49:51.135 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T00:57:38.179 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:01:23.538 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:09:29.648 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:10:49.273 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:13:37.132 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:44:28.918 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:47:46.539 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:51:47.632 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:55:00.695 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:55:55.320 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:57:58.292 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T01:59:39.231 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T02:02:16.001 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-23T02:06:53.163 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-31T02:47:13.500 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-31T02:57:45.512 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-31T03:00:13.060 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-31T03:06:00.082 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-31T03:08:42.750 - INFO - Pool HikariCP inicializado correctamente.
+2025-10-31T03:15:38.118 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-02T00:37:15.786 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-02T00:38:36.411 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-02T00:41:18.020 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-02T08:43:47.708 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-02T15:31:09.102 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-03T23:50:34.121 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-04T01:22:20.967 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-04T03:18:37.726 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-04T03:25:00.265 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-04T03:26:03.339 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-04T03:29:38.656 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-09T17:12:07.121 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-15T23:41:24.922 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-15T23:48:58.138 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-15T23:49:47.192 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-15T23:54:03.366 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-15T23:54:57.731 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-15T23:55:20.331 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:15:31.567 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:17:18.244 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:20:25.775 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:22:49.618 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:25:46.732 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:27:17.320 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:28:56.883 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:30:20.392 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T00:48:43.165 - INFO - Pool HikariCP inicializado usando: config/config.local.properties
+2025-11-16T01:51:57.879 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T01:52:20.481 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T01:53:03.655 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T01:56:44.666 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T01:56:55.780 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T01:57:15.638 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T01:57:20.526 - INFO - Usuario válido: NA | Empresa: 20
+2025-11-16T01:57:32.155 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T01:57:39.136 - ERROR - Intento de login fallido: NA | Empresa: 20 - 
+2025-11-16T01:58:03.229 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2025-11-16T02:03:03.827 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T02:03:21.067 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2025-11-16T02:03:34.909 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:03:52.465 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T02:04:12.186 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:06:21.321 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:06:28.369 - ERROR - Intento de login fallido: victorluishernandez92@gmail.com | Empresa: 1 - 
+2025-11-16T02:06:39.833 - INFO - Usuario válido: NA | Empresa: 20
+2025-11-16T02:13:36.718 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:14:43.791 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:15:02.704 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:15:19.530 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:15:52.249 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:18:04.622 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:18:34.817 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:19:02.218 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:19:58.298 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:20:11.025 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:20:30.078 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:20:42.657 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:21:04.126 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:22:41.696 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T02:23:06.147 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2025-11-16T02:23:45.014 - ERROR - Sin conexión - HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-11-16T02:24:07.151 - ERROR - Error al inicializar pool - Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-11-16T02:24:15.498 - ERROR - Error al inicializar pool - Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-11-16T02:24:48.670 - ERROR - Error al inicializar pool - Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-11-16T02:27:18.985 - ERROR - Error al inicializar pool - Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-11-16T02:30:01.704 - ERROR - Error al inicializar pool - Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-11-16T02:30:28.639 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T02:30:28.726 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2025-11-16T02:30:37.852 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2025-11-16T02:30:56.467 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2025-11-16T02:32:05.453 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T02:32:09.715 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2025-11-16T02:32:14.434 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2025-11-16T02:45:04.315 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:45:52.665 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T02:46:31.071 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:49:59.415 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:50:10.775 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:53:24.579 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:53:41.118 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T02:53:47.871 - INFO - Usuario válido: loo | Empresa: 25
+2025-11-16T02:54:03.131 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T03:01:01.776 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T03:01:16.791 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T03:02:59.420 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T03:04:17.244 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T03:04:29.147 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T03:57:35.949 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T03:57:43.956 - ERROR - Intento de login fallido: NA | Empresa: 29 - 
+2025-11-16T03:58:14.864 - ERROR - Intento de login fallido: victorluishenrandez92@gmail.com | Empresa: 1 - 
+2025-11-16T03:58:27.987 - ERROR - Intento de login fallido: victorluishenrandez92@gmail.com | Empresa: 1 - 
+2025-11-16T03:58:38.292 - ERROR - Intento de login fallido: todrigo@gmail.com | Empresa: 2 - 
+2025-11-16T03:58:41.908 - ERROR - Intento de login fallido: todrigo@gmail.com | Empresa: 2 - 
+2025-11-16T03:58:48.005 - ERROR - Intento de login fallido: todrig@gmail.com | Empresa: 2 - 
+2025-11-16T03:58:54.141 - ERROR - Intento de login fallido: todrig@gmail.com | Empresa: 22 - 
+2025-11-16T03:59:02.338 - ERROR - Intento de login fallido: rodrig@gmail.com | Empresa: 22 - 
+2025-11-16T03:59:09.554 - INFO - Usuario válido: Rodrigg | Empresa: 23
+2025-11-16T03:59:13.466 - INFO - Usuario válido: Rodrigg | Empresa: 23
+2025-11-16T03:59:31.920 - INFO - Usuario válido: NA | Empresa: 20
+2025-11-16T22:56:24.019 - ERROR - Error al inicializar pool - Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-11-16T22:57:27.161 - INFO - Pool HikariCP inicializado con entorno: local
+2025-11-16T22:58:15.628 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:03:05.134 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:03:33.712 - INFO - Pool HikariCP inicializado correctamente.
+2025-11-16T23:03:52.807 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:09:06.549 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:10:37.514 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:10:52.336 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:11:56.104 - INFO - Usuario válido: NA | Empresa: 4
+2025-11-16T23:12:06.572 - INFO - Usuario válido: NA | Empresa: 4
+2025-11-16T23:12:09.370 - INFO - Usuario válido: NA | Empresa: 4
+2025-11-16T23:13:31.403 - INFO - Usuario válido: NA | Empresa: 4
+2025-11-16T23:16:09.260 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:36:58.263 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:37:43.320 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-16T23:37:51.041669900 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-17T14:14:45.291 - INFO - Pool HikariCP inicializado con entorno: prod
+2025-11-17T14:14:53.539 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:27:22.660 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:27:50.908 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:28:22.086 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:28:49.266 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:28:51.772 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:29:02.049 - ERROR - Intento de login fallido: admin@gmail.com | Empresa: 9 - 
+2026-01-02T01:30:14.219 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-01-02T01:31:45.349 - ERROR - Intento de login fallido: pizza@gmail.com | Empresa: 22 - 
+2026-01-02T01:31:50.702 - ERROR - Intento de login fallido: pizza@gmail.com | Empresa: 22 - 
+2026-01-02T01:32:04.702 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T01:34:01.304 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:34:08.037 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T01:46:17.473 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:46:23.126 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T01:47:59.122 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:48:14.123 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:48:17.632 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T01:50:02.149 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:50:07.454 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T01:51:14.235 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T01:51:20.225 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T01:53:17.333 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T19:10:53.569 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T19:21:40.363 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T19:21:45.661 - ERROR - Intento de login fallido: pizza@gmail.com | Empresa: 22 - 
+2026-01-02T19:21:58.768 - INFO - Usuario válido: victor luis hernandez | Empresa: 1

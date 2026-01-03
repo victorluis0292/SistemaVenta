@@ -1,0 +1,180 @@
+package Vista;
+
+import Modelo.Conexion;
+import java.awt.BorderLayout;
+import java.awt.CardLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
+import java.awt.GridLayout;
+import java.awt.Insets;
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import javax.swing.BorderFactory;
+import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.JFrame;
+import javax.swing.JLabel;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JTextField;
+import javax.swing.SwingUtilities;
+import javax.swing.*;
+import java.awt.*;
+/**
+ *
+ * @author vic
+ */
+public class MovimientosCaja extends javax.swing.JFrame {
+ public static MovimientosCaja instance;
+  // Campos para ingreso
+    public JTextField txtMontoIngreso;
+    public JTextField txtConceptoIngreso;
+    public JTextField txtNotaIngreso;
+    public JButton btnGuardarIngreso;
+
+    // Campos para egreso
+    public JTextField txtMontoEgreso;
+    public JTextField txtConceptoEgreso;
+    public JTextField txtNotaEgreso;
+    public JComboBox<String> cmbGastoEgreso;
+    public JButton btnGuardarEgreso;
+
+    private CardLayout cardLayout;
+    private JPanel panelContenido;
+    private JButton btnVerIngresos;
+    private JButton btnVerEgresos;
+
+    
+    public MovimientosCaja() {
+        setTitle("Movimientos de Caja");
+        setSize(500, 300);
+        setLocationRelativeTo(null);
+        setDefaultCloseOperation(DISPOSE_ON_CLOSE);
+   instance = this;
+        initComponents();
+    }
+
+
+private void initComponents() {
+        // Botones para cambiar panel
+        btnVerIngresos = new JButton("Ingresos");
+        btnVerEgresos = new JButton("Egresos");
+
+        JPanel panelBotones = new JPanel();
+        panelBotones.add(btnVerIngresos);
+        panelBotones.add(btnVerEgresos);
+
+        cardLayout = new CardLayout();
+        panelContenido = new JPanel(cardLayout);
+
+        // Panel Ingresos
+        JPanel panelIngresos = new JPanel(new GridLayout(5, 2, 10, 10));
+        panelIngresos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel lblMontoIngreso = new JLabel("Monto:");
+        txtMontoIngreso = new JTextField();
+
+        JLabel lblConceptoIngreso = new JLabel("Concepto:");
+        txtConceptoIngreso = new JTextField();
+
+        JLabel lblNotaIngreso = new JLabel("Nota:");
+        txtNotaIngreso = new JTextField();
+
+        btnGuardarIngreso = new JButton("Guardar Ingreso");
+
+        panelIngresos.add(lblMontoIngreso);
+        panelIngresos.add(txtMontoIngreso);
+        panelIngresos.add(lblConceptoIngreso);
+        panelIngresos.add(txtConceptoIngreso);
+        panelIngresos.add(lblNotaIngreso);
+        panelIngresos.add(txtNotaIngreso);
+        panelIngresos.add(new JLabel()); // espacio
+        panelIngresos.add(btnGuardarIngreso);
+
+        // Panel Egresos
+        JPanel panelEgresos = new JPanel(new GridLayout(6, 2, 10, 10));
+        panelEgresos.setBorder(BorderFactory.createEmptyBorder(20, 20, 20, 20));
+
+        JLabel lblMontoEgreso = new JLabel("Monto:");
+        txtMontoEgreso = new JTextField();
+
+        JLabel lblConceptoEgreso = new JLabel("Concepto:");
+        txtConceptoEgreso = new JTextField();
+
+        JLabel lblNotaEgreso = new JLabel("Nota:");
+        txtNotaEgreso = new JTextField();
+
+        JLabel lblGastoEgreso = new JLabel("Tipo de gasto:");
+        cmbGastoEgreso = new JComboBox<>(new String[]{"Proveedor","Gastos generales", "Compra de materiales", "Servicios", "Otro"});
+
+        btnGuardarEgreso = new JButton("Guardar Egreso");
+
+        panelEgresos.add(new JLabel("Operacion:"));
+        panelEgresos.add(cmbGastoEgreso);
+        panelEgresos.add(lblMontoEgreso);
+        panelEgresos.add(txtMontoEgreso);
+        panelEgresos.add(lblConceptoEgreso);
+        panelEgresos.add(txtConceptoEgreso);
+        panelEgresos.add(lblNotaEgreso);
+        panelEgresos.add(txtNotaEgreso);
+       
+        panelEgresos.add(new JLabel());
+        panelEgresos.add(btnGuardarEgreso);
+
+        panelContenido.add(panelIngresos, "ingresos");
+        panelContenido.add(panelEgresos, "egresos");
+
+        btnVerIngresos.addActionListener(e -> cardLayout.show(panelContenido, "ingresos"));
+        btnVerEgresos.addActionListener(e -> cardLayout.show(panelContenido, "egresos"));
+
+        getContentPane().setLayout(new BorderLayout());
+        getContentPane().add(panelBotones, BorderLayout.NORTH);
+        getContentPane().add(panelContenido, BorderLayout.CENTER);
+    }
+ 
+  
+ 
+    public static void main(String[] args) {
+    SwingUtilities.invokeLater(() -> {
+        MovimientosCaja form = new MovimientosCaja();
+        new Controlador.MovimientosCajaController(form);
+        form.setVisible(true);
+    });
+}
+
+    /**
+     * This method is called from within the constructor to initialize the form.
+     * WARNING: Do NOT modify this code. The content of this method is always
+     * regenerated by the Form Editor.
+     */
+    
+   // @SuppressWarnings("unchecked")
+    /*
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
+    private void initComponents() {
+
+        setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
+
+        javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
+        getContentPane().setLayout(layout);
+        layout.setHorizontalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 717, Short.MAX_VALUE)
+        );
+        layout.setVerticalGroup(
+            layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
+            .addGap(0, 578, Short.MAX_VALUE)
+        );
+
+        pack();
+    }// </editor-fold>//GEN-END:initComponents
+*/
+    /**
+     * @param args the command line arguments
+     */
+   
+
+    // Variables declaration - do not modify//GEN-BEGIN:variables
+    // End of variables declaration//GEN-END:variables
+}
