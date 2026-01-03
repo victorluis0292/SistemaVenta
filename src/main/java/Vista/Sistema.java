@@ -2697,9 +2697,10 @@ lg.setIdEmpresa(Sistema.getIdEmpresaActiva());
     }//GEN-LAST:event_btnEliminarProActionPerformed
 
     private void btnEditarproActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarproActionPerformed
-       // 1️⃣ Validar selección de producto
+    
+    // 1️⃣ Validar selección de producto
     if (txtIdproducto.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Seleccione una fila");
+        JOptionPane.showMessageDialog(null, "Seleccione un producto de la tabla");
         return;
     }
 
@@ -2720,52 +2721,64 @@ lg.setIdEmpresa(Sistema.getIdEmpresaActiva());
         return;
     }
 
+    // 4️⃣ Validar proveedor (🔴 AQUÍ ESTABA EL PROBLEMA)
+    Combo itemP = (Combo) cbxProveedorPro.getSelectedItem();
+    if (itemP == null || itemP.getId() <= 0) {
+        JOptionPane.showMessageDialog(
+            null,
+            "Debe seleccionar un proveedor válido",
+            "Proveedor requerido",
+            JOptionPane.WARNING_MESSAGE
+        );
+        cbxProveedorPro.requestFocus();
+        return;
+    }
+
     try {
-        // 4️⃣ Asignar datos al producto
+        // 5️⃣ Asignar datos al producto
         pro.setId(Integer.parseInt(txtIdproducto.getText().trim()));
         pro.setCodigo(txtCodigoPro.getText().trim());
         pro.setNombre(txtDesPro.getText().trim());
-
-        Combo itemP = (Combo) cbxProveedorPro.getSelectedItem();
-        if (itemP == null) {
-            JOptionPane.showMessageDialog(null, "Seleccione un proveedor válido.");
-            return;
-        }
-        pro.setProveedor(itemP.getId());
+        pro.setProveedor(itemP.getId()); // ✅ ID real del proveedor
 
         pro.setStock(Integer.parseInt(txtCantPro.getText().trim()));
         pro.setPrecio(Double.parseDouble(txtPrecioPro.getText().trim()));
         pro.setPreciocompra(Double.parseDouble(txtPreciocompraPro.getText().trim()));
 
-        // 🔴 CLAVE: enviar SIEMPRE la empresa
+        // 🔴 CLAVE: empresa SIEMPRE
         pro.setId_empresa(idEmpresaActiva);
 
-        // 5️⃣ Ejecutar actualización
-        proDao.ModificarProductos(pro);
+        // 6️⃣ Ejecutar actualización
+        if (proDao.ModificarProductos(pro)) {
 
-        JOptionPane.showMessageDialog(null, "Producto modificado correctamente");
+            JOptionPane.showMessageDialog(null, "Producto modificado correctamente");
 
-        // 6️⃣ Refrescar UI
-        LimpiarTable();
-        ListarProductos();
-        LimpiarProductos();
-        cbxProveedorPro.removeAllItems();
-        llenarProveedor();
+            // 7️⃣ Refrescar UI
+            LimpiarTable();
+            ListarProductos();
+            LimpiarProductos();
 
-        // 7️⃣ Estado de botones
-        btnEditarpro.setEnabled(false);
-        btnEliminarPro.setEnabled(false);
-        btnGuardarpro.setEnabled(true);
+            cbxProveedorPro.removeAllItems();
+            llenarProveedor();
+
+            // 8️⃣ Estado de botones
+            btnEditarpro.setEnabled(false);
+            btnEliminarPro.setEnabled(false);
+            btnGuardarpro.setEnabled(true);
+
+        } else {
+            JOptionPane.showMessageDialog(null, "No se pudo modificar el producto");
+        }
 
     } catch (NumberFormatException e) {
         JOptionPane.showMessageDialog(
-                null,
-                "Error: asegúrese de ingresar valores numéricos válidos."
+            null,
+            "Error: asegúrese de ingresar valores numéricos válidos."
         );
     } catch (Exception e) {
         JOptionPane.showMessageDialog(
-                null,
-                "Error al modificar el producto: " + e.getMessage()
+            null,
+            "Error al modificar el producto: " + e.getMessage()
         );
         e.printStackTrace();
     }
@@ -2881,33 +2894,51 @@ lg.setIdEmpresa(Sistema.getIdEmpresaActiva());
     }//GEN-LAST:event_btnNuevoProveedorActionPerformed
 
     private void btnEditarProveedorActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarProveedorActionPerformed
-     if ("".equals(txtIdProveedor.getText())) {
-        JOptionPane.showMessageDialog(null, "Seleccione una fila");
+    
+    // 1️⃣ Validar selección
+    if (txtIdProveedor.getText().trim().isEmpty()) {
+        JOptionPane.showMessageDialog(null, "Seleccione un proveedor de la tabla");
+        return;
+    }
+
+    // 2️⃣ Validar campos obligatorios
+    if (txtRucProveedor.getText().trim().isEmpty()
+        || txtNombreproveedor.getText().trim().isEmpty()
+        || txtTelefonoProveedor.getText().trim().isEmpty()
+        || txtDireccionProveedor.getText().trim().isEmpty()) {
+
+        JOptionPane.showMessageDialog(
+            null,
+            "Todos los campos son obligatorios",
+            "Validación",
+            JOptionPane.WARNING_MESSAGE
+        );
+        return;
+    }
+
+    // 3️⃣ Asignar valores
+    pr.setRuc(txtRucProveedor.getText().trim());
+    pr.setNombre(txtNombreproveedor.getText().trim());
+    pr.setTelefono(txtTelefonoProveedor.getText().trim());
+    pr.setDireccion(txtDireccionProveedor.getText().trim());
+    pr.setId(Integer.parseInt(txtIdProveedor.getText().trim()));
+
+    // 4️⃣ Empresa del usuario logueado
+    pr.setIdEmpresa(usuarioLogueado.getIdEmpresa());
+
+    // 5️⃣ Actualizar
+    if (PrDao.ModificarProveedor(pr)) {
+        JOptionPane.showMessageDialog(null, "Proveedor modificado correctamente");
+
+        LimpiarTable();
+        ListarProveedor(usuarioLogueado.getIdEmpresa());
+        LimpiarProveedor();
+
+        btnEditarProveedor.setEnabled(false);
+        btnEliminarProveedor.setEnabled(false);
+        btnguardarProveedor.setEnabled(true);
     } else {
-        if (!"".equals(txtRucProveedor.getText()) || !"".equals(txtNombreproveedor.getText()) 
-            || !"".equals(txtTelefonoProveedor.getText()) || !"".equals(txtDireccionProveedor.getText())) {
-            
-            pr.setRuc(txtRucProveedor.getText());
-            pr.setNombre(txtNombreproveedor.getText());
-            pr.setTelefono(txtTelefonoProveedor.getText());
-            pr.setDireccion(txtDireccionProveedor.getText());
-            pr.setId(Integer.parseInt(txtIdProveedor.getText()));
-            
-            // Asignar la empresa del usuario logueado
-            pr.setIdEmpresa(usuarioLogueado.getIdEmpresa());
-
-            PrDao.ModificarProveedor(pr);
-            JOptionPane.showMessageDialog(null, "Proveedor Modificado");
-
-            LimpiarTable();
-            // Listar solo los proveedores de la empresa del usuario logueado
-            ListarProveedor(usuarioLogueado.getIdEmpresa());
-
-            LimpiarProveedor();
-            btnEditarProveedor.setEnabled(false);
-            btnEliminarProveedor.setEnabled(false);
-            btnguardarProveedor.setEnabled(true);
-        }
+        JOptionPane.showMessageDialog(null, "Error al modificar proveedor");
     }
     }//GEN-LAST:event_btnEditarProveedorActionPerformed
 

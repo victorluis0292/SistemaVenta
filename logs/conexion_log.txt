@@ -811,3 +811,23 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2026-01-02T19:21:40.363 - INFO - Pool HikariCP inicializado con entorno: prod
 2026-01-02T19:21:45.661 - ERROR - Intento de login fallido: pizza@gmail.com | Empresa: 22 - 
 2026-01-02T19:21:58.768 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2026-01-02T20:23:05.227 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:23:20.912 - ERROR - Intento de login fallido: efren@gmai.com | Empresa: 22 - 
+2026-01-02T20:23:26.819 - ERROR - Intento de login fallido: efren@gmai.com | Empresa: 22 - 
+2026-01-02T20:23:56.042 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T20:24:43.823 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:24:59.943 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T20:27:38.319 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:27:45.302 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T20:38:01.233 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:38:07.210 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T20:45:44.224 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:45:48.921 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T20:47:24.771 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:47:31.162 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T20:49:47.060 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:49:58.639 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:50:10.771 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:50:33.727 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-01-02T20:50:37.052 - INFO - Usuario válido: pizza | Empresa: 22
+2026-01-02T20:51:30.804 - INFO - Usuario válido: pizza | Empresa: 22
