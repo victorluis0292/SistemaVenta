@@ -1,0 +1,211 @@
+2025-06-13T12:13:05.667 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:13:51.565 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:15:54.648 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:16:27.976 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-13T12:39:34.931 - Error al inicializar pool de conexiones: Failed to initialize pool: Access denied for user 'root'@'localhost' (using password: YES)
+2025-06-13T12:39:48.023 - Error al inicializar pool de conexiones: Failed to initialize pool: Access denied for user 'root'@'localhost' (using password: YES)
+2025-06-13T12:52:41.752 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T12:52:59.537 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T12:56:12.761 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T13:00:16.869 - Error al inicializar pool de conexiones: Archivo db_config.properties no encontrado
+2025-06-13T13:01:00.069 - Error al inicializar pool de conexiones: Uncompilable source code - cannot find symbol
+  symbol:   variable CONFIGURACIÓN
+  location: class Modelo.Conexion
+2025-06-16T00:14:15.989 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-17T13:38:46.708 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-18T02:13:32.947 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:14:32.118 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:15:08.311 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-18T02:19:52.554 - Error al inicializar pool de conexiones: Failed to initialize pool: Could not create connection to database server. Attempted reconnect 3 times. Giving up.
+2025-06-19T00:35:26.130 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-19T09:04:44.818 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-19T09:04:55.669 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-19T09:05:02.859 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-06-20T17:45:10.902 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-21T01:13:58.882 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T00:18:46.833 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T00:19:17.294 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:37:47.567 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:38:15.279 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:38:28.452 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-24T18:39:00.544 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-06-26T01:24:59.951 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T00:20:35.078 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T11:07:18.344 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-07-01T11:07:29.273 - Error al inicializar pool de conexiones: dataSource or dataSourceClassName or jdbcUrl is required.
+2025-07-01T19:10:45.649 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T19:11:28.173 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-01T19:11:44.976 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-02T01:06:55.597 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:07:12.601 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:09:25.052 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:13:46.722 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:15:42.074 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:17:44.121 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:21:05.639 - Error al inicializar pool de conexiones: config\config.local.properties (El sistema no puede encontrar la ruta especificada)
+2025-07-02T01:23:10.882 - Error al inicializar pool de conexiones: config.local.properties.txt (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:38:48.543 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:39:18.339 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:41:50.051 - Error al inicializar pool de conexiones: config.local.properties (El sistema no puede encontrar el archivo especificado)
+2025-07-02T01:43:44.741 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:46:07.850 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-02T01:47:27.741 - Error al inicializar pool de conexiones: No se encontró el archivo config/config.local.properties en el classpath.
+2025-07-04T12:07:22.445 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-04T12:32:30.891 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-08T12:56:47.438 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-08T12:57:03.439 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-08T12:57:26.787 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-10T19:13:55.519 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-10T19:18:55.494 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30008ms.
+2025-07-10T19:23:55.495 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-10T19:28:55.484 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-10T19:33:55.479 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-10T19:38:55.501 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-10T19:43:55.495 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-10T19:48:55.501 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-10T19:53:55.483 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T00:37:40.663 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 16755202ms.
+2025-07-11T00:38:10.671 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30005ms.
+2025-07-11T00:38:40.678 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30004ms.
+2025-07-11T00:39:10.681 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:39:40.693 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T00:40:10.701 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30005ms.
+2025-07-11T00:40:40.705 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T00:41:10.718 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T00:41:40.733 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T00:42:10.750 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T00:42:40.762 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T00:43:10.765 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:43:40.777 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T00:44:10.781 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30000ms.
+2025-07-11T00:44:40.790 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30008ms.
+2025-07-11T00:45:10.795 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T00:45:40.807 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T00:46:10.811 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T00:46:40.817 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T00:47:10.827 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30006ms.
+2025-07-11T00:47:40.829 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30000ms.
+2025-07-11T00:48:10.833 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:48:40.848 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T00:49:10.858 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T00:49:40.865 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30004ms.
+2025-07-11T00:50:10.875 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T00:50:40.886 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30008ms.
+2025-07-11T00:51:10.904 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T00:51:40.919 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T00:52:10.933 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T00:52:40.937 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:53:10.952 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T00:53:40.969 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-11T00:54:10.979 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T00:54:40.997 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T00:55:11.016 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T00:55:41.026 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30008ms.
+2025-07-11T00:56:11.037 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T00:56:41.050 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T00:57:11.053 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30000ms.
+2025-07-11T00:57:41.066 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T00:58:11.070 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T00:58:41.075 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T00:59:11.089 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T00:59:39.297 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-11T00:59:41.100 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30009ms.
+2025-07-11T01:00:13.942 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-11T01:00:25.587 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-11T15:06:32.941 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-11T15:11:32.916 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T15:16:32.913 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T15:21:32.913 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T15:26:32.916 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T15:31:32.923 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T15:36:32.926 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30015ms.
+2025-07-11T15:41:32.911 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30006ms.
+2025-07-11T15:46:32.907 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T15:51:32.921 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-11T15:56:32.903 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T16:01:32.907 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T16:06:32.915 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30012ms.
+2025-07-11T16:11:32.903 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30006ms.
+2025-07-11T16:16:32.899 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T16:21:32.920 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T16:26:32.909 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30004ms.
+2025-07-11T16:31:32.900 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T16:36:32.921 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T16:41:32.917 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30011ms.
+2025-07-11T16:46:32.902 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30003ms.
+2025-07-11T16:51:32.905 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30006ms.
+2025-07-11T16:56:32.908 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30004ms.
+2025-07-11T17:01:32.920 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T17:06:32.904 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T17:11:32.912 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T17:16:32.914 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30005ms.
+2025-07-11T17:21:32.905 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T17:26:32.898 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30001ms.
+2025-07-11T17:31:32.899 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T17:36:32.920 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30014ms.
+2025-07-11T17:41:32.914 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30013ms.
+2025-07-11T17:46:32.917 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30007ms.
+2025-07-11T17:51:32.911 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30010ms.
+2025-07-11T17:56:32.900 - [KeepAlive] Error: HikariPool-1 - Connection is not available, request timed out after 30002ms.
+2025-07-11T17:56:47.063 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.
+2025-07-11T17:57:32.105 - Error al inicializar pool de conexiones: Failed to initialize pool: Communications link failure
+
+The last packet sent successfully to the server was 0 milliseconds ago. The driver has not received any packets from the server.

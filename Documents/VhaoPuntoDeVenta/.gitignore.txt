@@ -1,0 +1,4 @@
+# Ignorar configuración de producción
+src/main/resources/config/config.prod.properties
+# Ignorar configuración local
+src/main/resources/config/config.local.properties
