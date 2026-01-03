@@ -93,7 +93,7 @@ public boolean ModificarProductos(Productos pro) {
 
 
 
-    // Buscar producto por código filtrando por id_empresa
+    // Buscar producto por código filtrando por id_empresa s
     public Productos BuscarPro(String cod, int idEmpresa) {
         Productos producto = new Productos();
         String sql = "SELECT * FROM productos WHERE codigo = ? AND id_empresa = ?";

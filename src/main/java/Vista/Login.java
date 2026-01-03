@@ -31,7 +31,7 @@ public class Login extends JFrame {
         setLocationRelativeTo(null);
         setLayout(null);
 
-        // 🔹 Mostrar loader mientras se verifica actualización
+        // 🔹 Mostrar loader smientras se verifica actualización
         new Thread(() -> {
             LoaderUpdateSystemPDV loader = new LoaderUpdateSystemPDV(null, "Verificando actualización del sistema...");
             SwingUtilities.invokeLater(() -> loader.setVisible(true));
