@@ -10,16 +10,12 @@ public class CobroService {
 
     private final VentaDao ventaDao = new VentaDao();
     private final ProductosDao productosDao = new ProductosDao();
-    private int idEmpresaActiva;  // ✅ ahora es instancia y se setea
+    private int idEmpresaActiva;
 
     public void setIdEmpresaActiva(int id) {
         this.idEmpresaActiva = id;
     }
 
-    /**
-     * Registra una venta, sus detalles y actualiza el stock.
-     * Retorna el ID de la venta registrada.
-     */
     public int procesarVenta(int idTurno, int idCliente, String vendedor, JTable tablaVenta, double total,String tipoPago, double pagaCon, double cambio, double comision, double subtotal) throws Exception {
 
         System.out.println("🚀 procesarVenta iniciado con idTurno=" + idTurno + ", idCliente=" + idCliente);
@@ -47,7 +43,6 @@ public class CobroService {
 
         Detalle detalle = new Detalle();
 
-        // Datos adicionales si es crédito
         int dniCliente = -1;
         String nombreCliente = "";
         if (tipoPago.equalsIgnoreCase("credito")) {
@@ -56,11 +51,12 @@ public class CobroService {
 
         for (int i = 0; i < tablaVenta.getRowCount(); i++) {
             int idProducto = Integer.parseInt(tablaVenta.getValueAt(i, 0).toString());
-            int cantidad = Integer.parseInt(tablaVenta.getValueAt(i, 2).toString());
+            double cantidad = Double.parseDouble(
+                tablaVenta.getValueAt(i, 2).toString().replace(",", ".")
+            );
             double precio = Double.parseDouble(tablaVenta.getValueAt(i, 3).toString());
             double totalProducto = cantidad * precio;
 
-            // Validar cantidad positiva
             if (cantidad < 0) {
                 System.out.println("⚠ Cantidad negativa detectada para producto ID=" + idProducto + ", usando abs() para seguridad.");
                 cantidad = Math.abs(cantidad);
@@ -83,16 +79,15 @@ public class CobroService {
                 ventaDao.RegistrarDetalle(detalle);
             }
 
-            // Buscar producto filtrando por la empresa activa
             Productos producto = productosDao.BuscarId(idProducto, idEmpresaActiva);
             if (producto != null) {
-                int nuevoStock = producto.getStock() - cantidad;
-                if (nuevoStock < 0) nuevoStock = 0;  // seguridad
+                double nuevoStock = producto.getStock() - cantidad;   // 👈 cambio: int a double
+                if (nuevoStock < 0) nuevoStock = 0;
 
                 System.out.println("🔹 Producto ID=" + idProducto + ", stock actual=" + producto.getStock() +
                                    ", cantidad vendida=" + cantidad + ", stock nuevo=" + nuevoStock);
 
-              ventaDao.ActualizarStock(cantidad, idProducto, idEmpresaActiva);
+                ventaDao.ActualizarStock(cantidad, idProducto, idEmpresaActiva);
 
             } else {
                 System.out.println("❌ Producto con ID " + idProducto + " no pertenece a la empresa activa.");
@@ -102,9 +97,6 @@ public class CobroService {
         return idVenta;
     }
 
-    /**
-     * Genera y manda a imprimir el ticket de una venta.
-     */
     public void generarYImprimirTicket(int idVenta, double pago, double cambio, String tipoPago) {
         try {
             if (tipoPago.equalsIgnoreCase("Efectivo") || tipoPago.equalsIgnoreCase("Mixto")) {
@@ -119,9 +111,6 @@ public class CobroService {
         }
     }
 
-    /**
-     * Muestra el ticket generado en un JDialog.
-     */
     public void mostrarTicketDialog(JFrame parent, String ticketTexto) {
         JTextArea area = new JTextArea(ticketTexto);
         area.setEditable(false);

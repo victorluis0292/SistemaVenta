@@ -4,25 +4,41 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProductosDao {
     Conexion cn = new Conexion();
 
-    // Registrar productos incluyendo id_empresa
+    // Registrar productos incluyendo id_empresa, categoria, id_catalogo_global e id_categoria
     public boolean RegistrarProductos(Productos pro) {
-        String sql = "INSERT INTO productos (codigo, nombre, proveedor, stock, precio, preciocompra, id_empresa) VALUES (?,?,?,?,?,?,?)";
+        String sql = "INSERT INTO productos (codigo, nombre, categoria, proveedor, stock, precio, preciocompra, id_empresa, imagen_url, id_catalogo_global, id_categoria) VALUES (?,?,?,?,?,?,?,?,?,?,?)";
         try (Connection con = cn.getConnection();
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setString(1, pro.getCodigo());
             ps.setString(2, pro.getNombre());
-            ps.setInt(3, pro.getProveedor());
-            ps.setInt(4, pro.getStock());
-            ps.setDouble(5, pro.getPrecio());
-            ps.setDouble(6, pro.getPreciocompra());
-            ps.setInt(7, pro.getId_empresa()); // NUEVO
+            ps.setString(3, pro.getCategoria());
+            ps.setInt(4, pro.getProveedor());
+            ps.setInt(5, pro.getStock());
+            ps.setDouble(6, pro.getPrecio());
+            ps.setDouble(7, pro.getPreciocompra());
+            ps.setInt(8, pro.getId_empresa());
+            ps.setString(9, pro.getImagenUrl());
+
+            if (pro.getIdCatalogoGlobal() != null) {
+                ps.setInt(10, pro.getIdCatalogoGlobal());
+            } else {
+                ps.setNull(10, Types.INTEGER);
+            }
+
+            if (pro.getIdCategoria() != null) {
+                ps.setInt(11, pro.getIdCategoria());
+            } else {
+                ps.setNull(11, Types.INTEGER);
+            }
+
             ps.execute();
             return true;
         } catch (SQLException e) {
@@ -47,12 +63,22 @@ public class ProductosDao {
                     pro.setId(rs.getInt("id"));
                     pro.setCodigo(rs.getString("codigo"));
                     pro.setNombre(rs.getString("nombre"));
+                    pro.setCategoria(rs.getString("categoria")); 
                     pro.setProveedor(rs.getInt("id_proveedor"));
                     pro.setProveedorPro(rs.getString("nombre_proveedor"));
                     pro.setStock(rs.getInt("stock"));
                     pro.setPrecio(rs.getDouble("precio"));
+                    pro.setPrecioKg(pro.getPrecio()); 
                     pro.setPreciocompra(rs.getDouble("preciocompra"));
-                    pro.setId_empresa(idEmpresa); // NUEVO
+                    pro.setId_empresa(idEmpresa);
+                    pro.setImagenUrl(rs.getString("imagen_url")); // ✅ ¡Agregado aquí!
+
+                    int idCatGlobal = rs.getInt("id_catalogo_global");
+                    pro.setIdCatalogoGlobal(rs.wasNull() ? null : idCatGlobal); // ✅ Vínculo con catalogo_global
+
+                    int idCategoria = rs.getInt("id_categoria");
+                    pro.setIdCategoria(rs.wasNull() ? null : idCategoria); // ✅ Vínculo con categorias
+
                     Listapro.add(pro);
                 }
             }
@@ -62,39 +88,45 @@ public class ProductosDao {
         return Listapro;
     }
 
-// Modificar producto incluyendo id_empresa
-public boolean ModificarProductos(Productos pro) {
+    // Modificar producto incluyendo id_empresa, categoria, id_catalogo_global e id_categoria
+   public boolean ModificarProductos(Productos pro) {
+        String sql = "UPDATE productos SET codigo=?, nombre=?, categoria=?, proveedor=?, stock=?, precio=?, preciocompra=?, id_empresa=?, imagen_url=?, id_catalogo_global=?, id_categoria=? WHERE id=?";
+        try (Connection con = cn.getConnection();
+             PreparedStatement ps = con.prepareStatement(sql)) {
 
-    String sql = "UPDATE productos "
-               + "SET codigo=?, nombre=?, proveedor=?, stock=?, precio=?, preciocompra=?, id_empresa=? "
-               + "WHERE id=?";
+            ps.setString(1, pro.getCodigo());
+            ps.setString(2, pro.getNombre());
+            ps.setString(3, pro.getCategoria());
+            ps.setInt(4, pro.getProveedor());
+            ps.setInt(5, pro.getStock());
+            ps.setDouble(6, pro.getPrecio());
+            ps.setDouble(7, pro.getPreciocompra());
+            ps.setInt(8, pro.getId_empresa());
+            ps.setString(9, pro.getImagenUrl()); 
 
-    try (Connection con = cn.getConnection();
-         PreparedStatement ps = con.prepareStatement(sql)) {
+            if (pro.getIdCatalogoGlobal() != null) {
+                ps.setInt(10, pro.getIdCatalogoGlobal());
+            } else {
+                ps.setNull(10, Types.INTEGER);
+            }
 
-        ps.setString(1, pro.getCodigo());
-        ps.setString(2, pro.getNombre());
-        ps.setInt(3, pro.getProveedor());
-        ps.setInt(4, pro.getStock());
-        ps.setDouble(5, pro.getPrecio());
-        ps.setDouble(6, pro.getPreciocompra());
-        ps.setInt(7, pro.getId_empresa());   // FK correcta
-        ps.setInt(8, pro.getId());           // 👈 ESTE FALTABA
+            if (pro.getIdCategoria() != null) {
+                ps.setInt(11, pro.getIdCategoria());
+            } else {
+                ps.setNull(11, Types.INTEGER);
+            }
 
-        ps.executeUpdate();
-        return true;
+            ps.setInt(12, pro.getId());
 
-    } catch (SQLException e) {
-        System.out.println("Error al modificar producto: " + e.getMessage());
-        e.printStackTrace();
-        return false;
+            ps.executeUpdate();
+            return true;
+        } catch (SQLException e) {
+            System.out.println("Error al modificar producto: " + e.getMessage());
+            return false;
+        }
     }
-}
 
-
-
-
-    // Buscar producto por código filtrando por id_empresa s
+    // Buscar producto por código filtrando por id_empresa
     public Productos BuscarPro(String cod, int idEmpresa) {
         Productos producto = new Productos();
         String sql = "SELECT * FROM productos WHERE codigo = ? AND id_empresa = ?";
@@ -108,11 +140,19 @@ public boolean ModificarProductos(Productos pro) {
                     producto.setId(rs.getInt("id"));
                     producto.setCodigo(rs.getString("codigo"));
                     producto.setNombre(rs.getString("nombre"));
+                    producto.setCategoria(rs.getString("categoria")); 
                     producto.setPrecio(rs.getDouble("precio"));
+                    producto.setPrecioKg(producto.getPrecio());
                     producto.setPreciocompra(rs.getDouble("preciocompra"));
                     producto.setStock(rs.getInt("stock"));
                     producto.setId_empresa(idEmpresa);
-                    return producto;
+                    producto.setImagenUrl(rs.getString("imagen_url")); // ✅ ¡Agregado aquí!
+
+                    int idCatGlobal = rs.getInt("id_catalogo_global");
+                    producto.setIdCatalogoGlobal(rs.wasNull() ? null : idCatGlobal); // ✅ Vínculo con catalogo_global
+
+                    int idCategoria = rs.getInt("id_categoria");
+                    producto.setIdCategoria(rs.wasNull() ? null : idCategoria); // ✅ Vínculo con categorias
                 }
             }
         } catch (SQLException e) {
@@ -137,12 +177,21 @@ public boolean ModificarProductos(Productos pro) {
                     pro.setId(rs.getInt("id"));
                     pro.setCodigo(rs.getString("codigo"));
                     pro.setNombre(rs.getString("nombre"));
+                    pro.setCategoria(rs.getString("categoria")); 
                     pro.setProveedor(rs.getInt("proveedor"));
                     pro.setProveedorPro(rs.getString("nombre_proveedor"));
                     pro.setStock(rs.getInt("stock"));
                     pro.setPrecio(rs.getDouble("precio"));
+                    pro.setPrecioKg(pro.getPrecio());
                     pro.setPreciocompra(rs.getDouble("preciocompra"));
                     pro.setId_empresa(idEmpresa);
+                    pro.setImagenUrl(rs.getString("imagen_url")); // ✅ ¡Agregado aquí!
+
+                    int idCatGlobal = rs.getInt("id_catalogo_global");
+                    pro.setIdCatalogoGlobal(rs.wasNull() ? null : idCatGlobal); // ✅ Vínculo con catalogo_global
+
+                    int idCategoria = rs.getInt("id_categoria");
+                    pro.setIdCategoria(rs.wasNull() ? null : idCategoria); // ✅ Vínculo con categorias
                 }
             }
         } catch (SQLException e) {
@@ -151,7 +200,7 @@ public boolean ModificarProductos(Productos pro) {
         return pro;
     }
 
-    // Eliminar productos (no depende de id_empresa, pero podrías añadir filtro si quieres)
+    // Eliminar productos
     public boolean EliminarProductos(int id) {
         String sql = "DELETE FROM productos WHERE id = ?";
         try (Connection con = cn.getConnection();

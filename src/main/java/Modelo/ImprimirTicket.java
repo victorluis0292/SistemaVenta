@@ -71,103 +71,114 @@ public class ImprimirTicket {
     // =============================================
     // TICKET EFECTIVO
     // =============================================
-    public static String generarTicketEfectivo(int idVenta, double pago, double cambio, String tipoPago) {
-        StringBuilder sb = new StringBuilder();
-        int folio = obtenerFolio(idVenta);
+   public static String generarTicketEfectivo(int idVenta, double pago, double cambio, String tipoPago) {
+    StringBuilder sb = new StringBuilder();
+    int folio = obtenerFolio(idVenta);
 
-        try (Connection con = Conexion.getConnection()) {
+    try (Connection con = Conexion.getConnection()) {
 
-            // Datos empresa
-            String nombreNegocio = "Mi Negocio";
-            String direccion = "Mi Dirección";
-            String telefono = "Mi Teléfono";
+        // Datos empresa
+        String nombreNegocio = "Mi Negocio";
+        String direccion = "Mi Dirección";
+        String telefono = "Mi Teléfono";
 
-            String sqlEmpresa = 
-                "SELECT e.nombre, e.direccion, e.telefono " +
-                "FROM empresa e " +
-                "JOIN ventas v ON v.id_empresa = e.id_empresa " +
-                "WHERE v.id = ?";
+        String sqlEmpresa =
+            "SELECT e.nombre, e.direccion, e.telefono " +
+            "FROM empresa e " +
+            "JOIN ventas v ON v.id_empresa = e.id_empresa " +
+            "WHERE v.id = ?";
 
-            try (PreparedStatement psEmp = con.prepareStatement(sqlEmpresa)) {
-                psEmp.setInt(1, idVenta);
-                try (ResultSet rs = psEmp.executeQuery()) {
-                    if (rs.next()) {
-                        nombreNegocio = rs.getString("nombre");
-                        direccion = rs.getString("direccion");
-                        telefono = rs.getString("telefono");
-                    }
+        try (PreparedStatement psEmp = con.prepareStatement(sqlEmpresa)) {
+            psEmp.setInt(1, idVenta);
+            try (ResultSet rs = psEmp.executeQuery()) {
+                if (rs.next()) {
+                    nombreNegocio = rs.getString("nombre");
+                    direccion = rs.getString("direccion");
+                    telefono = rs.getString("telefono");
                 }
             }
-
-            sb.append("     ").append(nombreNegocio).append("\n");
-            sb.append(centrarConSaltos(direccion, 32));
-            sb.append("Tel: ").append(telefono).append("\n");
-            sb.append("------------------------------\n");
-            sb.append("Folio: ").append(folio).append("\n");
-
-            // Fecha y hora
-            TimeZone.setDefault(TimeZone.getTimeZone("GMT-06:00"));
-            Date ahora = new Date();
-            SimpleDateFormat sdfTicket = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-            sb.append("Fecha: ").append(sdfTicket.format(ahora)).append("\n");
-
-            // Datos venta y cliente
-            String sqlVenta =
-                "SELECT v.total, c.nombre AS cliente " +
-                "FROM ventas v LEFT JOIN clientes c ON v.cliente = c.id " +
-                "WHERE v.id = ?";
-            double totalVenta = 0;
-            try (PreparedStatement psVenta = con.prepareStatement(sqlVenta)) {
-                psVenta.setInt(1, idVenta);
-                try (ResultSet rsVenta = psVenta.executeQuery()) {
-                    if (rsVenta.next()) {
-                        String cliente = rsVenta.getString("cliente");
-                        sb.append("Cliente: ")
-                          .append(cliente != null ? cliente : "Público en general")
-                          .append("\n");
-                        totalVenta = rsVenta.getDouble("total");
-                    }
-                }
-            }
-
-            sb.append("------------------------------\n");
-
-            // Detalles venta
-            String sqlDetalle =
-                "SELECT p.nombre, d.cantidad, d.precio " +
-                "FROM detalle d JOIN productos p ON d.id_pro = p.id " +
-                "WHERE d.id_venta = ?";
-            try (PreparedStatement psDetalle = con.prepareStatement(sqlDetalle)) {
-                psDetalle.setInt(1, idVenta);
-                try (ResultSet rsDetalle = psDetalle.executeQuery()) {
-                    while (rsDetalle.next()) {
-                        String nombreProd = rsDetalle.getString("nombre");
-                        int cantidad = rsDetalle.getInt("cantidad");
-                        double precioUnit = rsDetalle.getDouble("precio");
-                        double subTotal = cantidad * precioUnit;
-
-                        sb.append(nombreProd).append("\n");
-                        sb.append(String.format("%dx$%.2f   $%.2f\n", cantidad, precioUnit, subTotal));
-                    }
-                }
-            }
-
-            sb.append("------------------------------\n");
-            sb.append("Tipo: ").append(tipoPago).append("\n");
-            sb.append(String.format("%-12s $%8.2f\n", "TOTAL:", totalVenta));
-            sb.append(String.format("%-12s $%8.2f\n", "PAGA CON:", pago));
-            sb.append(String.format("%-12s $%8.2f\n", "CAMBIO:", cambio));
-            sb.append("------------------------------\n");
-            sb.append("¡Gracias por su compra!\n");
-            sb.append("USAMOS VHAO PUNTO DE VENTAS\n\n\n");
-
-        } catch (SQLException e) {
-            e.printStackTrace();
-            sb.append("Error al generar ticket.\n");
         }
 
-        return sb.toString();
+        sb.append("     ").append(nombreNegocio).append("\n");
+        sb.append(centrarConSaltos(direccion, 32));
+        sb.append("Tel: ").append(telefono).append("\n");
+        sb.append("------------------------------\n");
+        sb.append("Folio: ").append(folio).append("\n");
+
+        // Fecha y hora
+        TimeZone.setDefault(TimeZone.getTimeZone("GMT-06:00"));
+        Date ahora = new Date();
+        SimpleDateFormat sdfTicket = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+        sb.append("Fecha: ").append(sdfTicket.format(ahora)).append("\n");
+
+        // Datos venta y cliente
+        String sqlVenta =
+            "SELECT v.total, c.nombre AS cliente " +
+            "FROM ventas v LEFT JOIN clientes c ON v.cliente = c.id " +
+            "WHERE v.id = ?";
+        double totalVenta = 0;
+        try (PreparedStatement psVenta = con.prepareStatement(sqlVenta)) {
+            psVenta.setInt(1, idVenta);
+            try (ResultSet rsVenta = psVenta.executeQuery()) {
+                if (rsVenta.next()) {
+                    String cliente = rsVenta.getString("cliente");
+                    sb.append("Cliente: ")
+                      .append(cliente != null ? cliente : "Público en general")
+                      .append("\n");
+                    totalVenta = rsVenta.getDouble("total");
+                }
+            }
+        }
+
+        sb.append("------------------------------\n");
+
+        // Detalles venta (incluyendo proveedor para distinguir verdulería)
+        String sqlDetalle =
+            "SELECT p.nombre, d.cantidad, d.precio, pr.nombre AS proveedor " +
+            "FROM detalle d " +
+            "JOIN productos p ON d.id_pro = p.id " +
+            "JOIN proveedor pr ON p.proveedor = pr.id " +
+            "WHERE d.id_venta = ?";
+        try (PreparedStatement psDetalle = con.prepareStatement(sqlDetalle)) {
+            psDetalle.setInt(1, idVenta);
+            try (ResultSet rsDetalle = psDetalle.executeQuery()) {
+                while (rsDetalle.next()) {
+                    String nombreProd = rsDetalle.getString("nombre");
+                    double cantidad = rsDetalle.getDouble("cantidad");   // 👈 antes getInt
+                    double precioUnit = rsDetalle.getDouble("precio");
+                    String proveedor = rsDetalle.getString("proveedor");
+                    double subTotal = cantidad * precioUnit;
+
+                    sb.append(nombreProd).append("\n");
+
+                    if ("verduleria".equalsIgnoreCase(proveedor)) {
+                        // cantidad ya está en kilos (ej. 0.200 kg), NO se divide entre 1000
+                        sb.append(String.format("%.3fkg x$%.2f/kg   $%.2f\n",
+                                cantidad, precioUnit, subTotal));
+                    } else {
+                        // productos normales
+                        sb.append(formatearLineaProducto(cantidad, precioUnit, subTotal));
+                    }
+                }
+            }
+        }
+
+        sb.append("------------------------------\n");
+        sb.append("Tipo: ").append(tipoPago).append("\n");
+        sb.append(String.format("%-12s $%8.2f\n", "TOTAL:", totalVenta));
+        sb.append(String.format("%-12s $%8.2f\n", "PAGA CON:", pago));
+        sb.append(String.format("%-12s $%8.2f\n", "CAMBIO:", cambio));
+        sb.append("------------------------------\n");
+        sb.append("¡Gracias por su compra!\n");
+        sb.append("USAMOS VHAO PUNTO DE VENTAS\n\n\n");
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+        sb.append("Error al generar ticket.\n");
     }
+
+    return sb.toString();
+}
 
     // =============================================
     // TICKET TARJETA
@@ -244,12 +255,12 @@ public class ImprimirTicket {
                 try (ResultSet rsDetalle = psDetalle.executeQuery()) {
                     while (rsDetalle.next()) {
                         String nombreProd = rsDetalle.getString("nombre");
-                        int cantidad = rsDetalle.getInt("cantidad");
+                        double cantidad = rsDetalle.getDouble("cantidad");   // 👈 antes getInt
                         double precioUnit = rsDetalle.getDouble("precio");
                         double subTotal = cantidad * precioUnit;
 
                         sb.append(nombreProd).append("\n");
-                        sb.append(String.format("%dx$%.2f   $%.2f\n", cantidad, precioUnit, subTotal));
+                        sb.append(formatearLineaProducto(cantidad, precioUnit, subTotal));
                     }
                 }
             }
@@ -531,5 +542,20 @@ public static String generarTicketCredito(int idVenta, double total, String tipo
             sb.append(texto).append("\n");
         }
         return sb.toString();
+    }
+
+    /**
+     * Formatea la línea de un producto en el ticket.
+     * Si la cantidad es un número entero (ej. 1.0, 2.0), se muestra sin decimales.
+     * Si tiene decimales (ej. 0.2, 1.5 -> verdulería u otros productos por peso), se muestran con 3 decimales.
+     */
+    private static String formatearLineaProducto(double cantidad, double precioUnit, double subTotal) {
+        String cantidadStr;
+        if (cantidad == Math.floor(cantidad)) {
+            cantidadStr = String.valueOf((int) cantidad);
+        } else {
+            cantidadStr = String.format("%.3f", cantidad);
+        }
+        return String.format("%sx$%.2f   $%.2f\n", cantidadStr, precioUnit, subTotal);
     }
 }

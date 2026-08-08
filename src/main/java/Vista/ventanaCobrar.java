@@ -22,6 +22,7 @@ import Modelo.AbonoDao;
 
 public final class ventanaCobrar extends JDialog {
     private int idEmpresaActiva;
+    private String dniCliente;
 
     private boolean cobroRealizado = false;
     private JTable TableConsultaCreditCliente;
@@ -52,12 +53,28 @@ public final class ventanaCobrar extends JDialog {
     }
 
     // Constructor para indicar si es venta crédito
-    public ventanaCobrar(JFrame parent, boolean esCredito, JTable TableConsultaCreditCliente) {
-        super(parent, "Pago", true);
-        this.esVentaCredito = esCredito;
-        this.TableConsultaCreditCliente = TableConsultaCreditCliente;
-        initComponentes();
-    }
+   public ventanaCobrar(
+        JFrame parent,
+        boolean esCredito,
+        JTable TableConsultaCreditCliente,
+        String dniCliente,
+        int idEmpresaActiva) {
+
+    super(parent, "Pago", true);
+
+    this.esVentaCredito = esCredito;
+    this.TableConsultaCreditCliente = TableConsultaCreditCliente;
+    this.dniCliente = dniCliente;
+    this.idEmpresaActiva = idEmpresaActiva;
+
+    System.out.println("========================================");
+    System.out.println("🟣 [LOG] Constructor crédito");
+    System.out.println("🟣 DNI cliente = " + this.dniCliente);
+    System.out.println("🟣 Empresa activa = " + this.idEmpresaActiva);
+    System.out.println("========================================");
+
+    initComponentes();
+}
 
     private void initComponentes() {
         setDefaultCloseOperation(WindowConstants.DO_NOTHING_ON_CLOSE);
@@ -248,12 +265,60 @@ public final class ventanaCobrar extends JDialog {
 
                     // Leemos el id que esté puesto en la UI, pero luego aplicaremos la regla:
                     // si es VENTA NORMAL forzamos idCliente = 1 (Mostrador)
-                    try {
-                        String idCampo = Sistema.txtIdCV.getText();
-                        idCliente = (idCampo == null || idCampo.trim().isEmpty()) ? -1 : Integer.parseInt(idCampo.trim());
-                    } catch (Exception ex) {
-                        idCliente = -1;
-                    }
+                   try {
+
+    if (esVentaCredito) {
+
+        // =====================================================
+        // CRÉDITO:
+        // El cliente ya viene identificado por DNI.
+        // NO usar Sistema.txtIdCV porque puede contener
+        // Cliente Mostrador (ID 1).
+        // =====================================================
+
+        System.out.println("🟣 [RULE] Venta CRÉDITO");
+        System.out.println("🟣 DNI cliente = " + dniCliente);
+        System.out.println("🟣 Empresa = " + idEmpresaActiva);
+
+        // Para crédito podemos buscar el ID real del cliente
+        // usando DNI + empresa.
+        idCliente = new VentaDao()
+                .obtenerIdClientePorDniEmpresa(
+                        Integer.parseInt(dniCliente),
+                        idEmpresaActiva
+                );
+
+        if (idCliente <= 0) {
+            throw new Exception(
+                    "No se encontró el cliente con DNI "
+                    + dniCliente
+                    + " en la empresa "
+                    + idEmpresaActiva
+            );
+        }
+
+        System.out.println(
+                "🟣 Cliente encontrado. ID = " + idCliente
+        );
+
+    } else {
+
+        // =====================================================
+        // VENTA NORMAL
+        // Siempre Mostrador
+        // =====================================================
+
+        idCliente = 1;
+
+        System.out.println(
+                "🟢 [RULE] Venta NORMAL -> Cliente Mostrador ID=1"
+        );
+    }
+
+} catch (Exception ex) {
+    idCliente = -1;
+    throw ex;
+}
 
                     // ------ REGLA SOLICITADA: EN VENTA NORMAL, USAR SIEMPRE CLIENTE MOSTRADOR ID=1 ------
                     if (!esVentaCredito) {
@@ -372,22 +437,35 @@ public final class ventanaCobrar extends JDialog {
                     System.out.println("👤 Nombre cliente recuperado por id (" + idCliente + "): " + nombreCliente);
 
                     if (esCredito) {
-                        System.out.println("Venta a crédito detectada, intentando eliminar créditos...");
+    System.out.println("Venta a crédito detectada, intentando eliminar créditos...");
 
-                        int dni = new VentaDao().obtenerDniPorIdCliente(idCliente);
-                        System.out.println("DNI obtenido: " + dni);
+    int dni = new VentaDao().obtenerDniPorIdCliente(idCliente);
+    System.out.println("DNI obtenido: " + dni);
 
-                        if (dni != -1) {
-                            boolean eliminado = new VentaDao().eliminarCreditosDelCliente(dni);
-                            System.out.println("¿Se eliminaron los créditos? " + eliminado);
+    if (dni != -1) {
 
-                            AbonoDao abonoDao = new AbonoDao();
-                            boolean abonosActualizados = abonoDao.actualizarAbonosAplicados(dni, idVenta);
-                            System.out.println("¿Se actualizaron los abonos a aplicados? " + abonosActualizados);
-                        } else {
-                            System.out.println("❌ No se pudo obtener el DNI del cliente.");
-                        }
+        boolean eliminado = new VentaDao()
+                .eliminarCreditosDelCliente(dni, idEmpresaActiva);
 
+        System.out.println(
+                "¿Se eliminaron los créditos? " + eliminado +
+                " | DNI: " + dni +
+                " | Empresa: " + idEmpresaActiva
+        );
+
+        AbonoDao abonoDao = new AbonoDao();
+
+        boolean abonosActualizados =
+                abonoDao.actualizarAbonosAplicados(dni, idVenta);
+
+        System.out.println(
+                "¿Se actualizaron los abonos a aplicados? " +
+                abonosActualizados
+        );
+
+    } else {
+        System.out.println("❌ No se pudo obtener el DNI del cliente.");
+    }
                         if (tipoPagoFinal.equalsIgnoreCase("tarjeta")) {
                             double subtotal = totalPagar - totalComision;
                             ticket = ImprimirTicket.generarTicketCreditoConTarjeta(

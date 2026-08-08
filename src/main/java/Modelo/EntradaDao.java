@@ -75,26 +75,25 @@ public class EntradaDao {
         return r;
     }
 
-    public int RegistrarDetalle(Detalle Dc) {
-        String sql = "INSERT INTO detalle (id_pro, cantidad, precio, id_venta) VALUES (?,?,?,?)";
-        r = 0;
-        try {
-            con = cn.getConnection();
-            ps = con.prepareStatement(sql);
-            ps.setInt(1, Dc.getId_pro());
-            ps.setInt(2, Dc.getCantidad());
-            ps.setDouble(3, Dc.getPrecio());
-            ps.setInt(4, Dc.getId());
-            r = ps.executeUpdate();
-        } catch (SQLException e) {
-            System.out.println(e.toString());
-        } finally {
-            try { if (ps != null) ps.close(); } catch (SQLException e) { System.out.println(e.toString()); }
-            try { if (con != null) con.close(); } catch (SQLException e) { System.out.println(e.toString()); }
-        }
-        return r;
+   public int RegistrarDetalle(Detalle Dc) {
+    String sql = "INSERT INTO detalle (id_pro, cantidad, precio, id_venta) VALUES (?,?,?,?)";
+    r = 0;
+    try {
+        con = cn.getConnection();
+        ps = con.prepareStatement(sql);
+        ps.setInt(1, Dc.getId_pro());
+        ps.setDouble(2, Dc.getCantidad());   // 👈 cambio: antes setInt, ahora setDouble
+        ps.setDouble(3, Dc.getPrecio());
+        ps.setInt(4, Dc.getId());
+        r = ps.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println(e.toString());
+    } finally {
+        try { if (ps != null) ps.close(); } catch (SQLException e) { System.out.println(e.toString()); }
+        try { if (con != null) con.close(); } catch (SQLException e) { System.out.println(e.toString()); }
     }
-
+    return r;
+}
     public boolean ActualizarStockEntrada(int cant, int id) {
         String sql = "UPDATE productos SET stock = ? WHERE id = ?";
         try {

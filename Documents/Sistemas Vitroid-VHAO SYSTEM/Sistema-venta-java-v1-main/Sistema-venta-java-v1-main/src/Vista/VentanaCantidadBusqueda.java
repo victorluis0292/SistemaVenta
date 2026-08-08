@@ -14,17 +14,15 @@ import java.util.ArrayList;
 import javax.swing.JOptionPane;
 import javax.swing.table.DefaultTableModel;
 import static Vista.Sistema.TableVenta;
-import static Vista.Sistema.lblEnviaTotal;
 import static Vista.Sistema.txtCodigoVenta;
 import javax.swing.JTable;
-import Vista.Sistema;
 /**
  *
  * @author vic
  */
 public class VentanaCantidadBusqueda extends javax.swing.JFrame {
     public String origen = "venta"; // por defecto
-   private static int idEmpresaActiva;  // <-- nuevo campo
+
     ProductosDao proDao = new ProductosDao();
     Productos pro = new Productos();
       DefaultTableModel modelo = new DefaultTableModel();
@@ -35,15 +33,6 @@ public class VentanaCantidadBusqueda extends javax.swing.JFrame {
     /**
      * Creates new form VentanaCantidadBusqueda
      */
-       
-       // -------------------- EMPRESA --------------------
- public static void setIdEmpresaActiva(int idEmpresa) {
-        idEmpresaActiva = idEmpresa;
-    }
-
-    public static int getIdEmpresaActiva() {
-        return idEmpresaActiva;
-    }
     public VentanaCantidadBusqueda() {
         initComponents();
           this.setLocationRelativeTo(null);
@@ -219,244 +208,67 @@ txtCodigoEntrada.setText(codigo);
     }//GEN-LAST:event_txtCantidadEntradaActionPerformed
 
     private void txtCantidadEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntradaKeyPressed
-   if (evt.getKeyCode() != KeyEvent.VK_ENTER) {
-        return;
-    }
+ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        String textoCantidad = txtCantidadEntrada.getText().trim();
 
-    evt.consume();
-
-    System.out.println("======================================");
-    System.out.println("ENTER EN CANTIDAD");
-    System.out.println("Origen actual: [" + origen + "]");
-    System.out.println("======================================");
-
-    String textoCantidad =
-            txtCantidadEntrada.getText().trim();
-
-    if (textoCantidad.isEmpty()) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Ingrese la cantidad"
-        );
-
-        txtCantidadEntrada.requestFocus();
-        return;
-    }
-
-    int cant;
-
-    try {
-
-        cant = Integer.parseInt(textoCantidad);
-
-    } catch (NumberFormatException ex) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "La cantidad debe ser un número entero"
-        );
-
-        txtCantidadEntrada.requestFocus();
-        txtCantidadEntrada.selectAll();
-
-        return;
-    }
-
-    // ---------------------------------------------------------
-    // VALIDAR PRODUCTO
-    // ---------------------------------------------------------
-
-    if (pro == null || pro.getId() <= 0) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "No se ha cargado ningún producto"
-        );
-
-        System.out.println(
-                "ERROR: pro es null o no tiene ID"
-        );
-
-        return;
-    }
-
-    // ---------------------------------------------------------
-    // DATOS DEL PRODUCTO
-    // ---------------------------------------------------------
-
-    int id = pro.getId();
-
-    String descripcion =
-            txtDescripcionEntrada.getText().trim();
-
-    double precio;
-
-    try {
-
-        precio = Double.parseDouble(
-                txtPrecioEntrada.getText().trim()
-        );
-
-    } catch (NumberFormatException ex) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Precio inválido"
-        );
-
-        return;
-    }
-
-    int stock;
-
-    try {
-
-        stock = Integer.parseInt(
-                txtStockDisponible1.getText().trim()
-        );
-
-    } catch (NumberFormatException ex) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Stock inválido"
-        );
-
-        return;
-    }
-
-    // ---------------------------------------------------------
-    // VALIDAR CANTIDAD
-    // ---------------------------------------------------------
-
-    if (cant <= 0) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "La cantidad debe ser mayor a 0"
-        );
-
-        txtCantidadEntrada.requestFocus();
-        txtCantidadEntrada.selectAll();
-
-        return;
-    }
-
-    if (cant > stock) {
-
-        JOptionPane.showMessageDialog(
-                this,
-                "Stock insuficiente. Solo hay "
-                        + stock
-                        + " unidades disponibles."
-        );
-
-        txtCantidadEntrada.requestFocus();
-        txtCantidadEntrada.selectAll();
-
-        return;
-    }
-
-    // ---------------------------------------------------------
-    // TOTAL
-    // ---------------------------------------------------------
-
-    double total = cant * precio;
-
-    System.out.println("ID producto: " + id);
-    System.out.println("Descripción: " + descripcion);
-    System.out.println("Cantidad: " + cant);
-    System.out.println("Precio: " + precio);
-    System.out.println("Stock: " + stock);
-    System.out.println("Total: " + total);
-
-    // =========================================================
-    // CRÉDITO CLIENTE
-    // =========================================================
-
-    if ("credito".equalsIgnoreCase(origen)) {
-
-        System.out.println(
-                ">>> ENTRANDO AL FLUJO CRÉDITO CLIENTE"
-        );
-
-        Controlador.CreditoClienteController controller =
-                Sistema.getInstancia()
-                        .getCreditoClienteController();
-
-        if (controller == null) {
-
-            JOptionPane.showMessageDialog(
-                    this,
-                    "ERROR: El controlador de Crédito Cliente no está inicializado."
-            );
-
-            System.out.println(
-                    "ERROR: creditoClienteController == null"
-            );
-
+        if (textoCantidad.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese la cantidad");
             return;
         }
 
-        System.out.println(
-                "Controlador encontrado correctamente"
-        );
+        int id = pro.getId();
+        String descripcion = txtDescripcionEntrada.getText();
+        double cant;
+        try {
+            cant = Double.parseDouble(textoCantidad);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Cantidad inválida");
+            return;
+        }
+        double precio = Double.parseDouble(txtPrecioEntrada.getText());
+        double total = cant * precio;
+        double stock = Double.parseDouble(txtStockDisponible1.getText());
 
-        controller.agregarFila(
-                id,
-                descripcion,
-                cant,
-                precio,
-                total
-        );
+        if (cant <= 0) {
+            JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor a 0");
+            return;
+        }
 
-        System.out.println(
-                ">>> PRODUCTO AGREGADO A CRÉDITO CLIENTE"
-        );
+        if (cant > stock) {
+            JOptionPane.showMessageDialog(null, "Stock insuficiente. Solo hay " + stock + " unidades disponibles.");
+            txtCantidadEntrada.requestFocus();
+            txtCantidadEntrada.selectAll();
+            return;
+        }
 
-    } else {
+        if ("credito".equals(origen)) {
+            // 🔹 Ya no toca TableCreditClient (tabla fantasma). Usa el controller real del panel nuevo.
+            Controlador.CreditoClienteController controller =
+                    Vista.Sistema.getInstancia().getCreditoClienteController();
 
-        // =====================================================
-        // VENTA NORMAL
-        // =====================================================
+            if (controller != null) {
+                controller.agregarFila(id, descripcion, cant, precio, total);
+            } else {
+                System.out.println("⚠️ CreditoClienteController es null: Sistema aún no lo inicializó");
+                JOptionPane.showMessageDialog(null, "No se pudo agregar el producto al crédito. Intenta de nuevo.");
+                return;
+            }
 
-        System.out.println(
-                ">>> ENTRANDO AL FLUJO VENTA NORMAL"
-        );
+        } else {
+            // Flujo normal de venta (sin cambios de comportamiento)
+            DefaultTableModel tmp = (DefaultTableModel) TableVenta.getModel();
+            Object[] fila = new Object[]{id, descripcion, cant, precio, total};
+            tmp.addRow(fila);
+            TableVenta.setModel(tmp);
+            actualizarTotal(TableVenta);
+        }
 
-        DefaultTableModel tmp =
-                (DefaultTableModel) TableVenta.getModel();
-
-        Object[] fila = new Object[]{
-                id,
-                descripcion,
-                cant,
-                precio,
-                total
-        };
-
-        tmp.addRow(fila);
-
-        TableVenta.setModel(tmp);
-
-        actualizarTotal(TableVenta);
+        // ✅ cerrar ventana y regresar foco
+        dispose();
+        txtCodigoVenta.requestFocus();
     }
-
-    // ---------------------------------------------------------
-    // CERRAR VENTANA
-    // ---------------------------------------------------------
-
-    dispose();
-}
-
-// Método para actualizar total de la tabla en lblEnviaTotal
-private void actualizarTotal(JTable tabla) {
-    double total = 0.0;
-    for (int i = 0; i < tabla.getRowCount(); i++) {
-        total += Double.parseDouble(tabla.getValueAt(i, 4).toString());
+  
     }
-    lblEnviaTotal.setText(String.format("%.2f", total));
       
     }//GEN-LAST:event_txtCantidadEntradaKeyPressed
 
@@ -474,7 +286,7 @@ private void actualizarTotal(JTable tabla) {
     }//GEN-LAST:event_formKeyPressed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-      enter();// TODO add your handling code here:
+enter();        // TODO add your handling code here:
     }//GEN-LAST:event_formWindowActivated
 
     /**
@@ -511,52 +323,32 @@ private void actualizarTotal(JTable tabla) {
             }
         });
     }
-public void enter() {
-    System.out.println("=== enter() INVOCADO ===");
+public void enter(){
+       // if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+     
+            if (!"".equals(txtCodigoEntrada.getText())) {
+                String cod = txtCodigoEntrada.getText();
+                pro = proDao.BuscarPro(cod);
+                if (pro.getNombre() != null) {
+                    txtIdPro.setText("" + pro.getId());
+                    txtDescripcionEntrada.setText("" + pro.getNombre());
+                    txtPrecioEntrada.setText("" + pro.getPrecio());
+                    txtStockDisponible1.setText("" + pro.getStock());
+                    txtCantidadEntrada.requestFocus();
+                } else {
+                    //LimpiarEntrada();
 
-    // Validar que se haya ingresado código
-    String cod = txtCodigoEntrada.getText().trim();
-    if (!cod.isEmpty()) {
-        System.out.println("Código ingresado: [" + cod + "]");
-
-        // Obtener la empresa activa
-        int empresa = VentanaCantidadBusqueda.getIdEmpresaActiva();
-        System.out.println("Empresa activa: " + empresa);
-
-        // Buscar producto en la base de datos filtrando por empresa
-        pro = proDao.BuscarPro(cod, empresa);
-
-        if (pro != null) {
-            System.out.println("Producto encontrado: ID=" + pro.getId() + ", Nombre=" + pro.getNombre() +
-                               ", Código=" + pro.getCodigo() + ", Stock=" + pro.getStock() +
-                               ", Precio=" + pro.getPrecio());
-
-            if (pro.getNombre() != null) {
-                // Llenar campos con datos del producto
-               txtIdPro1.setText("" + pro.getId());
-                txtDescripcionEntrada.setText(pro.getNombre());
-                txtPrecioEntrada.setText("" + pro.getPrecio());
-                txtStockDisponible1.setText("" + pro.getStock());
-                System.out.println("Campos del formulario actualizados correctamente.");
-                txtCantidadEntrada.requestFocus();
+                    txtCodigoEntrada.requestFocus();
+                    JOptionPane.showMessageDialog(null, "EL CODIGO DE PRODUCTO NO EXISTE");
+                }
             } else {
-                System.out.println("Producto no tiene nombre, no se cargó en la ventana");
-                JOptionPane.showMessageDialog(null, "EL CÓDIGO DE PRODUCTO NO EXISTE");
+                JOptionPane.showMessageDialog(null, "Ingrese el codigo del productos");
                 txtCodigoEntrada.requestFocus();
+                //LimpiarEntrada();
             }
-        } else {
-            System.out.println("proDao.BuscarPro devolvió null");
-            JOptionPane.showMessageDialog(null, "EL CÓDIGO DE PRODUCTO NO EXISTE");
-            txtCodigoEntrada.requestFocus();
-        }
-
-    } else {
-        System.out.println("No se ingresó código de producto");
-        JOptionPane.showMessageDialog(null, "Ingrese el código del producto");
-        txtCodigoEntrada.requestFocus();
-    }
-}
-
+      //  }
+    
+     }
     void Operacion(){
       // int valor = Integer.parseInt(txtCantidadEntrada.getText());
     double num1=Double.parseDouble(txtPrecioEntrada.getText()); 
