@@ -207,85 +207,336 @@ public final class ventanaCobrar extends JDialog {
         SwingWorker<Void, Void> worker = new SwingWorker<Void, Void>() {
 
             int idVenta;
-            boolean esCredito = false;
-            String tipoPagoFinal = "";
-            String ticket = "";
-            int idCliente;
+    boolean esCredito = false;
+    String tipoPagoFinal = "";
+    String ticket = "";
+    int idCliente;
 
-            @Override
-            protected Void doInBackground() throws Exception {
-                try {
-                    System.out.println("🚀 doInBackground iniciado");
+    int dniCredito = -1;
+    int empresaCredito = -1;
 
-                    idCliente = Integer.parseInt(Sistema.txtIdCV.getText());
-                    String vendedor = Sistema.LabelVendedor.getText();
-                    CobroService servicio = new CobroService();
+            
+           @Override
+protected Void doInBackground() throws Exception {
+    try {
+        System.out.println("🚀 doInBackground iniciado");
 
-                    TurnoModel turno = TurnoController.getTurnoGlobal();
-                    if (turno == null) {
-                        SwingUtilities.invokeLater(() -> {
-                            loader.dispose();
-                            JOptionPane.showMessageDialog(ventanaCobrar.this,
-                                    "No hay un turno abierto. No se puede procesar la venta.",
-                                    "Turno no encontrado",
-                                    JOptionPane.WARNING_MESSAGE);
-                        });
-                        return null;
-                    }
+        // ============================================================
+        // 1. OBTENER CLIENTE
+        // ============================================================
+        try {
+            String idCampo = Sistema.txtIdCV.getText();
 
-                    int idTurno = turno.getId();
-                    System.out.println("✅ ID del turno recibido: " + idTurno);
-
-                    tipoPagoFinal = determinarTipoPagoFinal();
-                    System.out.println("Tipo de pago final: '" + tipoPagoFinal + "'");
-
-                    idVenta = servicio.procesarVenta(idTurno, idCliente, vendedor, Sistema.TableVenta, totalPagar, tipoPagoFinal);
-                    System.out.println("✅ Venta creada con ID: " + idVenta);
-
-                    if (idVenta == 0) {
-                        throw new Exception("No se pudo registrar la venta. ID generado es 0.");
-                    }
-
-                    esCredito = esVentaCredito || tipoPagoFinal.equalsIgnoreCase("credito");
-                    System.out.println("Flag esCredito: " + esCredito);
-
-                    if (esCredito) {
-                        VentaDao ventaDao = new VentaDao();
-                        DefaultTableModel modeloCredito = (DefaultTableModel) TableConsultaCreditCliente.getModel();
-
-                        for (int i = 0; i < modeloCredito.getRowCount(); i++) {
-                            String concepto = modeloCredito.getValueAt(i, 2).toString().toLowerCase();
-
-                            if (concepto.contains("abono")) {
-                                System.out.println("⛔ Fila " + i + " ignorada por ser abono: " + concepto);
-                                continue;
-                            }
-
-                            Detalle detalle = new Detalle();
-                            detalle.setId_pro(Integer.parseInt(modeloCredito.getValueAt(i, 1).toString()));
-                            detalle.setCantidad(Integer.parseInt(modeloCredito.getValueAt(i, 3).toString()));
-                            detalle.setPrecio(Double.parseDouble(modeloCredito.getValueAt(i, 4).toString()));
-                            detalle.setId(idVenta);
-
-                            int filas = ventaDao.RegistrarDetalle(detalle);
-                            System.out.println("✅ Producto registrado (fila " + i + "): " + concepto + ", filas afectadas: " + filas);
-                        }
-                    }
-
-                } catch (Exception e) {
-                    SwingUtilities.invokeLater(() -> {
-                        loader.dispose();
-                        JOptionPane.showMessageDialog(ventanaCobrar.this,
-                                "Error al procesar la venta: " + e.getMessage(),
-                                "Error",
-                                JOptionPane.ERROR_MESSAGE);
-                    });
-                    e.printStackTrace();
-                    throw e;
-                }
-                return null;
+            if (idCampo == null || idCampo.trim().isEmpty()) {
+                idCliente = 1; // Mostrador como respaldo
+            } else {
+                idCliente = Integer.parseInt(idCampo.trim());
             }
 
+        } catch (Exception ex) {
+            System.out.println("⚠️ No se pudo obtener idCliente. Se usará 1.");
+            idCliente = 1;
+        }
+
+        String vendedor = Sistema.LabelVendedor.getText();
+
+        // ============================================================
+        // 2. OBTENER EMPRESA ACTIVA
+        // ============================================================
+        idEmpresaActiva = Sistema.getIdEmpresaActiva();
+
+        System.out.println("🏢 ID Empresa Activa: " + idEmpresaActiva);
+
+        if (idEmpresaActiva <= 0) {
+            throw new Exception(
+                    "El ID de empresa activa no es válido: "
+                    + idEmpresaActiva
+            );
+        }
+
+        // ============================================================
+        // 3. OBTENER DNI DEL CLIENTE DESDE LA TABLA DE CRÉDITO
+        // ============================================================
+        dniCredito = -1;
+
+        if (esVentaCredito && TableConsultaCreditCliente != null) {
+
+            DefaultTableModel modeloCredito =
+                    (DefaultTableModel) TableConsultaCreditCliente.getModel();
+
+            for (int i = 0; i < modeloCredito.getRowCount(); i++) {
+
+                // La columna 7 es DNI
+                Object valorDni = modeloCredito.getValueAt(i, 7);
+
+                if (valorDni != null) {
+                    String dniTexto = valorDni.toString().trim();
+
+                    if (!dniTexto.isEmpty()) {
+                        try {
+                            dniCredito = Integer.parseInt(dniTexto);
+                            break;
+                        } catch (NumberFormatException ex) {
+                            System.out.println(
+                                    "⚠️ DNI inválido encontrado en fila "
+                                    + i + ": " + dniTexto
+                            );
+                        }
+                    }
+                }
+            }
+        }
+
+        System.out.println("👤 DNI del crédito detectado: " + dniCredito);
+        System.out.println("🏢 Empresa del crédito: " + idEmpresaActiva);
+
+        // ============================================================
+        // 4. COBRO SERVICE
+        // ============================================================
+        CobroService servicio = new CobroService();
+
+        // MUY IMPORTANTE:
+        // La empresa debe establecerse antes de procesar la venta.
+        servicio.setIdEmpresaActiva(idEmpresaActiva);
+
+        System.out.println(
+                "DEBUG ventanaCobrar: idEmpresaActiva seteada a "
+                + idEmpresaActiva
+        );
+
+        // ============================================================
+        // 5. VALIDAR TURNO
+        // ============================================================
+        TurnoModel turno = TurnoController.getTurnoGlobal();
+
+        if (turno == null) {
+
+            SwingUtilities.invokeLater(() -> {
+                loader.dispose();
+
+                JOptionPane.showMessageDialog(
+                        ventanaCobrar.this,
+                        "No hay un turno abierto. No se puede procesar la venta.",
+                        "Turno no encontrado",
+                        JOptionPane.WARNING_MESSAGE
+                );
+            });
+
+            return null;
+        }
+
+        int idTurno = turno.getId();
+
+        System.out.println(
+                "✅ ID del turno recibido: " + idTurno
+        );
+
+        // ============================================================
+        // 6. DETERMINAR TIPO DE PAGO
+        // ============================================================
+        tipoPagoFinal = determinarTipoPagoFinal();
+
+        System.out.println(
+                "Tipo de pago final: '" + tipoPagoFinal + "'"
+        );
+
+        // ============================================================
+        // 7. CALCULAR PAGA CON Y CAMBIO
+        // ============================================================
+        double pagaCon = ultimoPagoEfectivo;
+
+        double cambio = 0.0;
+
+        try {
+            cambio = Double.parseDouble(lblCambio.getText());
+        } catch (NumberFormatException ex) {
+            cambio = 0.0;
+        }
+
+        // ============================================================
+        // 8. CALCULAR SUBTOTAL
+        // ============================================================
+        double subtotal = totalPagar - totalComision;
+
+        // ============================================================
+        // 9. LOG DE PROCESAMIENTO
+        // ============================================================
+        System.out.println("========================================");
+        System.out.println("🟢 INICIO PROCESAR VENTA");
+        System.out.println("🏢 ID Empresa: " + idEmpresaActiva);
+        System.out.println("👤 ID Cliente: " + idCliente);
+        System.out.println("🪪 DNI Crédito: " + dniCredito);
+        System.out.println("💰 Total: " + totalPagar);
+        System.out.println("💵 Paga con: " + pagaCon);
+        System.out.println("💵 Cambio: " + cambio);
+        System.out.println("💳 Tipo pago: " + tipoPagoFinal);
+        System.out.println("👨‍💼 Vendedor: " + vendedor);
+        System.out.println("========================================");
+
+        // ============================================================
+        // 10. REGISTRAR VENTA
+        // ============================================================
+        idVenta = servicio.procesarVenta(
+                idTurno,
+                idCliente,
+                vendedor,
+                Sistema.TableVenta,
+                totalPagar,
+                tipoPagoFinal,
+                pagaCon,
+                cambio,
+                totalComision,
+                subtotal
+        );
+
+        System.out.println(
+                "✅ Venta creada con ID: " + idVenta
+        );
+
+        if (idVenta == 0) {
+            throw new Exception(
+                    "No se pudo registrar la venta. ID generado es 0."
+            );
+        }
+
+        // ============================================================
+        // 11. DETERMINAR SI ES CRÉDITO
+        // ============================================================
+        esCredito =
+                esVentaCredito ||
+                tipoPagoFinal.equalsIgnoreCase("credito");
+
+        System.out.println(
+                "Flag esCredito: " + esCredito
+        );
+
+        // ============================================================
+        // 12. REGISTRAR LOS DETALLES DE LA VENTA
+        // ============================================================
+        if (esCredito) {
+
+            VentaDao ventaDao = new VentaDao();
+
+            if (TableConsultaCreditCliente == null) {
+                throw new Exception(
+                        "No existe la tabla de créditos del cliente."
+                );
+            }
+
+            DefaultTableModel modeloCredito =
+                    (DefaultTableModel)
+                            TableConsultaCreditCliente.getModel();
+
+            for (int i = 0;
+                 i < modeloCredito.getRowCount();
+                 i++) {
+
+                String concepto =
+                        String.valueOf(
+                                modeloCredito.getValueAt(i, 2)
+                        ).toLowerCase();
+
+                // No registrar abonos como productos
+                if (concepto.contains("abono")) {
+
+                    System.out.println(
+                            "⛔ Fila " + i +
+                            " ignorada por ser abono: " +
+                            concepto
+                    );
+
+                    continue;
+                }
+
+                // Obtener ID del producto
+                Object idProductoObj =
+                        modeloCredito.getValueAt(i, 1);
+
+                if (idProductoObj == null) {
+                    continue;
+                }
+
+                int idProducto =
+                        Integer.parseInt(
+                                idProductoObj.toString()
+                        );
+
+                // Evitar registrar filas que no sean productos
+                if (idProducto <= 0) {
+                    System.out.println(
+                            "⛔ Fila " + i +
+                            " ignorada. ID producto inválido: " +
+                            idProducto
+                    );
+                    continue;
+                }
+
+                Detalle detalle = new Detalle();
+
+                detalle.setId_pro(idProducto);
+
+                detalle.setCantidad(
+                        Integer.parseInt(
+                                modeloCredito
+                                        .getValueAt(i, 3)
+                                        .toString()
+                        )
+                );
+
+                detalle.setPrecio(
+                        Double.parseDouble(
+                                modeloCredito
+                                        .getValueAt(i, 4)
+                                        .toString()
+                        )
+                );
+
+                detalle.setId(idVenta);
+
+                int filas =
+                        ventaDao.RegistrarDetalle(detalle);
+
+                System.out.println(
+                        "✅ Producto registrado " +
+                        "(fila " + i + "): " +
+                        concepto +
+                        " | filas afectadas: " +
+                        filas
+                );
+            }
+        }
+
+      
+
+        System.out.println("========================================");
+        System.out.println("✅ doInBackground terminado");
+        System.out.println("Venta: " + idVenta);
+        System.out.println("DNI a eliminar: " + dniFinal);
+        System.out.println("Empresa a eliminar: " + empresaFinal);
+        System.out.println("========================================");
+
+        return null;
+
+    } catch (Exception e) {
+
+        SwingUtilities.invokeLater(() -> {
+
+            loader.dispose();
+
+            JOptionPane.showMessageDialog(
+                    ventanaCobrar.this,
+                    "Error al procesar la venta: "
+                            + e.getMessage(),
+                    "Error",
+                    JOptionPane.ERROR_MESSAGE
+            );
+        });
+
+        e.printStackTrace();
+
+        throw e;
+    }
+}
             @Override
             protected void done() {
                 System.out.println("🟢 done() ejecutado");

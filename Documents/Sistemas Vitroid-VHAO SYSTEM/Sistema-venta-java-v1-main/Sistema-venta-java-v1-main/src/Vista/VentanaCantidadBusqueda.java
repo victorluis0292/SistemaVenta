@@ -208,63 +208,66 @@ txtCodigoEntrada.setText(codigo);
     }//GEN-LAST:event_txtCantidadEntradaActionPerformed
 
     private void txtCantidadEntradaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCantidadEntradaKeyPressed
+ if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+        String textoCantidad = txtCantidadEntrada.getText().trim();
 
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        if (!"".equals(txtCantidadEntrada.getText())) {
-            int id = Integer.parseInt(txtIdPro.getText());
-            String descripcion = txtDescripcionEntrada.getText();
-            int cant = Integer.parseInt(txtCantidadEntrada.getText());
-            double precio = Double.parseDouble(txtPrecioEntrada.getText());
-            double total = cant * precio;
-            int stock = Integer.parseInt(txtStockDisponible1.getText());
-
-            if (stock >= cant) {
-                item = item + 1;
-
-                DefaultTableModel tmp;
-                JTable tablaDestino;
-
-                if ("credito".equals(origen)) {
-                    tmp = (DefaultTableModel) TableCreditClient.getModel();
-                    tablaDestino = TableCreditClient;
-
-                    for (int i = 0; i < tablaDestino.getRowCount(); i++) {
-                        if (tablaDestino.getValueAt(i, 0).equals(descripcion)) {
-                            JOptionPane.showMessageDialog(null, "El producto ya está registrado en crédito");
-                            return;
-                        }
-                    }
-                } else {
-                    tmp = (DefaultTableModel) TableVenta.getModel();
-                    tablaDestino = TableVenta;
-
-                    for (int i = 0; i < tablaDestino.getRowCount(); i++) {
-                        if (tablaDestino.getValueAt(i, 0).equals(descripcion)) {
-                            JOptionPane.showMessageDialog(null, "El producto ya está registrado");
-                            return;
-                        }
-                    }
-                }
-
-                Object[] fila = new Object[5];
-                fila[0] = id;
-                fila[1] = descripcion;
-                fila[2] = cant;
-                fila[3] = precio;
-                fila[4] = total;
-
-                tmp.addRow(fila);
-                tablaDestino.setModel(tmp);
-
-                dispose(); // cerrar la ventana actual
-                txtCodigoEntrada.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "Stock no disponible");
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "Ingrese cantidad");
+        if (textoCantidad.isEmpty()) {
+            JOptionPane.showMessageDialog(null, "Ingrese la cantidad");
+            return;
         }
-        txtCodigoEntrada.requestFocus();
+
+        int id = pro.getId();
+        String descripcion = txtDescripcionEntrada.getText();
+        double cant;
+        try {
+            cant = Double.parseDouble(textoCantidad);
+        } catch (NumberFormatException ex) {
+            JOptionPane.showMessageDialog(null, "Cantidad inválida");
+            return;
+        }
+        double precio = Double.parseDouble(txtPrecioEntrada.getText());
+        double total = cant * precio;
+        double stock = Double.parseDouble(txtStockDisponible1.getText());
+
+        if (cant <= 0) {
+            JOptionPane.showMessageDialog(null, "La cantidad debe ser mayor a 0");
+            return;
+        }
+
+        if (cant > stock) {
+            JOptionPane.showMessageDialog(null, "Stock insuficiente. Solo hay " + stock + " unidades disponibles.");
+            txtCantidadEntrada.requestFocus();
+            txtCantidadEntrada.selectAll();
+            return;
+        }
+
+        if ("credito".equals(origen)) {
+            // 🔹 Ya no toca TableCreditClient (tabla fantasma). Usa el controller real del panel nuevo.
+            Controlador.CreditoClienteController controller =
+                    Vista.Sistema.getInstancia().getCreditoClienteController();
+
+            if (controller != null) {
+                controller.agregarFila(id, descripcion, cant, precio, total);
+            } else {
+                System.out.println("⚠️ CreditoClienteController es null: Sistema aún no lo inicializó");
+                JOptionPane.showMessageDialog(null, "No se pudo agregar el producto al crédito. Intenta de nuevo.");
+                return;
+            }
+
+        } else {
+            // Flujo normal de venta (sin cambios de comportamiento)
+            DefaultTableModel tmp = (DefaultTableModel) TableVenta.getModel();
+            Object[] fila = new Object[]{id, descripcion, cant, precio, total};
+            tmp.addRow(fila);
+            TableVenta.setModel(tmp);
+            actualizarTotal(TableVenta);
+        }
+
+        // ✅ cerrar ventana y regresar foco
+        dispose();
+        txtCodigoVenta.requestFocus();
+    }
+  
     }
       
     }//GEN-LAST:event_txtCantidadEntradaKeyPressed

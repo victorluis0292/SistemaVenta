@@ -11,6 +11,7 @@ import java.awt.Graphics;
 import java.awt.Graphics2D;
 import java.awt.Insets;
 import java.awt.RenderingHints;
+import java.awt.Window;
 import javax.swing.*;
 import javax.swing.table.JTableHeader;
 import javax.swing.*;
@@ -269,6 +270,71 @@ public static void estiloBotonMenuLateral(JButton boton) {
     boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
     boton.setMargin(new Insets(10, 20, 10, 10)); // Margen interno
 }
+public static void estiloBotonVerduleria(JButton boton) {
+    boton.setFont(new Font("Segoe UI", Font.BOLD, 14));
+    boton.setBackground(new Color(46, 139, 87)); // ✅ Verde inicial
+    boton.setForeground(Color.WHITE);
+    boton.setFocusPainted(false);
+    boton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+    boton.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+    // Hover effect
+    boton.addMouseListener(new java.awt.event.MouseAdapter() {
+        @Override
+        public void mouseEntered(java.awt.event.MouseEvent evt) {
+            boton.setBackground(new Color(60, 179, 113)); // Verde más claro
+        }
+
+        @Override
+        public void mouseExited(java.awt.event.MouseEvent evt) {
+            boton.setBackground(new Color(46, 139, 87)); // ✅ Vuelve al verde inicial
+        }
+    });
+}
+
+
+public static void estiloVerdura(Window frame, JButton boton, JTextField campo,
+                                 JLabel etiquetaTitulo, JLabel etiquetaPrecio,
+                                 JComboBox<String> combo) {
+    // Fondo general de la ventana
+    if (frame instanceof JDialog) {
+        ((JDialog) frame).getContentPane().setBackground(new Color(240, 255, 240));
+    } else if (frame instanceof JFrame) {
+        ((JFrame) frame).getContentPane().setBackground(new Color(240, 255, 240));
+    }
+
+    // Botón principal
+    boton.setFont(new Font("Segoe UI", Font.BOLD, 16));
+    boton.setForeground(Color.WHITE);
+    boton.setBackground(new Color(46, 139, 87));
+    boton.setFocusPainted(false);
+    boton.setBorder(BorderFactory.createEmptyBorder(5, 15, 5, 15));
+
+    // Campo de texto
+    campo.setFont(new Font("Segoe UI", Font.PLAIN, 16));
+    campo.setForeground(new Color(33, 37, 41));
+    campo.setBackground(Color.WHITE);
+    campo.setBorder(BorderFactory.createCompoundBorder(
+        BorderFactory.createLineBorder(new Color(46, 139, 87), 1, true),
+        BorderFactory.createEmptyBorder(5, 8, 5, 8)
+    ));
+
+    // ComboBox
+    combo.setFont(new Font("Segoe UI", Font.PLAIN, 15));
+    combo.setBackground(Color.WHITE);
+    combo.setForeground(new Color(33, 37, 41));
+    combo.setBorder(BorderFactory.createLineBorder(new Color(46, 139, 87), 1));
+    combo.setCursor(new Cursor(Cursor.HAND_CURSOR));
+
+    // Etiqueta título
+    etiquetaTitulo.setFont(new Font("Segoe UI", Font.BOLD, 20));
+    etiquetaTitulo.setForeground(new Color(34, 139, 34));
+
+    // Etiqueta precio
+    etiquetaPrecio.setFont(new Font("Segoe UI", Font.BOLD, 18));
+    etiquetaPrecio.setForeground(new Color(0, 102, 204));
+}
+
 
 
 }

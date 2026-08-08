@@ -306,32 +306,78 @@ private void listarProductos() {
     txtTotalCredito.setText(String.format("%.2f", pendiente));
 }
 
-    private void cobrarCredito() {
-        if (modeloProductos.getRowCount() == 0) {
-            JOptionPane.showMessageDialog(this, "No hay créditos para cobrar.");
-            return;
-        }
-
-        double creditoPendiente;
-        try {
-            creditoPendiente = Double.parseDouble(txtTotalCredito.getText());
-        } catch (NumberFormatException e) {
-            creditoPendiente = 0;
-        }
-
-        if (creditoPendiente <= 0) {
-            JOptionPane.showMessageDialog(this, "No hay saldo pendiente para cobrar.");
-            return;
-        }
-
-        ventanaCobrar cobroDialog = new ventanaCobrar(this, true, tableProductos);
-        cobroDialog.setTotal(creditoPendiente);
-        cobroDialog.setLocationRelativeTo(this);
-        cobroDialog.setVisible(true);
-
-        cargarDatos(); // refrescar tabla después del cobro
+ private void cobrarCredito() {
+    if (modeloProductos.getRowCount() == 0) {
+        JOptionPane.showMessageDialog(this, "No hay créditos para cobrar.");
+        return;
     }
 
+    double creditoPendiente;
+
+    try {
+        creditoPendiente = Double.parseDouble(txtTotalCredito.getText());
+    } catch (NumberFormatException e) {
+        creditoPendiente = 0;
+    }
+
+    if (creditoPendiente <= 0) {
+        JOptionPane.showMessageDialog(this, "No hay saldo pendiente para cobrar.");
+        return;
+    }
+
+    // ==========================================================
+    // DATOS DEL CLIENTE Y EMPRESA QUE SE ESTÁN COBRANDO
+    // ==========================================================
+
+    String dniCliente = this.dni;
+    int empresa = Sistema.getIdEmpresaActiva();
+
+    if (dniCliente == null || dniCliente.trim().isEmpty()) {
+        JOptionPane.showMessageDialog(
+                this,
+                "No se encontró el DNI del cliente.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    if (empresa <= 0) {
+        JOptionPane.showMessageDialog(
+                this,
+                "No se encontró una empresa activa válida.",
+                "Error",
+                JOptionPane.ERROR_MESSAGE
+        );
+        return;
+    }
+
+    System.out.println("========================================");
+    System.out.println("🟣 ABRIENDO COBRO DE CRÉDITO");
+    System.out.println("DNI cliente: " + dniCliente);
+    System.out.println("Empresa activa: " + empresa);
+    System.out.println("Cliente: " + nombreCliente);
+    System.out.println("Crédito pendiente: " + creditoPendiente);
+    System.out.println("========================================");
+
+    // ==========================================================
+    // PASAMOS DNI + EMPRESA A ventanaCobrar
+    // ==========================================================
+
+    ventanaCobrar cobroDialog = new ventanaCobrar(
+            this,
+            true,
+            tableProductos,
+            dniCliente,
+            empresa
+    );
+
+    cobroDialog.setTotal(creditoPendiente);
+    cobroDialog.setLocationRelativeTo(this);
+    cobroDialog.setVisible(true);
+
+    cargarDatos();
+}
    public void setDato(int ruc, String nombre) {
     txtRuc.setText(String.valueOf(ruc));
     txtNombre.setText(nombre);

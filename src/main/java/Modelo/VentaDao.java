@@ -137,7 +137,7 @@ public class VentaDao {
         return filas;
     }
 
-    // Eliminar créditos de cliente
+    // Eliminar créditos de cliente/ 
  public boolean eliminarCreditosDelCliente(int dni, int idEmpresa) {
 
     String sql = "DELETE FROM detalle_creditocliente " +

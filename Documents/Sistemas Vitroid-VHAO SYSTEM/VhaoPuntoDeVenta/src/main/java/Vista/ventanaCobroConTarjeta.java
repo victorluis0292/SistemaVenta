@@ -17,7 +17,7 @@ public final class ventanaCobroConTarjeta extends JDialog {
     private final ventanaCobrar ventanaPrincipal;
 
     private final double subtotal;       // saldo pendiente
-    private final double comisionPorc = 0.045;
+    private final double comisionPorc = 0.000;
 
     public ventanaCobroConTarjeta(ventanaCobrar ventana) {
      

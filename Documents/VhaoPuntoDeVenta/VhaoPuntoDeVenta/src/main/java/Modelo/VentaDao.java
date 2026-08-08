@@ -160,19 +160,39 @@ public int IdVenta() {
 }
 
         
-public boolean EliminarClienteCredito(int dni){
-    String sql = "DELETE FROM detalle_creditocliente WHERE dni = ?";
+public boolean eliminarCreditosDelCliente(int dni, int idEmpresa) {
+
+    String sql =
+            "DELETE FROM detalle_creditocliente " +
+            "WHERE dni = ? " +
+            "AND id_empresa = ?";
+
     try (Connection con = cn.getConnection();
          PreparedStatement ps = con.prepareStatement(sql)) {
+
         ps.setInt(1, dni);
-        ps.execute();
-        return true;
+        ps.setInt(2, idEmpresa);
+
+        int filas = ps.executeUpdate();
+
+        System.out.println(
+                "🗑️ Créditos eliminados: " + filas +
+                " | DNI: " + dni +
+                " | Empresa: " + idEmpresa
+        );
+
+        return filas > 0;
+
     } catch (SQLException e) {
-        System.out.println(e.toString());
+
+        System.err.println(
+                "❌ Error al eliminar créditos: "
+                + e.getMessage()
+        );
+
         return false;
     }
-}
-   
+} 
   public boolean ActualizarStock(int cant, int id) {
     String sql = "UPDATE productos SET stock = ? WHERE id = ?";
     try (Connection con = cn.getConnection();

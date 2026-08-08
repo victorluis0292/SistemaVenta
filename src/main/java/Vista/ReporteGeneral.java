@@ -13,7 +13,7 @@ import java.util.Locale;
 import Modelo.CashInBoxDAO;
 import java.math.BigDecimal;
 import Estilos.Estilos;
-
+import Controlador.HistorialVentasController;
 /**
  * Reporte general con filtrado por empresa (optimizado)
  */

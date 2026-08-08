@@ -18,6 +18,10 @@ import Modelo.Venta;
 import Modelo.VentaDao;
 import Modelo.login;
 import Reportes.Grafico;
+import java.util.List;
+import java.util.ArrayList;
+import java.util.Map;
+import java.util.HashMap;
 
 import java.awt.event.KeyEvent;
 import java.text.SimpleDateFormat;
@@ -68,13 +72,19 @@ import Modelo.Empresa;
 import Modelo.EmpresaDao;
 import Utilidades.BotonCerrarSesion;
 import Utilidades.ConfigApp;
+import java.util.Map;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Arrays;
+
+
 /**
  *
  * @author USUARIO
  */
 
  import Vista.menuCorteCaja;
-import static Vista.FrmBusqueda.TableProductoJF;
+import static Vista.FrmBusqueda2.TableProductoJF;
 import java.awt.Component;
 import java.awt.FlowLayout;
 import static java.awt.SystemColor.menu;
@@ -89,6 +99,13 @@ import Utilidades.FormularioAgregarProveedor;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import javax.swing.BoxLayout;
+import Controlador.VerduleriaController;
+import javax.swing.JScrollPane;
+import Controlador.HistorialVentasController;
 
 
 public final class Sistema extends javax.swing.JFrame {
@@ -97,14 +114,23 @@ public final class Sistema extends javax.swing.JFrame {
       private static String usuarioActivo;
       private JButton btnReimprimirTicket;
       private JButton btnCerrarSesion;
-
+      private Vista.VerduleriaPanel panelVerduleria;
+      private List<Productos> cacheProductosEmpresa = new ArrayList<>();
+      private Vista.HistorialVentasPanel panelHistorialVentas;
+       private HistorialVentasController historialController;
+      private javax.swing.JPanel jPanelConfig;
      private RolController rolController = new RolController();
-
+     private JButton btnConfiguraciones;
+      
    private boolean corteValidado = false;
     private Set<Integer> pestañasConValidacion = new HashSet<>(); // ✅ atributo de clase
 
   private login usuarioLogueado; // objeto que guarda el usuario logueado
     private static int idEmpresaActiva;  // <-- nuevo campo
+    
+    
+    private Vista.CreditoClientePanel panelCreditoCliente;
+    private Controlador.CreditoClienteController creditoClienteController;
 
 public static void setUsuarioActivo(String usuario) {
     usuarioActivo = usuario;
@@ -203,18 +229,161 @@ public static Sistema getInstancia() {
     
 
 public Sistema() {
-    initComponents(); // Siempre primero, para inicializar jPanel18 y otros componentes
-   // 🔹 BOTÓN CERRAR SESIÓN: solo se crea si no existe
+        instancia = this;   // 👈 agrega esta línea — asegura que el singleton SIEMPRE apunte a la instancia real en uso, sin importar si se creó con new Sistema() o con getInstancia()
+
+    initComponents(); // inicializa todo
+
+    // -------------------------
+    // 🔹 Pestaña: Config Dispositivos
+    // -------------------------
+    jPanelConfig = new javax.swing.JPanel();
+    // Insertar la pestaña justo antes de la última (Cerrar Sesión)
+    Menu.insertTab("Config Dispositivos", null, jPanelConfig, null, Math.max(0, Menu.getTabCount() - 1));
+    System.out.println("DEBUG: Config Dispositivos insertado en índice " + (Menu.getTabCount() - 2) + " antes de Cerrar Sesión");
+
+    jPanelConfig.setLayout(new BorderLayout());
+    jPanelConfig.add(new Vista.OpcionConfig(), BorderLayout.CENTER);
+
+    // -------------------------
+    // 🔹 Asegurar que jPanelMenuCorte exista y esté en el JTabbedPane
+    // -------------------------
+    if (jPanelMenuCorte == null) {
+        jPanelMenuCorte = new javax.swing.JPanel();
+        jPanelMenuCorte.setLayout(new BorderLayout());
+    }
+    if (Menu.indexOfComponent(jPanelMenuCorte) == -1) {
+        Menu.insertTab("Corte de caja", null, jPanelMenuCorte, null, Math.max(0, Menu.getTabCount() - 1));
+        System.out.println("DEBUG: jPanelMenuCorte insertado en índice " + Menu.indexOfComponent(jPanelMenuCorte));
+    }
+
+    // -------------------------
+    // 🔹 Tabla de venta (si no existe)
+    // -------------------------
+    if (TableVenta == null) {
+        TableVenta = new JTable();
+        TableVenta.setFont(new java.awt.Font("Tahoma", 0, 20));
+        TableVenta.setModel(new javax.swing.table.DefaultTableModel(
+                new Object[][]{},
+                new String[]{
+                    "ID", "DESCRIPCIÓN", "CANTIDAD", "PRECIO U.", "PRECIO TOTAL"
+                }
+        ));
+        JScrollPane scroll = new JScrollPane(TableVenta);
+        scroll.setBounds(20, 300, 600, 200);
+        jPanel2.add(scroll);
+    }
+    // llamar a Historialventaspanel
+    panelHistorialVentas = new Vista.HistorialVentasPanel();
+    jPanel6.setLayout(new BorderLayout());
+    jPanel6.removeAll();
+    jPanel6.add(panelHistorialVentas, BorderLayout.CENTER);
+    jPanel6.revalidate();
+    jPanel6.repaint();
+//
+ // llama a panel creditoCliente
+ panelCreditoCliente = new Vista.CreditoClientePanel();
+creditoClienteController = new Controlador.CreditoClienteController(panelCreditoCliente);
+jPanel17.setLayout(new BorderLayout());
+jPanel17.removeAll();
+jPanel17.add(panelCreditoCliente, BorderLayout.CENTER);
+jPanel17.revalidate();
+jPanel17.repaint();
+    
+    // -------------------------
+    // 🔹 Ajustes de layout en jPanel2 (verdulería y tabla)
+    // -------------------------
+    jPanel2.remove(jScrollPane1);
+    jPanel2.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(30, 160, 650, 310));
+
+    panelVerduleria = new Vista.VerduleriaPanel();
+    jPanel2.add(panelVerduleria, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 160, 360, 310));
+    new Controlador.VerduleriaController(panelVerduleria, TableVenta);
+    TableVenta.getModel().addTableModelListener(evt -> TotalPagarX());
+
+    jPanel2.revalidate();
+    jPanel2.repaint();
+
+    // -------------------------
+    // 🔹 BOTÓN CERRAR SESIÓN: solo se crea si no existe
+    // -------------------------
     if (btnCerrarSesion == null) {
         btnCerrarSesion = BotonCerrarSesion.crearBoton(this, jPanel1);
     }
-    
-    
-    
-    
-    
-    
-    // 🔹 Estilos de botones (mantener igual)
+
+    // -------------------------
+    // 🔹 BOTÓN CONFIGURACIONES (temporal: debajo de Cerrar Sesión)
+    // -------------------------
+    if (btnConfiguraciones == null) {
+        btnConfiguraciones = new javax.swing.JButton("Configuraciones");
+        Estilos.estiloBotonMenuLateral(btnConfiguraciones);
+    }
+
+    // Tamaño y posición: colocarlo justo debajo de btnCerrarSesion (AbsoluteLayout)
+    int ancho = 180;
+    int alto  = 40;
+    btnConfiguraciones.setSize(ancho, alto);
+
+    if (btnCerrarSesion != null) {
+        // obtener coordenadas del botón Cerrar Sesión ya posicionado por NetBeans
+        int xCerrar = btnCerrarSesion.getX();
+        int yCerrar = btnCerrarSesion.getY();
+        int gap = 6; // separación entre botones
+
+        int x = xCerrar;
+        int y = yCerrar + btnCerrarSesion.getHeight() + gap;
+
+        // fallback si las coordenadas son 0 (por seguridad)
+        if (x <= 0) x = 20;
+        if (y <= 0) y = 520;
+
+        btnConfiguraciones.setBounds(x, y, ancho, alto);
+    } else {
+        // fallback: posición fija
+        btnConfiguraciones.setBounds(20, 520, ancho, alto);
+    }
+
+    // Asegurar visibilidad y estilo
+    btnConfiguraciones.setVisible(true);
+    btnConfiguraciones.setOpaque(true);
+    btnConfiguraciones.setContentAreaFilled(true);
+    btnConfiguraciones.setBorderPainted(true);
+
+    // Añadir al panel lateral y forzar repintado
+    jPanel1.add(btnConfiguraciones);
+    // Intentar llevar al frente para evitar que quede "detrás"
+    try {
+        jPanel1.setComponentZOrder(btnConfiguraciones, 0);
+    } catch (Exception ex) {
+        // si el layout no soporta Z-order, ignorar sin romper la UI
+    }
+    jPanel1.revalidate();
+    jPanel1.repaint();
+
+    // Listener para abrir la pestaña de Config Dispositivos
+    btnConfiguraciones.addActionListener(evt -> {
+        if (jPanelConfig == null) {
+            System.out.println("DEBUG: jPanelConfig es null");
+            return;
+        }
+        int index = Menu.indexOfComponent(jPanelConfig);
+        if (index != -1) {
+            System.out.println("DEBUG: btnConfiguraciones abre pestaña Config Dispositivos en índice " + index);
+            Menu.setSelectedIndex(index);
+            Menu.getComponentAt(index).revalidate();
+            Menu.getComponentAt(index).repaint();
+        } else {
+            System.out.println("DEBUG: jPanelConfig no encontrado en Menu");
+        }
+    });
+
+    // -------------------------
+    // 🔹 Listar configuración básica
+    // -------------------------
+    ListarConfig();
+
+    // -------------------------
+    // 🔹 Estilos de botones laterales (incluye el nuevo)
+    // -------------------------
     Estilos.estiloBotonMenuLateral(btnNuevaVenta);
     Estilos.estiloBotonMenuLateral(btnClientes);
     Estilos.estiloBotonMenuLateral(btnProveedor);
@@ -225,26 +394,36 @@ public Sistema() {
     Estilos.estiloBotonMenuLateral(btnEntrada);
     Estilos.estiloBotonMenuLateral(BtnCreditoCliente);
     Estilos.estiloBotonMenuLateral(BtnCorte);
-    Estilos.estiloBotonMenuLateral(btnCerrarSesion); 
-    // 🔹 Inicializar teclas de acceso rápido
+    Estilos.estiloBotonMenuLateral(btnCerrarSesion);
+    Estilos.estiloBotonMenuLateral(btnConfiguraciones); // aplicar estilo al nuevo botón
+
+    // -------------------------
+    // 🔹 Inicializar teclas rápidas
+    // -------------------------
     inicializarTeclas();
 
+    // -------------------------
     // 🔹 Pestañas con validación
-    pestañasConValidacion.add(1); // clientes
-    pestañasConValidacion.add(2); // Proveedores
-    pestañasConValidacion.add(3); // Productos
-    pestañasConValidacion.add(4); // Ventas
-    pestañasConValidacion.add(5); // Config
-    pestañasConValidacion.add(6); // Usuarios
-    pestañasConValidacion.add(7); // Cerrar sesion 
-  
-    
+    // -------------------------
+    pestañasConValidacion.add(1);
+    pestañasConValidacion.add(2);
+    pestañasConValidacion.add(3);
+    pestañasConValidacion.add(4);
+    pestañasConValidacion.add(5);
+    pestañasConValidacion.add(6);
+    pestañasConValidacion.add(7);
 
-    // 🔹 Listener para cambio de pestañas
+    // -------------------------
+    // 🔹 Listener de cambio de pestañas (validación de corte)
+    // -------------------------
     Menu.addChangeListener(evt -> {
         int selectedIndex = Menu.getSelectedIndex();
-        if (selectedIndex == 2) origenActual = "venta";
-        else if (selectedIndex == 7) origenActual = "credito";
+
+        if (selectedIndex == 2) {
+            origenActual = "venta";
+        } else if (selectedIndex == 7) {
+            origenActual = "credito";
+        }
 
         if (pestañasConValidacion.contains(selectedIndex)) {
             if (!corteValidado) {
@@ -259,6 +438,16 @@ public Sistema() {
             corteValidado = false;
         }
     });
+
+    // -------------------------
+    // 🔹 Panel embebido de Productos Moderno (con Cloudinary y Categorías)
+    // -------------------------
+    PanelProductos panelProductosNuevo = new PanelProductos(idEmpresaActiva, proDao, PrDao, this::refrescarPanelVerduleria);
+    jPanel5.setLayout(new BorderLayout());
+    jPanel5.removeAll();
+    jPanel5.add(panelProductosNuevo, BorderLayout.CENTER);
+    jPanel5.revalidate();
+    jPanel5.repaint();
 }
 
 // Agrega este método
@@ -271,6 +460,8 @@ public void inicializarSistema(login priv) {
     this.usuarioLogueado = priv;
     sistemaYaIniciado = true; // Activamos la bandera
 
+    System.out.println("DEBUG: Inicializando sistema para usuario -> " + priv.getNombre() + " con rol " + priv.getRol());
+
     // Configurar acceso rápido (mnemonic) para botón Buscar Producto
     btnBusccarPro.setMnemonic(KeyEvent.VK_X);
 
@@ -279,24 +470,22 @@ public void inicializarSistema(login priv) {
 
     // Aplicar estilos personalizados a tablas
     Estilos.estiloTablas(TableVenta);
-    Estilos.estiloTablas(TableCreditClient);
-
     // Agregar listener para detectar cambio de pestaña en el menú (JTabbedPane)
     Menu.addChangeListener(evt -> {
         int selectedIndex = Menu.getSelectedIndex();
 
         if (selectedIndex == 2) {
             origenActual = "venta";
-            System.out.println("origenActual = venta");
+            System.out.println("DEBUG: origenActual = venta");
         } else if (selectedIndex == 7) {
             origenActual = "credito";
-            System.out.println("origenActual = credito");
+            System.out.println("DEBUG: origenActual = credito");
         }
 
         // Reseteamos la bandera de validación si cambiamos a una pestaña que no requiere validación
         if (!pestañasConValidacion.contains(selectedIndex)) {
             corteValidado = false;
-            System.out.println("🔹 corteValidado reseteado porque se cambió de pestaña");
+            System.out.println("DEBUG: corteValidado reseteado porque se cambió de pestaña");
         }
     });
 
@@ -304,11 +493,53 @@ public void inicializarSistema(login priv) {
     // 🔹 LIMPIAR PANEL DE CORTE DE CAJA
     // -------------------------------
     jPanelMenuCorte.removeAll();  // eliminamos botones existentes
-    jPanelMenuCorte.repaint();     // refrescar panel
+    jPanelMenuCorte.repaint();    // refrescar panel
 
     // Configurar estilo y agregar botones nuevamente
     menuCorteCaja.aplicarEstilo(menu);
     menuCorteCaja.agregarBotonesAJPanel(jPanelMenuCorte, priv.getCorreo());
+// --- RESTAURAR DISEÑO ORIGINAL DEL PANEL DE CORTE ---
+// Llamar a esto justo después de menuCorteCaja.agregarBotonesAJPanel(...)
+jPanelMenuCorte.removeAll(); // quitar todo lo que haya (wrappers, botones, etc.)
+jPanelMenuCorte.repaint();
+
+// Restaurar un layout neutro igual al original de initComponents
+// Si en initComponents usabas otro layout (p.ej. AbsoluteLayout o FlowLayout),
+// reemplaza new FlowLayout(...) por el layout original.
+jPanelMenuCorte.setLayout(new java.awt.FlowLayout(java.awt.FlowLayout.LEFT, 8, 8));
+
+// Volver a aplicar estilo y repoblar con el método original
+menuCorteCaja.aplicarEstilo(menu);
+menuCorteCaja.agregarBotonesAJPanel(jPanelMenuCorte, priv.getCorreo());
+
+// Forzar que los botones creados por agregarBotonesAJPanel mantengan su estilo original
+for (java.awt.Component comp : jPanelMenuCorte.getComponents()) {
+    if (comp instanceof javax.swing.JButton) {
+        javax.swing.JButton btn = (javax.swing.JButton) comp;
+        // Restaurar propiedades por defecto (evita bordes redondeados o tamaños forzados)
+        btn.setOpaque(true);
+        btn.setContentAreaFilled(true);
+        btn.setFocusPainted(true);
+        btn.setBorder(javax.swing.UIManager.getBorder("Button.border"));
+        btn.setPreferredSize(null);
+        btn.setMinimumSize(null);
+        btn.setMaximumSize(null);
+        btn.setFont(btn.getFont().deriveFont(java.awt.Font.PLAIN, btn.getFont().getSize()));
+        // Si se cambió el icono, no lo tocamos; si quieres restaurar iconos, hazlo aquí.
+    }
+}
+
+// Revalidar y repintar
+jPanelMenuCorte.revalidate();
+jPanelMenuCorte.repaint();
+
+// Debug opcional (borra estas líneas si no las necesitas)
+System.out.println("DEBUG: Restaurado jPanelMenuCorte. Componentes = " + jPanelMenuCorte.getComponentCount());
+for (int i = 0; i < jPanelMenuCorte.getComponentCount(); i++) {
+    java.awt.Component c = jPanelMenuCorte.getComponent(i);
+    System.out.println("  comp[" + i + "] = " + c.getClass().getSimpleName() + " bounds=" + c.getBounds());
+}
+
 
     // Ajustes adicionales para interfaz: enfocar código de venta
     Menu.setSelectedIndex(0);
@@ -362,24 +593,11 @@ public void inicializarSistema(login priv) {
     TotalEntrada.setVisible(true);
     menu.setVisible(false);
 
-    // Inicializar modelo para tabla de créditos de clientes
-    modelo3 = new DefaultTableModel();
-    modelo3.addColumn("ID");
-    modelo3.addColumn("Descripcion");
-    modelo3.addColumn("Cantidad");
-    modelo3.addColumn("Precio U.");
-    modelo3.addColumn("Precio Total.");
-    TableCreditClient.setModel(modelo3);
-    Estilos.estiloTablas(TableCreditClient);
-
     // Inicializar teclas de acceso rápido
     inicializarTeclas();
 
     // Hacer visible la ventana
     setVisible(true);
-
-    // Listar configuración
-    ListarConfig();
 
     // Configurar botones y etiquetas según rol del usuario
     if (priv.getRol().equals("Asistente")) {
@@ -394,10 +612,74 @@ public void inicializarSistema(login priv) {
 
     // Solicitar foco en el campo de código de venta
     txtCodigoVenta.requestFocus();
-}
 
+    // Log final para confirmar que todo se inicializó
+    System.out.println("DEBUG: inicializarSistema completado. Panel lateral tiene " + jPanel1.getComponentCount() + " componentes.");
+// 🔹 CARGAR DATOS EN EL PANEL DE VERDULERÍA YA EXISTENTE (`panelVerduleria`)
+refrescarPanelVerduleria();
   
-    
+} 
+private void refrescarPanelVerduleria() {
+    try {
+        List<Productos> listaPro = proDao.ListarProductos(idEmpresaActiva);
+        cacheProductosEmpresa = listaPro; // 👈 agregar esta línea
+        Map<String, Productos> mapaProductosVerduleria = new HashMap<>();
+        List<String> nombresVerduleria = new ArrayList<>();
+
+        if (listaPro != null) {
+            for (Productos p : listaPro) {
+                if (p.getCategoria() != null && "verduleria".equalsIgnoreCase(p.getCategoria().trim())) {
+                    mapaProductosVerduleria.put(p.getNombre(), p);
+                    nombresVerduleria.add(p.getNombre());
+                }
+            }
+        }
+
+        if (panelVerduleria != null) {
+            panelVerduleria.cargarProductos(nombresVerduleria, mapaProductosVerduleria);
+            panelVerduleria.revalidate();
+            panelVerduleria.repaint();
+        }
+
+        jPanel2.revalidate();
+        jPanel2.repaint();
+
+        System.out.println("DEBUG-VERDULERIA: Panel de verdulería actualizado con " + nombresVerduleria.size() + " productos.");
+    } catch (Exception e) {
+        System.out.println("Error al refrescar productos en el panel de verdulería: " + e.getMessage());
+        e.printStackTrace();
+    }
+}   
+
+private Productos buscarProductoVerduleria(String texto) {
+    if (cacheProductosEmpresa == null || texto == null || texto.trim().isEmpty()) return null;
+    String t = texto.trim();
+
+    for (Productos p : cacheProductosEmpresa) {
+        if (p.getCategoria() == null || !"verduleria".equalsIgnoreCase(p.getCategoria().trim())) {
+            continue; // solo nos interesan los de Verdulería
+        }
+        boolean coincideCodigo = p.getCodigo() != null && p.getCodigo().equalsIgnoreCase(t);
+        boolean coincideId = false;
+        try {
+            coincideId = p.getId() == Integer.parseInt(t);
+        } catch (NumberFormatException ignored) {}
+
+        if (coincideCodigo || coincideId) {
+            return p;
+        }
+    }
+    return null;
+}
+public void abrirDetalleVerduleria(Productos producto) {
+    Menu.setSelectedIndex(0); // pestaña Nueva Venta, donde vive panelVerduleria
+    if (panelVerduleria != null) {
+        panelVerduleria.mostrarDetalle(producto);
+    }
+}
+public Controlador.CreditoClienteController getCreditoClienteController() {
+    return creditoClienteController;
+}
     public void nuevatabla(){
     
     modelo3=new DefaultTableModel();
@@ -460,117 +742,30 @@ public void inicializarSistema(login priv) {
     TableUsuarios.setModel(modelo);
 }
 
-   
-public void ListarProductos() {
-    // Usamos la variable global idEmpresaActiva
-    System.out.println("idEmpresaActiva = " + idEmpresaActiva);
-
-    List<Productos> ListarPro = proDao.ListarProductos(idEmpresaActiva);
-    modelo = (DefaultTableModel) TableProducto.getModel();
-
-    Object[] ob = new Object[8];
-    modelo.setRowCount(0);
-
-    for (Productos p : ListarPro) {
-        ob[0] = p.getId();
-        ob[1] = p.getCodigo();
-        ob[2] = p.getNombre();
-        ob[3] = p.getProveedorPro();
-        ob[4] = p.getStock();
-        ob[5] = p.getPrecio();
-        ob[6] = p.getPreciocompra();
-        ob[7] = p.getProveedor(); // columna invisible
-        modelo.addRow(ob);
-    }
-
-    TableProducto.setModel(modelo);
-    TableProducto.setAutoCreateRowSorter(true);
-    sorter = new TableRowSorter<>(modelo);
-    TableProducto.setRowSorter(sorter);
-
-    // Ajuste de columnas
-    TableProducto.getColumnModel().getColumn(0).setPreferredWidth(50);
-    TableProducto.getColumnModel().getColumn(1).setPreferredWidth(150);
-    TableProducto.getColumnModel().getColumn(2).setPreferredWidth(400);
-    TableProducto.getColumnModel().getColumn(3).setPreferredWidth(100);
-    TableProducto.getColumnModel().getColumn(4).setPreferredWidth(50);
-    TableProducto.getColumnModel().getColumn(5).setPreferredWidth(100);
-    TableProducto.getColumnModel().getColumn(6).setPreferredWidth(100);
-    TableProducto.getColumnModel().getColumn(7).setMinWidth(0);
-    TableProducto.getColumnModel().getColumn(7).setMaxWidth(0);
-    TableProducto.getColumnModel().getColumn(7).setResizable(false);
-
-    TableProducto.setRowHeight(30);
-}
-
-
     
 public void ListarConfig() {
+    // Validar que el usuario logueado exista para evitar NullPointerException
+    if (usuarioLogueado == null) {
+        System.out.println("DEBUG: usuarioLogueado es null al intentar listar la configuración.");
+        return;
+    }
+
     EmpresaDao empresaDao = new EmpresaDao();
-    
-    // Usar el ID de la empresa del usuario logueado
     int idEmpresa = usuarioLogueado.getIdEmpresa(); 
-    Empresa empresa = empresaDao.BuscarDatos(idEmpresa); // PASAR id_empresa correcto
+    Empresa empresa = empresaDao.BuscarDatos(idEmpresa); 
     
     if (empresa != null) {
-        txtIdConfig.setText("" + empresa.getId_empresa());
-        txtRucConfig.setText(empresa.getRuc() != null ? empresa.getRuc() : "");
-        txtNombreConfig.setText(empresa.getNombre() != null ? empresa.getNombre() : "");
-        txtTelefonoConfig.setText(empresa.getTelefono() != null ? empresa.getTelefono() : "");
-        txtDireccionConfig.setText(empresa.getDireccion() != null ? empresa.getDireccion() : "");
-        txtMensaje.setText(empresa.getMensaje() != null ? empresa.getMensaje() : "");
+        if (txtIdConfig != null) txtIdConfig.setText("" + empresa.getId_empresa());
+        if (txtRucConfig != null) txtRucConfig.setText(empresa.getRuc() != null ? empresa.getRuc() : "");
+        if (txtNombreConfig != null) txtNombreConfig.setText(empresa.getNombre() != null ? empresa.getNombre() : "");
+        if (txtTelefonoConfig != null) txtTelefonoConfig.setText(empresa.getTelefono() != null ? empresa.getTelefono() : "");
+        if (txtDireccionConfig != null) txtDireccionConfig.setText(empresa.getDireccion() != null ? empresa.getDireccion() : "");
+        if (txtMensaje != null) txtMensaje.setText(empresa.getMensaje() != null ? empresa.getMensaje() : "");
     } else {
         JOptionPane.showMessageDialog(null, "No se encontró la empresa con ID " + idEmpresa);
     }
 }
 
-public void ListarVentas() {
-    int idEmpresa = Sistema.getIdEmpresaActiva(); 
-
-    List<Venta> ListarVenta = Vdao.ListarVentas(idEmpresa);
-
-    String[] columnas = {"No.", "CLIENTE", "VENDEDOR", "TOTAL", "TICKET", "FOLIO"};
-    modelo = new DefaultTableModel(null, columnas) {
-        @Override
-        public boolean isCellEditable(int row, int column) {
-            return column == 4; // solo el botón editable
-        }
-    };
-    TableVentas.setModel(modelo);
-
-   for (int i = 0; i < ListarVenta.size(); i++) {
-    Object[] ob = new Object[6];
-
-    // Columna visible: folio
-    ob[0] = ListarVenta.get(i).getFolio(); 
-
-    ob[1] = ListarVenta.get(i).getNombre_cli();
-    ob[2] = ListarVenta.get(i).getVendedor();
-    ob[3] = ListarVenta.get(i).getTotal();
-    ob[4] = "Reimprimir"; // botón
-
-    // Columna oculta: id único de venta
-    ob[5] = ListarVenta.get(i).getId(); 
-
-    modelo.addRow(ob);
-
-
-
-        System.out.println("DEBUG: fila=" + i + ", folio real=" + ob[5]); // debug
-    }
-
-    // Configurar botón
-    TableVentas.getColumnModel().getColumn(4).setCellRenderer(new Utilidades.TablaBotonImprimirVentaHistorial());
-    TableVentas.getColumnModel().getColumn(4).setCellEditor(new Utilidades.TablaBotonImprimirVentaHistorial());
-    TableVentas.getColumnModel().getColumn(4).setMaxWidth(60);
-    TableVentas.getColumnModel().getColumn(4).setMinWidth(50);
-    TableVentas.getColumnModel().getColumn(4).setPreferredWidth(60);
-
-    // Ocultar columna FOLIO
-    TableVentas.getColumnModel().getColumn(5).setMinWidth(0);
-    TableVentas.getColumnModel().getColumn(5).setMaxWidth(0);
-    TableVentas.getColumnModel().getColumn(5).setWidth(0);
-}
 
 
     public void LimpiarTable() {
@@ -2506,7 +2701,7 @@ public void ListarVentas() {
         corteValidado = true; // marcar como validado
         Menu.setSelectedIndex(3);// abrir pestaña de proveedor
         LimpiarTable();
-        ListarProductos();
+       // ListarProductos();
         btnEditarpro.setEnabled(false);
         btnEliminarPro.setEnabled(false);
         btnGuardarpro.setEnabled(true);
@@ -2533,18 +2728,16 @@ public void ListarVentas() {
     }//GEN-LAST:event_btnConfigActionPerformed
 
     private void btnVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnVentasActionPerformed
-        // TODO add your handling code here:
-        
-        
           if (usuarioLogueado.getRol().equals("Administrador") || corteValidado
         || rolController.solicitarClaveAdministrador()) {
         corteValidado = true; // marcar como validado
-       Menu.setSelectedIndex(4);
-        LimpiarTable();
-        ListarVentas();
-    }
-        
-        
+        Menu.setSelectedIndex(4);
+
+        if (historialController == null) {
+            historialController = new HistorialVentasController(panelHistorialVentas, idEmpresaActiva);
+        }
+        historialController.cargarVentas();
+    } 
         
     }//GEN-LAST:event_btnVentasActionPerformed
 
@@ -2632,40 +2825,11 @@ lg.setIdEmpresa(Sistema.getIdEmpresaActiva());
     // Sobrecarga simplificada
 
     private void btnPdfVentasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnPdfVentasActionPerformed
-    // Verificar que haya un folio ingresado
-    if (txtIdVenta.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Selecciona una fila");
-        return;
-    }
-
-    try {
-        int folio = Integer.parseInt(txtIdVenta.getText().trim());
-        int idEmpresa = Sistema.getIdEmpresaActiva(); // obtenemos la empresa activa
-
-        // Buscar venta por folio y empresa
-        Venta venta = Vdao.BuscarVentaPorFolio(folio, idEmpresa);
-        if (venta == null) {
-            JOptionPane.showMessageDialog(null, "No se encontró la venta con folio " + folio);
-            return;
-        }
-
-        // Obtener el vendedor registrado
-        String usuario = venta.getVendedor();
-
-        // Generar PDF
-        Vdao.pdfV(venta.getId(), usuario);
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(null, "Folio inválido");
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(null, "Error al generar PDF: " + e.getMessage());
-        e.printStackTrace();
-    }
+  //bloque eliminado 
     }//GEN-LAST:event_btnPdfVentasActionPerformed
 
     private void TableVentasMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableVentasMouseClicked
-         int fila = TableVentas.rowAtPoint(evt.getPoint());
-        txtIdVenta.setText(TableVentas.getValueAt(fila, 0).toString());
+
     }//GEN-LAST:event_TableVentasMouseClicked
 
     private void btnNuevoProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnNuevoProActionPerformed
@@ -2678,7 +2842,7 @@ lg.setIdEmpresa(Sistema.getIdEmpresaActiva());
     }//GEN-LAST:event_btnNuevoProActionPerformed
 
     private void btnEliminarProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEliminarProActionPerformed
-        // TODO add your handling code here:
+        /* / TODO add your handling code here:
         if (!"".equals(txtIdproducto.getText())) {
             int pregunta = JOptionPane.showConfirmDialog(null, "Esta seguro de eliminar");
             if (pregunta == 0) {
@@ -2693,99 +2857,16 @@ lg.setIdEmpresa(Sistema.getIdEmpresaActiva());
             }
         }else{
             JOptionPane.showMessageDialog(null, "Selecciona una fila");
-        }
+        } */
     }//GEN-LAST:event_btnEliminarProActionPerformed
 
     private void btnEditarproActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEditarproActionPerformed
     
-    // 1️⃣ Validar selección de producto
-    if (txtIdproducto.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Seleccione un producto de la tabla");
-        return;
-    }
-
-    // 2️⃣ Validar campos obligatorios
-    if (txtCodigoPro.getText().trim().isEmpty()
-            || txtDesPro.getText().trim().isEmpty()
-            || txtCantPro.getText().trim().isEmpty()
-            || txtPrecioPro.getText().trim().isEmpty()
-            || txtPreciocompraPro.getText().trim().isEmpty()) {
-
-        JOptionPane.showMessageDialog(null, "Todos los campos deben estar llenos.");
-        return;
-    }
-
-    // 3️⃣ Validar empresa activa
-    if (idEmpresaActiva <= 0) {
-        JOptionPane.showMessageDialog(null, "Empresa no válida.");
-        return;
-    }
-
-    // 4️⃣ Validar proveedor (🔴 AQUÍ ESTABA EL PROBLEMA)
-    Combo itemP = (Combo) cbxProveedorPro.getSelectedItem();
-    if (itemP == null || itemP.getId() <= 0) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Debe seleccionar un proveedor válido",
-            "Proveedor requerido",
-            JOptionPane.WARNING_MESSAGE
-        );
-        cbxProveedorPro.requestFocus();
-        return;
-    }
-
-    try {
-        // 5️⃣ Asignar datos al producto
-        pro.setId(Integer.parseInt(txtIdproducto.getText().trim()));
-        pro.setCodigo(txtCodigoPro.getText().trim());
-        pro.setNombre(txtDesPro.getText().trim());
-        pro.setProveedor(itemP.getId()); // ✅ ID real del proveedor
-
-        pro.setStock(Integer.parseInt(txtCantPro.getText().trim()));
-        pro.setPrecio(Double.parseDouble(txtPrecioPro.getText().trim()));
-        pro.setPreciocompra(Double.parseDouble(txtPreciocompraPro.getText().trim()));
-
-        // 🔴 CLAVE: empresa SIEMPRE
-        pro.setId_empresa(idEmpresaActiva);
-
-        // 6️⃣ Ejecutar actualización
-        if (proDao.ModificarProductos(pro)) {
-
-            JOptionPane.showMessageDialog(null, "Producto modificado correctamente");
-
-            // 7️⃣ Refrescar UI
-            LimpiarTable();
-            ListarProductos();
-            LimpiarProductos();
-
-            cbxProveedorPro.removeAllItems();
-            llenarProveedor();
-
-            // 8️⃣ Estado de botones
-            btnEditarpro.setEnabled(false);
-            btnEliminarPro.setEnabled(false);
-            btnGuardarpro.setEnabled(true);
-
-        } else {
-            JOptionPane.showMessageDialog(null, "No se pudo modificar el producto");
-        }
-
-    } catch (NumberFormatException e) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Error: asegúrese de ingresar valores numéricos válidos."
-        );
-    } catch (Exception e) {
-        JOptionPane.showMessageDialog(
-            null,
-            "Error al modificar el producto: " + e.getMessage()
-        );
-        e.printStackTrace();
-    }
+   
     }//GEN-LAST:event_btnEditarproActionPerformed
 
     private void btnGuardarproActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGuardarproActionPerformed
-         // Validar que ningún campo esté vacío o lleno de espacios
+         /*/ Validar que ningún campo esté vacío o lleno de espacios
     if (!txtCodigoPro.getText().trim().isEmpty() &&
         !txtDesPro.getText().trim().isEmpty() &&
         !txtCantPro.getText().trim().isEmpty() &&
@@ -2813,7 +2894,8 @@ lg.setIdEmpresa(Sistema.getIdEmpresaActiva());
             pro.setPrecio(precio);
             pro.setPreciocompra(precioCompra);
             pro.setId_empresa(idEmpresaActiva); // <-- variable global asignada
-
+// 👇 👇 AQUI AGREGAS LA CATEGORIA 👇 👇
+            pro.setCategoria("Verduleria");
             // Registrar producto en la base de datos
             if (proDao.RegistrarProductos(pro)) {
                 JOptionPane.showMessageDialog(null, "Producto registrado correctamente");
@@ -2839,7 +2921,7 @@ lg.setIdEmpresa(Sistema.getIdEmpresaActiva());
 
     } else {
         JOptionPane.showMessageDialog(null, "Todos los campos deben estar llenos.");
-    }  
+    } */ 
     }//GEN-LAST:event_btnGuardarproActionPerformed
 
     private void cbxProveedorProActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_cbxProveedorProActionPerformed
@@ -3238,7 +3320,7 @@ public void abrirVentanaCobrar() {
    //// hasta aqui
 
     private void txtCodigoVentaKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaKeyPressed
-       if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+         if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
         String texto = txtCodigoVenta.getText().trim();
 
         if (texto.isEmpty()) {
@@ -3246,10 +3328,21 @@ public void abrirVentanaCobrar() {
             return;
         }
 
-        // 🔍 Buscar por código primero
+        // 🥬 Interceptar: si coincide con un producto de Verdulería (nombre, código o ID),
+        // abrir el panel de detalle con báscula/peso en vez de agregar directo a la tabla.
+        Productos productoVerduleria = buscarProductoVerduleria(texto);
+        if (productoVerduleria != null) {
+            if (panelVerduleria != null) {
+                panelVerduleria.mostrarDetalle(productoVerduleria);
+            }
+            txtCodigoVenta.setText("");
+            txtCodigoVenta.requestFocus();
+            return; // 👈 no seguir con la búsqueda normal
+        }
+
+        // 🔍 Búsqueda normal (productos que NO son de Verdulería)
         pro = proDao.BuscarPro(texto, idEmpresaActiva);
 
-        // 🔁 Si no lo encuentra por código, intentar buscar por ID
         if (pro.getNombre() == null) {
             try {
                 int id = Integer.parseInt(texto);
@@ -3259,7 +3352,6 @@ public void abrirVentanaCobrar() {
             }
         }
 
-        // ✅ Si encontró el producto (por código o ID)
         if (pro.getNombre() != null) {
             txtIdPro.setText(String.valueOf(pro.getId()));
             txtCodigoVenta.setText(pro.getCodigo());
@@ -3297,10 +3389,9 @@ public void abrirVentanaCobrar() {
             LimparVenta();
         }
 
-        // 🔁 Siempre permitir buscar nuevamente el mismo código o ID
         txtCodigoVenta.requestFocus();
         txtCodigoVenta.selectAll();
-    }       
+    }    
     }//GEN-LAST:event_txtCodigoVentaKeyPressed
 
     private void btnEntradaActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnEntradaActionPerformed
@@ -3569,28 +3660,15 @@ txtDesPro.setText(""+mayus.toUpperCase());  // TODO add your handling code here:
     }//GEN-LAST:event_txtCodigoVentaActionPerformed
 
     private void btnTodasFilasActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnTodasFilasActionPerformed
-if (TableVenta.getRowCount() > 0) {
-            if (TableVenta.getRowCount() >= 0) {
-             for(int i=0; i<TableVenta.getRowCount(); i++){
-       String Datos[]=new String[5];
-           Datos[0]=TableVenta.getValueAt(i,0).toString();
-              Datos[1]=TableVenta.getValueAt(i,1).toString();
-              Datos[2]=TableVenta.getValueAt(i,2).toString();
-              Datos[3]=TableVenta.getValueAt(i,3).toString();
-              Datos[4]=TableVenta.getValueAt(i,4).toString();
-              
-             Sistema.modelo3.addRow(Datos); 
-            
-            } 
-             LimpiarTableVenta();
-       } 
-            Menu.setSelectedIndex(8);
-            TotalPagarCreditoCliente();
-       } else {
-            JOptionPane.showMessageDialog(null, "Noy productos en la tabla");
-             jPanel17.requestFocus();
-          
-       }  
+Object[][] filas = new Object[TableVenta.getRowCount()][5];
+for (int i = 0; i < TableVenta.getRowCount(); i++) {
+    for (int j = 0; j < 5; j++) {
+        filas[i][j] = TableVenta.getValueAt(i, j);
+    }
+}
+creditoClienteController.agregarFilasDesdeVenta(filas);
+LimpiarTableVenta();
+Menu.setSelectedIndex(8);
     }//GEN-LAST:event_btnTodasFilasActionPerformed
  
     private void btnCobrarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnCobrarActionPerformed
@@ -3623,9 +3701,9 @@ if (TableVenta.getRowCount() > 0) {
     private void txtBuscarActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtBuscarActionPerformed
         // TODO add your handling code here:
     }//GEN-LAST:event_txtBuscarActionPerformed
-
+ 
     private void TableProductoMouseClicked(java.awt.event.MouseEvent evt) {//GEN-FIRST:event_TableProductoMouseClicked
-   // Obtener la fila en la que se hizo clic según la posición del mouse
+  // Obtener la fila en la que se hizo clic según la posición del mouse
     int fila = TableProducto.rowAtPoint(evt.getPoint());
 
     // Validar que la fila sea válida (no clic fuera de filas)
@@ -3695,7 +3773,7 @@ if (TableVenta.getRowCount() > 0) {
     origenActual = "venta";
 
     // Crear FrmBusqueda pasando idEmpresaActiva y origenActual
-    FrmBusqueda BuscarProd = new FrmBusqueda(this.idEmpresaActiva, origenActual);
+    FrmBusqueda2 BuscarProd = new FrmBusqueda2(this.idEmpresaActiva, origenActual);
     BuscarProd.setVisible(true);
     
     }//GEN-LAST:event_btnBusccarProActionPerformed
@@ -3703,7 +3781,7 @@ private void abrirVentanaBuscar() {
     System.out.println("Abriendo FrmBusqueda con empresa activa: " + this.idEmpresaActiva
                        + " y origen: " + this.origenActual);
 
-    FrmBusqueda busqueda = new FrmBusqueda(this.idEmpresaActiva, this.origenActual);
+    FrmBusqueda2 busqueda = new FrmBusqueda2(this.idEmpresaActiva, this.origenActual);
     busqueda.setVisible(true);
 }
 
@@ -3716,74 +3794,7 @@ private void abrirVentanaBuscar() {
     }//GEN-LAST:event_txtCodigoVentaCreditClientActionPerformed
 
     private void txtCodigoVentaCreditClientKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaCreditClientKeyPressed
-      if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        String texto = txtCodigoVentaCreditClient.getText().trim();
-
-        if (texto.isEmpty()) {
-            JOptionPane.showMessageDialog(null, "Ingrese el código o ID del producto");
-            txtCodigoVentaCreditClient.requestFocus();
-            return;
-        }
-
-        // 🔍 Buscar por código primero
-        pro = proDao.BuscarPro(texto, idEmpresaActiva);
-
-        // 🔁 Si no lo encuentra por código, intentar buscar por ID
-        if (pro == null || pro.getNombre() == null) {
-            try {
-                int id = Integer.parseInt(texto);
-                pro = proDao.BuscarId(id, idEmpresaActiva);
-            } catch (NumberFormatException e) {
-                // No es numérico, se ignora
-            }
-        }
-
-        // ✅ Si encontró el producto (por código o ID)
-        if (pro != null && pro.getNombre() != null) {
-            txtIdPro.setText(String.valueOf(pro.getId()));
-            txtCodigoVentaCreditClient.setText(pro.getCodigo());
-            txtDescripcionVenta.setText(pro.getNombre());
-            txtPrecioVenta.setText(String.valueOf(pro.getPrecio()));
-            txtStockDisponible.setText(String.valueOf(pro.getStock()));
-
-            int cant;
-            try {
-                cant = Integer.parseInt(txtCantidadVenta1.getText());
-            } catch (NumberFormatException e) {
-                JOptionPane.showMessageDialog(null, "Cantidad inválida");
-                txtCantidadVenta1.requestFocus();
-                return;
-            }
-
-            int stock = pro.getStock();
-            double total = cant * pro.getPrecio();
-
-            if (stock >= cant) {
-                DefaultTableModel tmp = (DefaultTableModel) TableCreditClient.getModel();
-
-                // 🔹 Permitir duplicados
-                Object[] fila = new Object[]{pro.getId(), pro.getNombre(), cant, pro.getPrecio(), total};
-                tmp.addRow(fila);
-                TableCreditClient.setModel(tmp);
-
-                TotalPagarCreditoCliente();
-                LimparVenta();
-            } else {
-                JOptionPane.showMessageDialog(null, "Stock no disponible");
-                LimparVenta();
-            }
-        } else {
-            JOptionPane.showMessageDialog(null, "El código o ID del producto no existe");
-            LimparVenta();
-        }
-
-        // 🔁 Siempre permitir buscar nuevamente el mismo código o ID
-        txtCodigoVentaCreditClient.requestFocus();
-        txtCodigoVentaCreditClient.selectAll();
-    
-    }
-    
-      // TODO add your handling code here:
+   
     }//GEN-LAST:event_txtCodigoVentaCreditClientKeyPressed
 
     private void txtCodigoVentaCreditClientKeyTyped(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtCodigoVentaCreditClientKeyTyped
@@ -3812,7 +3823,7 @@ private void abrirVentanaBuscar() {
 
     if (filaSeleccionada != -1) {
         modelo.removeRow(filaSeleccionada);
-        TotalPagarCreditoCliente(); // <-- recalcula el total
+        
     }
 
     txtCodigoVentaCreditClient.requestFocus();   
@@ -3823,40 +3834,11 @@ private void abrirVentanaBuscar() {
     }//GEN-LAST:event_txtRucVentaCreditActionPerformed
 
     private void txtRucVentaCreditKeyPressed(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCreditKeyPressed
-        if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
-        String rucText = txtRucVentaCredit.getText().trim();
-
-        if (rucText.isEmpty()) {
-            return; // Evita procesar si el campo está vacío
-        }
-
-        try {
-            int dni = Integer.parseInt(rucText);
-            // 🔹 Buscar cliente dentro de la empresa del usuario
-            cl = client.BuscarCliente(dni, usuarioLogueado.getIdEmpresa());
-
-            if (cl.getNombre() != null) {
-                txtNombreClienteventaCredit.setText(cl.getNombre());
-                txtIdCV.setText(String.valueOf(cl.getId()));
-                txtCodigoVentaCreditClient.requestFocus();
-            } else {
-                JOptionPane.showMessageDialog(null, "El cliente no existe en esta empresa");
-                LimparVentaCredit();
-            }
-        } catch (NumberFormatException e) {
-            JOptionPane.showMessageDialog(null, "Número de DNI inválido");
-            txtRucVentaCredit.requestFocus();
-        }
-    }
-    
+     
     }//GEN-LAST:event_txtRucVentaCreditKeyPressed
 
-    
-    
     public void EnterClienteCredit(){
-      //original
-         
-               } 
+       } 
     private void txtRucVentaCreditKeyReleased(java.awt.event.KeyEvent evt) {//GEN-FIRST:event_txtRucVentaCreditKeyReleased
         // TODO add your handling code here:
     }//GEN-LAST:event_txtRucVentaCreditKeyReleased
@@ -3866,46 +3848,11 @@ private void abrirVentanaBuscar() {
     }//GEN-LAST:event_txtRucVentaCreditKeyTyped
 
     private void btnGenerarVentaCreditActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnGenerarVentaCreditActionPerformed
-   if (TableCreditClient.getRowCount() == 0) {
-        JOptionPane.showMessageDialog(null, "No hay productos en la venta");
-        txtCodigoVentaCreditClient.requestFocus();
-        return;
-    }
-
-    if (txtNombreClienteventaCredit.getText().trim().isEmpty()) {
-        JOptionPane.showMessageDialog(null, "Debes buscar un cliente");
-        txtRucVentaCredit.requestFocus();
-        return;
-    }
-
-    // 🧾 Procesos principales
-    RegistrarDetalleCreditocliente();
-    ActualizarStockCreditCliente();
-
-    // 🧹 Limpieza general
-    LimpiarTableCredit();
-    LimparVentaCredit();
-    LimpiarCobro();
-
-    // 🧍‍♂️ Resetear campos del cliente
-    txtNombreClienteventaCredit.setText("");
-    txtRucVentaCredit.setText("");
-   
-
-    // 🔁 Foco al campo principal
-    txtCodigoVentaCreditClient.requestFocus();
-
-    // ✅ Mensaje final
-    JOptionPane.showMessageDialog(null, "Registro exitoso");
+  
     }//GEN-LAST:event_btnGenerarVentaCreditActionPerformed
 
     private void btnBusccarPro1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnBusccarPro1ActionPerformed
-  // Definimos el origen antes de abrir la ventana
-    String origenActual = "credito";
-
-    // Creamos FrmBusqueda pasando la empresa activa y el origen
-    FrmBusqueda frmBusqueda = new FrmBusqueda(this.idEmpresaActiva, origenActual);
-    frmBusqueda.setVisible(true);
+ 
     }//GEN-LAST:event_btnBusccarPro1ActionPerformed
 
     private void BtnCreditoClienteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCreditoClienteActionPerformed
@@ -3940,27 +3887,11 @@ private void abrirVentanaBuscar() {
     }//GEN-LAST:event_txtIDProductKeyTyped
 
     private void jButton2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jButton2ActionPerformed
-   // ventana ver historial
-    if (!"".equals(txtRucVentaCredit.getText()) && !"".equals(txtNombreClienteventaCredit.getText())) {
-        int ruc = Integer.parseInt(txtRucVentaCredit.getText());
-        String nombre = txtNombreClienteventaCredit.getText();
-
-        // 🔹 Usamos el idEmpresa desde Sistema
-        ConsultaCreditoCliente.setIdEmpresaActiva(Sistema.idEmpresaActiva);
-
-        // Pasa 0 para idVenta e idCliente, los carga internamente ConsultaCreditoCliente
-        ConsultaCreditoCliente consulta = new ConsultaCreditoCliente(ruc, nombre, 0, 0);
-        consulta.setVisible(true);
-
-        LimparVentaCredit(); // Limpia el ID del cliente
-    } else {
-        JOptionPane.showMessageDialog(null, "Ingresa Número de Casa + ENTER");
-        txtRucVentaCredit.requestFocus();
-    }
+  
     }//GEN-LAST:event_jButton2ActionPerformed
 
     private void formWindowActivated(java.awt.event.WindowEvent evt) {//GEN-FIRST:event_formWindowActivated
-TotalPagarCreditoCliente();
+//TotalPagarCreditoCliente();
         TotalPagarX();
         EnterClienteVenta();
         EnterClienteCredit();
@@ -4020,21 +3951,109 @@ private double calcularTotalPagar() {
     }//GEN-LAST:event_jPanel18KeyPressed
 
     private void BtnCorteActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_BtnCorteActionPerformed
-     if (usuarioLogueado.getRol().equals("Administrador") || corteValidado
-        || rolController.solicitarClaveAdministrador()) {
-        corteValidado = true; // marcar como validado
-        Menu.setSelectedIndex(9); // abrir pestaña de corte de caja
+     // Protección contra usuario nulo
+    if (usuarioLogueado == null) {
+        System.out.println("DEBUG: BtnCorte pulsado pero usuarioLogueado es null");
+        return;
+    }
+
+    // Comprobar permisos / validación
+    boolean acceso = usuarioLogueado.getRol().equals("Administrador") || corteValidado;
+    if (!acceso) {
+        acceso = rolController.solicitarClaveAdministrador(); // solo se ejecuta si no hay acceso previo
+    }
+
+    if (acceso) {
+        corteValidado = true;
+
+        // Buscar dinámicamente el panel de Corte en el JTabbedPane
+        int idx = Menu.indexOfComponent(jPanelMenuCorte);
+        if (idx == -1) {
+            // fallback: buscar por título "Corte de caja"
+            for (int i = 0; i < Menu.getTabCount(); i++) {
+                if ("Corte de caja".equalsIgnoreCase(Menu.getTitleAt(i))) {
+                    idx = i;
+                    break;
+                }
+            }
+        }
+
+        if (idx != -1) {
+            System.out.println("DEBUG: Abriendo pestaña Corte en índice " + idx);
+            Menu.setSelectedIndex(idx);
+            Menu.getComponentAt(idx).revalidate();
+            Menu.getComponentAt(idx).repaint();
+        } else {
+            System.out.println("DEBUG: No se encontró la pestaña Corte de caja en Menu");
+        }
     }
     }//GEN-LAST:event_BtnCorteActionPerformed
 
         private void BtnCerrarSActionPerformed(java.awt.event.ActionEvent evt) {                                         
-     if (usuarioLogueado.getRol().equals("Administrador") || corteValidado
-        || rolController.solicitarClaveAdministrador()) {
-        corteValidado = true; // marcar como validado
-        Menu.setSelectedIndex(9); // abrir pestaña de corte de caja
+     // Protección contra usuario nulo
+    if (usuarioLogueado == null) {
+        System.out.println("DEBUG: BtnCerrarS pulsado pero usuarioLogueado es null");
+        // Aquí podrías abrir el diálogo de confirmación de cierre sin usuario o forzar volver al login
+        return;
+    }
+
+    // Si tu flujo es pedir clave igual que en corte, reutiliza la lógica; si no, muestra confirmación de logout
+    boolean acceso = usuarioLogueado.getRol().equals("Administrador") || corteValidado;
+    if (!acceso) {
+        acceso = rolController.solicitarClaveAdministrador();
+    }
+
+    if (acceso) {
+        // Si quieres abrir la pestaña "Cerrar Sesión" en el JTabbedPane:
+        int idx = -1;
+        for (int i = 0; i < Menu.getTabCount(); i++) {
+            if ("Cerrar Sesión".equalsIgnoreCase(Menu.getTitleAt(i)) || "CerrarSesion".equalsIgnoreCase(Menu.getTitleAt(i))) {
+                idx = i;
+                break;
+            }
+        }
+
+        if (idx != -1) {
+            System.out.println("DEBUG: Abriendo pestaña Cerrar Sesión en índice " + idx);
+            Menu.setSelectedIndex(idx);
+        } else {
+            // fallback: ejecutar el flujo de cierre (diálogo)
+            System.out.println("DEBUG: pestaña Cerrar Sesión no encontrada, mostrando diálogo de cierre");
+            // ejemplo de diálogo:
+            int opt = javax.swing.JOptionPane.showConfirmDialog(this, "¿Deseas cerrar sesión?", "Cerrar sesión", javax.swing.JOptionPane.YES_NO_OPTION);
+            if (opt == javax.swing.JOptionPane.YES_OPTION) {
+                // tu lógica de logout
+                System.out.println("DEBUG: Usuario confirmó cierre de sesión");
+                // reiniciar o mostrar login
+            } else {
+                System.out.println("DEBUG: Usuario canceló cierre de sesión");
+            }
+        }
     }
     }
-    
+private void btnConfiguracionesActionPerformed(java.awt.event.ActionEvent evt) {
+    if (jPanelConfig == null) {
+        System.out.println("DEBUG: jPanelConfig es null");
+        return;
+    }
+    int index = Menu.indexOfComponent(jPanelConfig);
+    if (index != -1) {
+        System.out.println("DEBUG: btnConfig abre pestaña Config Dispositivos en índice " + index);
+        Menu.setSelectedIndex(index);
+        Menu.getComponentAt(index).revalidate();
+        Menu.getComponentAt(index).repaint();
+    } else {
+        System.out.println("DEBUG: jPanelConfig no encontrado en Menu. Intentando reinsertar...");
+        // reinsertar en penúltima posición antes de Cerrar Sesión
+        Menu.insertTab("Config Dispositivos", null, jPanelConfig, null, Math.max(0, Menu.getTabCount() - 1));
+        int newIdx = Menu.indexOfComponent(jPanelConfig);
+        System.out.println("DEBUG: jPanelConfig reinsertado en índice " + newIdx);
+        if (newIdx != -1) Menu.setSelectedIndex(newIdx);
+    }
+}
+
+
+
     private void menuActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_menuActionPerformed
   // Crear y mostrar el diálogo modal de opciones
     MenuOpcionesForm ventana = new MenuOpcionesForm(this, true);
@@ -4357,16 +4376,7 @@ void Operacion(){
     }
     TotalEntrada.setText(String.format("%.2f", TotalpagarEntrada));
      }
-     public void TotalPagarCreditoCliente() {
-        TotalpagarCredit = 0.00;
-     int numFila = TableCreditClient.getRowCount();
-       for (int i = 0; i < numFila; i++) {
-            double cal = Double.parseDouble(String.valueOf(TableCreditClient.getModel().getValueAt(i, 4)));
-            TotalpagarCredit = TotalpagarCredit + cal;
-       }
-        lblTotalCredit.setText(String.format("%.2f", TotalpagarCredit));
-   }
-
+  
     private void LimparVenta() {
         txtCodigoVentaCreditClient.setText("");
         txtCodigoVenta.setText("");
@@ -4378,18 +4388,7 @@ void Operacion(){
         
         
     }
-      private void LimparVentaCredit() {
-        txtCodigoVentaCreditClient.setText("");
-        txtRucVentaCredit.setText("");
-        txtNombreClienteventaCredit.setText("");
-        txtDescripcionVenta.setText("");
-        lblTotalCredit.setText("");
-       // txtCantidadVenta.seftText("");
-        txtStockDisponible.setText("");
-        txtPrecioVenta.setText("");
-        txtIdVenta.setText("");
-     
-    }
+   
      public void LimpiarCobro() {
         lblEnviaTotal.setText("");
           txtPaga1.setText("");
@@ -4544,85 +4543,10 @@ private void RegistrarDetalle() {
     }
 }
 
-  private void ActualizarStockCreditCliente() {
-    for (int i = 0; i < TableCreditClient.getRowCount(); i++) {
-        int id = Integer.parseInt(TableCreditClient.getValueAt(i, 0).toString());
-        int cant = Integer.parseInt(TableCreditClient.getValueAt(i, 2).toString());
-
-        // Buscar producto filtrando por la empresa activa
-        pro = proDao.BuscarId(id, idEmpresaActiva);
-
-        if (pro != null) {
-            boolean actualizado = Vdao.ActualizarStock(cant, id, idEmpresaActiva);
-            if (actualizado) {
-                System.out.println("✅ Stock actualizado correctamente para producto ID=" + id);
-            } else {
-                System.out.println("❌ No se pudo actualizar el stock para producto ID=" + id);
-            }
-        } else {
-            System.out.println("❌ Producto con ID " + id + " no pertenece a la empresa activa.");
-        }
-    }
-}
 
 
     //------credito cliente-------------
- private void RegistrarVentaCreditocliente() {
-    try {
-        int cliente = Integer.parseInt(txtIdCV1.getText());
-        String vendedor = LabelVendedor.getText();
-        double monto = TotalPagar;
-
-        // Crear e inicializar el objeto Venta
-        Venta v = new Venta();
-        v.setCliente(cliente);
-        v.setVendedor(vendedor);
-        v.setTotal(monto);
-
-        // Obtener fecha actual en formato dd/MM/yyyy
-        Date fecha = new Date();
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy");
-        String fechaActual = sdf.format(fecha);
-        
-        v.setFecha(fechaActual); // Asignar fecha formateada a la venta
-
-        // Registrar la venta
-        Vdao.RegistrarVenta(v);
-    } catch (NumberFormatException e) {
-        System.out.println("Error al convertir ID del cliente: " + e.getMessage());
-    } catch (Exception e) {
-        System.out.println("Error al registrar la venta: " + e.getMessage());
-    }
-}
  
-     private void RegistrarDetalleCreditocliente() {
-        int id = Vdao.IdVenta();
-        for (int i = 0; i < TableCreditClient.getRowCount(); i++) {
-            int id_pro = Integer.parseInt(TableCreditClient.getValueAt(i, 0).toString());
-             
-            String nombre = (TableCreditClient.getValueAt(i, 1).toString());
-            
-            int cantidad = Integer.parseInt(TableCreditClient.getValueAt(i, 2).toString());
-            double precio = Double.parseDouble(TableCreditClient.getValueAt(i, 3).toString());
-            double total = Double.parseDouble(TableCreditClient.getValueAt(i, 4).toString());
-             String cliente = txtNombreClienteventaCredit.getText();
-              int dni = Integer.parseInt(txtRucVentaCredit.getText());
-               
-            Dv.setId_pro(id_pro);
-             Dv.setNombre(nombre);
-            Dv.setCantidad(cantidad);
-            Dv.setPrecio(precio);
-             Dv.setTotal(total);
-            Dv.setId(id);
-             Dv.setCliente(cliente);
-             Dv.setDni(dni);
-               Dv.setFecha(fechaActual);
-            Vdao.RegistrarDetalleCreditocliente(Dv);
-
-        }
-      //   int cliente = Integer.parseInt(txtIdCV1.getText());
-       //  Vdao.pdfV(id, cliente, TotalpagarCredit, LabelVendedor.getText()); // aqui viajan
-    }
       
  
   public void LimpiarTableVenta() {
@@ -4637,25 +4561,14 @@ private void RegistrarDetalle() {
             tmp.removeRow(0);
         }
     }
-     private void LimpiarTableCredit() {
-        tmp = (DefaultTableModel) TableCreditClient.getModel();
-        int fila = TableCreditClient.getRowCount();
-        for (int i = 0; i < fila; i++) {
-            tmp.removeRow(0);
-        }
-    }
-
+   
     private void LimpiarClienteventa() {
         txtRucVenta.setText("");
         txtNombreClienteventa.setText("");
         txtIdCV.setText("");
     }
     
-    private void LimpiarClienteCredito() {
-    txtNombreClienteventaCredit.setText("");
-    txtRucVentaCredit.setText("");
-   
-}
+    
 
     private void nuevoUsuario(){
         txtNombre.setText("");
