@@ -95,23 +95,22 @@ public class VentaDao {
     }
 
     // Registra detalle de venta
-    public int RegistrarDetalle(Detalle detalle) {
-        int filas = 0;
-        String sql = "INSERT INTO detalle (id_pro, cantidad, precio, id_venta) VALUES (?,?,?,?)";
-        try (Connection con = cn.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
+  public int RegistrarDetalle(Detalle detalle) {
+    int filas = 0;
+    String sql = "INSERT INTO detalle (id_pro, cantidad, precio, id_venta) VALUES (?,?,?,?)";
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
 
-            ps.setInt(1, detalle.getId_pro());
-            ps.setInt(2, detalle.getCantidad());
-            ps.setDouble(3, detalle.getPrecio());
-            ps.setInt(4, detalle.getId());
-            filas = ps.executeUpdate();
-        } catch (SQLException e) {
-            System.err.println("Error en RegistrarDetalle: " + e);
-        }
-        return filas;
+        ps.setInt(1, detalle.getId_pro());
+        ps.setDouble(2, detalle.getCantidad());   // 👈 cambia a setDouble
+        ps.setDouble(3, detalle.getPrecio());
+        ps.setInt(4, detalle.getId());
+        filas = ps.executeUpdate();
+    } catch (SQLException e) {
+        System.err.println("Error en RegistrarDetalle: " + e);
     }
-
+    return filas;
+}
     // Registra detalle de crédito de cliente
     public int RegistrarDetalleCreditoCliente(Detalle detalle) {
         int filas = 0;
@@ -121,7 +120,7 @@ public class VentaDao {
              PreparedStatement ps = con.prepareStatement(sql)) {
 
             ps.setInt(1, detalle.getId_pro());
-            ps.setInt(2, detalle.getCantidad());
+            ps.setDouble(2, detalle.getCantidad());   // ✅ ya no trunca decimales (antes: (int) cast)
             ps.setDouble(3, detalle.getPrecio());
             ps.setDouble(4, detalle.getTotal());
             ps.setInt(5, detalle.getId());
@@ -139,32 +138,43 @@ public class VentaDao {
     }
 
     // Eliminar créditos de cliente
-    public boolean eliminarCreditosDelCliente(int dni) {
-        String sql = "DELETE FROM detalle_creditocliente WHERE dni = ?";
-        try (Connection con = cn.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, dni);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error al eliminar créditos: " + e.getMessage());
-            return false;
-        }
-    }
+ public boolean eliminarCreditosDelCliente(int dni, int idEmpresa) {
 
-    public boolean ActualizarStock(int cantidadVendida, int idProducto, int idEmpresaActiva) {
-        String sql = "UPDATE productos SET stock = stock - ? WHERE id = ? AND id_empresa = ?";
-        try (Connection con = cn.getConnection();
-             PreparedStatement ps = con.prepareStatement(sql)) {
-            ps.setInt(1, cantidadVendida);
-            ps.setInt(2, idProducto);
-            ps.setInt(3, idEmpresaActiva);
-            return ps.executeUpdate() > 0;
-        } catch (SQLException e) {
-            System.err.println("Error al actualizar stock: " + e);
-            return false;
-        }
-    }
+    String sql = "DELETE FROM detalle_creditocliente " +
+                 "WHERE dni = ? AND id_empresa = ?";
 
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, dni);
+        ps.setInt(2, idEmpresa);
+
+        int filas = ps.executeUpdate();
+
+        System.out.println("🗑️ Créditos eliminados: " + filas
+                + " | DNI: " + dni
+                + " | Empresa: " + idEmpresa);
+
+        return filas > 0;
+
+    } catch (SQLException e) {
+        System.err.println("Error al eliminar créditos: " + e.getMessage());
+        return false;
+    }
+}
+    public boolean ActualizarStock(double cantidadVendida, int idProducto, int idEmpresaActiva) {
+    String sql = "UPDATE productos SET stock = stock - ? WHERE id = ? AND id_empresa = ?";
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setDouble(1, cantidadVendida);   // 👈 cambia a setDouble
+        ps.setInt(2, idProducto);
+        ps.setInt(3, idEmpresaActiva);
+        return ps.executeUpdate() > 0;
+    } catch (SQLException e) {
+        System.err.println("Error al actualizar stock: " + e);
+        return false;
+    }
+}
     // Listar ventas por empresa
     public List<Venta> ListarVentas(int idEmpresa) {
         List<Venta> lista = new ArrayList<>();
@@ -235,7 +245,37 @@ public class VentaDao {
 
     return venta;
 }
+public int obtenerIdClientePorDniEmpresa(int dni, int idEmpresa) {
 
+    String sql =
+            "SELECT id " +
+            "FROM clientes " +
+            "WHERE dni = ? " +
+            "AND id_empresa = ? " +
+            "LIMIT 1";
+
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+
+        ps.setInt(1, dni);
+        ps.setInt(2, idEmpresa);
+
+        try (ResultSet rs = ps.executeQuery()) {
+
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        }
+
+    } catch (SQLException e) {
+        System.err.println(
+                "Error obteniendo cliente por DNI y empresa: "
+                + e.getMessage()
+        );
+    }
+
+    return -1;
+}
     public int obtenerFolio(int idEmpresa) {
         int folio = 1;
         String sql = "SELECT MAX(folio) AS max_folio FROM ventas WHERE id_empresa = ?";
@@ -291,7 +331,7 @@ public int RegistrarDetalleCreditocliente(Detalle Dv) {
          PreparedStatement ps = con.prepareStatement(sql)) {
 
         ps.setInt(1, Dv.getId_pro());
-        ps.setInt(2, Dv.getCantidad());
+        ps.setDouble(2, Dv.getCantidad());   // ✅ ya no trunca decimales (antes: (int) cast)
         ps.setDouble(3, Dv.getPrecio());
         ps.setDouble(4, Dv.getTotal());
         ps.setInt(5, Dv.getId());
@@ -332,7 +372,7 @@ public String obtenerNombreClientePorId(int idCliente) {
     return nombre;
 }
 public boolean eliminarAbonoCreditoPorId(int idAbono) {
-    String sql = "DELETE FROM abonos WHERE id = ?";
+    String sql = "DELETE FROM abonos_credito WHERE id = ?";
     try (Connection con = Conexion.getConnection();
          PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -504,10 +544,10 @@ public void pdfV(int idVenta, String usuario) {
                 ps.setInt(1, idVenta);
                 try (ResultSet rs = ps.executeQuery()) {
                     while (rs.next()) {
-                        int cantidad = rs.getInt("cantidad");
+                       double cantidad = rs.getDouble("cantidad");
                         double precio = rs.getDouble("precio");
-                        double subTotal = cantidad * precio;
-                        tabla.addCell(String.valueOf(cantidad));
+                          double subTotal = cantidad * precio;
+                        tabla.addCell(String.format("%.3f", cantidad));
                         tabla.addCell(rs.getString("nombre"));
                         tabla.addCell(moneda.format(precio));
                         tabla.addCell(moneda.format(subTotal));
