@@ -13,11 +13,13 @@ import Vista.Sistema;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import java.awt.Dialog;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 
 /**
  * Controlador del módulo "Crédito Cliente".
@@ -38,14 +40,23 @@ public class CreditoClienteController {
     private final ProductosDao productoDao = new ProductosDao();
     private final VentaDao ventaDao = new VentaDao();
 
-    private final DecimalFormat dfCantidad = new DecimalFormat("0.###");
+    private final DecimalFormat dfCantidad =
+            new DecimalFormat("0.###");
 
     private int idClienteActual = 0;
 
+
+    // ============================================================
+    // CONSTRUCTOR
+    // ============================================================
+
     public CreditoClienteController(CreditoClientePanel panel) {
+
         this.panel = panel;
+
         inicializarListeners();
     }
+
 
     // ============================================================
     // LISTENERS
@@ -54,10 +65,22 @@ public class CreditoClienteController {
     private void inicializarListeners() {
 
         // --------------------------------------------------------
-        // BUSCAR CLIENTE
+        // BUSCAR CLIENTE ESCRIBIENDO ID / DNI
         // --------------------------------------------------------
 
-        panel.getTxtRuc().addActionListener(e -> buscarCliente());
+        panel.getTxtRuc().addActionListener(
+                e -> buscarCliente()
+        );
+
+
+        // --------------------------------------------------------
+        // BUSCAR CLIENTE CON BOTÓN ...
+        // --------------------------------------------------------
+
+        panel.getBtnBuscarCliente().addActionListener(
+                e -> abrirBusquedaClientes()
+        );
+
 
         // --------------------------------------------------------
         // BUSCAR / AGREGAR PRODUCTO POR CÓDIGO
@@ -69,17 +92,23 @@ public class CreditoClienteController {
             public void keyPressed(KeyEvent evt) {
 
                 if (evt.getKeyCode() == KeyEvent.VK_ENTER) {
+
                     evt.consume();
+
                     agregarProductoPorCodigo();
                 }
             }
         });
 
+
         // --------------------------------------------------------
         // BOTÓN BUSCAR PRODUCTO
         // --------------------------------------------------------
 
-        panel.getBtnBuscarProducto().addActionListener(e -> abrirBusquedaProductos());
+        panel.getBtnBuscarProducto().addActionListener(
+                e -> abrirBusquedaProductos()
+        );
+
 
         // --------------------------------------------------------
         // ELIMINAR PRODUCTO
@@ -89,6 +118,7 @@ public class CreditoClienteController {
                 e -> eliminarFilaSeleccionada()
         );
 
+
         // --------------------------------------------------------
         // VER HISTORIAL
         // --------------------------------------------------------
@@ -97,6 +127,7 @@ public class CreditoClienteController {
                 e -> verHistorial()
         );
 
+
         // --------------------------------------------------------
         // ACEPTAR / GENERAR CRÉDITO
         // --------------------------------------------------------
@@ -104,6 +135,7 @@ public class CreditoClienteController {
         panel.getBtnAceptar().addActionListener(
                 e -> generarVentaCredito()
         );
+
 
         // --------------------------------------------------------
         // ACTUALIZAR TOTAL AUTOMÁTICAMENTE
@@ -114,19 +146,22 @@ public class CreditoClienteController {
         );
     }
 
+
     // ============================================================
     // BUSCAR PRODUCTOS
     // ============================================================
 
     private void abrirBusquedaProductos() {
 
-        int idEmpresa = Sistema.getIdEmpresaActiva();
+        int idEmpresa =
+                Sistema.getIdEmpresaActiva();
 
         System.out.println("======================================");
         System.out.println("ABRIENDO BUSQUEDA DE PRODUCTOS");
         System.out.println("Empresa activa: " + idEmpresa);
         System.out.println("Origen: credito");
         System.out.println("======================================");
+
 
         /*
          * MUY IMPORTANTE:
@@ -136,26 +171,35 @@ public class CreditoClienteController {
          * FrmBusqueda2 posteriormente manda este origen
          * a VentanaCantidadBusqueda.
          */
-        FrmBusqueda2 frm = new FrmBusqueda2(
-                idEmpresa,
-                "credito"
-        );
+
+        FrmBusqueda2 frm =
+                new FrmBusqueda2(
+                        idEmpresa,
+                        "credito"
+                );
 
         frm.setLocationRelativeTo(panel);
+
         frm.setVisible(true);
     }
 
+
     // ============================================================
-    // BUSCAR CLIENTE
+    // BUSCAR CLIENTE POR ID / DNI
     // ============================================================
 
     private void buscarCliente() {
 
-        String texto = panel.getTxtRuc().getText().trim();
+        String texto =
+                panel.getTxtRuc()
+                        .getText()
+                        .trim();
+
 
         if (texto.isEmpty()) {
             return;
         }
+
 
         int dni;
 
@@ -173,22 +217,32 @@ public class CreditoClienteController {
             return;
         }
 
-        int idEmpresa = Sistema.getIdEmpresaActiva();
 
-        Cliente cl = clienteDao.BuscarCliente(
-                dni,
-                idEmpresa
-        );
+        int idEmpresa =
+                Sistema.getIdEmpresaActiva();
 
-        if (cl != null && cl.getNombre() != null) {
 
-            panel.getTxtNombreCliente().setText(
-                    cl.getNombre()
-            );
+        Cliente cl =
+                clienteDao.BuscarCliente(
+                        dni,
+                        idEmpresa
+                );
 
+
+        if (cl != null &&
+                cl.getNombre() != null &&
+                !cl.getNombre().trim().isEmpty()) {
+
+            panel.getTxtNombreCliente()
+                    .setText(cl.getNombre());
+
+
+            // Guardamos el ID interno del cliente
             idClienteActual = cl.getId();
 
-            panel.getTxtCodigo().requestFocus();
+
+            panel.getTxtCodigo()
+                    .requestFocus();
 
         } else {
 
@@ -201,15 +255,457 @@ public class CreditoClienteController {
         }
     }
 
+
+    // ============================================================
+    // ABRIR BÚSQUEDA DE CLIENTES
+    // ============================================================
+
+ private void abrirBusquedaClientes() {
+
+    int idEmpresa = Sistema.getIdEmpresaActiva();
+
+    JDialog dialog = new JDialog(
+            SwingUtilities.getWindowAncestor(panel),
+            "Buscar Cliente",
+            Dialog.ModalityType.APPLICATION_MODAL
+    );
+
+    dialog.setSize(700, 500);
+    dialog.setLocationRelativeTo(panel);
+    dialog.setLayout(null);
+
+    // ========================================================
+    // LABEL BUSCAR
+    // ========================================================
+
+    JLabel lblBuscar = new JLabel("Buscar:");
+    lblBuscar.setFont(
+            new java.awt.Font(
+                    "Tahoma",
+                    java.awt.Font.BOLD,
+                    14
+            )
+    );
+    lblBuscar.setBounds(20, 20, 60, 30);
+    dialog.add(lblBuscar);
+
+
+    // ========================================================
+    // CAMPO BUSCAR
+    // ========================================================
+
+    JTextField txtBuscar = new JTextField();
+
+    txtBuscar.setFont(
+            new java.awt.Font(
+                    "Tahoma",
+                    java.awt.Font.PLAIN,
+                    16
+            )
+    );
+
+    txtBuscar.setBounds(
+            83,
+            20,
+            400,
+            30
+    );
+
+    dialog.add(txtBuscar);
+
+
+    // ========================================================
+    // BOTÓN BUSCAR
+    // ========================================================
+
+    JButton btnBuscar = new JButton("Buscar");
+
+    btnBuscar.setBounds(
+            493,
+            20,
+            100,
+            30
+    );
+
+    dialog.add(btnBuscar);
+
+
+    // ========================================================
+    // TABLA
+    // ========================================================
+
+    DefaultTableModel modelo =
+            new DefaultTableModel(
+                    new Object[][]{},
+                    new String[]{
+                            "ID",
+                            "DNI",
+                            "Nombre",
+                            "Teléfono"
+                    }
+            ) {
+
+                @Override
+                public boolean isCellEditable(
+                        int row,
+                        int column
+                ) {
+                    return false;
+                }
+            };
+
+
+    JTable tabla = new JTable(modelo);
+
+    tabla.setRowHeight(25);
+
+    tabla.setFont(
+            new java.awt.Font(
+                    "Tahoma",
+                    java.awt.Font.PLAIN,
+                    14
+            )
+    );
+
+    tabla.getTableHeader()
+            .setReorderingAllowed(false);
+
+    tabla.setSelectionMode(
+            ListSelectionModel.SINGLE_SELECTION
+    );
+
+
+    // ========================================================
+    // SCROLL
+    // ========================================================
+
+    JScrollPane scroll =
+            new JScrollPane(tabla);
+
+    scroll.setBounds(
+            20,
+            70,
+            640,
+            320
+    );
+
+    dialog.add(scroll);
+
+
+    // ========================================================
+    // BOTÓN ACEPTAR
+    // ========================================================
+
+    JButton btnAceptar =
+            new JButton("ACEPTAR");
+
+    btnAceptar.setBounds(
+            400,
+            405,
+            120,
+            35
+    );
+
+    dialog.add(btnAceptar);
+
+
+    // ========================================================
+    // BOTÓN CANCELAR
+    // ========================================================
+
+    JButton btnCancelar =
+            new JButton("CANCELAR");
+
+    btnCancelar.setBounds(
+            530,
+            405,
+            120,
+            35
+    );
+
+    dialog.add(btnCancelar);
+
+
+    // ========================================================
+    // MÉTODO PARA CARGAR CLIENTES
+    // ========================================================
+
+    Runnable cargarClientes = () -> {
+
+        String texto =
+                txtBuscar.getText()
+                        .trim();
+
+
+        modelo.setRowCount(0);
+
+
+        List<Cliente> clientes =
+                clienteDao.BuscarClientes(
+                        texto,
+                        idEmpresa
+                );
+
+
+        for (Cliente cl : clientes) {
+
+            modelo.addRow(
+                    new Object[]{
+                            cl.getId(),
+                            cl.getDni(),
+                            cl.getNombre(),
+                            cl.getTelefono()
+                    }
+            );
+        }
+    };
+
+
+    // ========================================================
+    // BOTÓN BUSCAR
+    // ========================================================
+
+    btnBuscar.addActionListener(
+            e -> cargarClientes.run()
+    );
+
+
+    // ========================================================
+    // BUSCAR CON ENTER
+    // ========================================================
+
+    txtBuscar.addActionListener(
+            e -> cargarClientes.run()
+    );
+
+
+    // ========================================================
+    // FILTRAR AUTOMÁTICAMENTE AL ESCRIBIR
+    // ========================================================
+
+    txtBuscar.getDocument()
+            .addDocumentListener(
+                    new javax.swing.event.DocumentListener() {
+
+                        @Override
+                        public void insertUpdate(
+                                javax.swing.event.DocumentEvent e
+                        ) {
+                            cargarClientes.run();
+                        }
+
+
+                        @Override
+                        public void removeUpdate(
+                                javax.swing.event.DocumentEvent e
+                        ) {
+                            cargarClientes.run();
+                        }
+
+
+                        @Override
+                        public void changedUpdate(
+                                javax.swing.event.DocumentEvent e
+                        ) {
+                            cargarClientes.run();
+                        }
+                    }
+            );
+
+
+    // ========================================================
+    // DOBLE CLICK PARA SELECCIONAR
+    // ========================================================
+
+    tabla.addMouseListener(
+            new java.awt.event.MouseAdapter() {
+
+                @Override
+                public void mouseClicked(
+                        java.awt.event.MouseEvent e
+                ) {
+
+                    if (e.getClickCount() == 2 &&
+                            tabla.getSelectedRow() != -1) {
+
+                        seleccionarCliente(
+                                tabla,
+                                dialog
+                        );
+                    }
+                }
+            }
+    );
+
+
+    // ========================================================
+    // ACEPTAR
+    // ========================================================
+
+    btnAceptar.addActionListener(e -> {
+
+        seleccionarCliente(
+                tabla,
+                dialog
+        );
+    });
+
+
+    // ========================================================
+    // CANCELAR
+    // ========================================================
+
+    btnCancelar.addActionListener(
+            e -> dialog.dispose()
+    );
+
+
+    // ========================================================
+    // CARGAR TODOS LOS CLIENTES AL ABRIR
+    // ========================================================
+
+    cargarClientes.run();
+
+
+    // ========================================================
+    // SELECCIONAR AUTOMÁTICAMENTE EL PRIMER CLIENTE
+    // ========================================================
+
+    if (tabla.getRowCount() > 0) {
+        tabla.setRowSelectionInterval(0, 0);
+    }
+
+
+    // ========================================================
+    // ENFOCAR BUSCADOR
+    // ========================================================
+
+    txtBuscar.requestFocus();
+
+
+    // ========================================================
+    // MOSTRAR
+    // ========================================================
+
+    dialog.setVisible(true);
+}
+
+    // ============================================================
+    // SELECCIONAR CLIENTE
+    // ============================================================
+
+    private void seleccionarCliente(
+            JTable tabla,
+            JDialog dialog
+    ) {
+
+        int fila =
+                tabla.getSelectedRow();
+
+
+        // --------------------------------------------------------
+        // VALIDAR SELECCIÓN
+        // --------------------------------------------------------
+
+        if (fila == -1) {
+
+            JOptionPane.showMessageDialog(
+                    dialog,
+                    "Selecciona un cliente"
+            );
+
+            return;
+        }
+
+
+        // --------------------------------------------------------
+        // OBTENER ID INTERNO
+        // --------------------------------------------------------
+
+        int id =
+                Integer.parseInt(
+                        tabla.getValueAt(
+                                fila,
+                                0
+                        ).toString()
+                );
+
+
+        // --------------------------------------------------------
+        // OBTENER DNI
+        // --------------------------------------------------------
+
+        String dni =
+                tabla.getValueAt(
+                        fila,
+                        1
+                ).toString();
+
+
+        // --------------------------------------------------------
+        // OBTENER NOMBRE
+        // --------------------------------------------------------
+
+        String nombre =
+                tabla.getValueAt(
+                        fila,
+                        2
+                ).toString();
+
+
+        // --------------------------------------------------------
+        // GUARDAR ID INTERNO
+        // --------------------------------------------------------
+
+        idClienteActual = id;
+
+
+        // --------------------------------------------------------
+        // ACTUALIZAR CAMPO ID/DNI
+        //
+        // IMPORTANTE:
+        // Tu sistema actual utiliza este campo como DNI.
+        // --------------------------------------------------------
+
+        panel.getTxtRuc()
+                .setText(dni);
+
+
+        // --------------------------------------------------------
+        // ACTUALIZAR NOMBRE
+        // --------------------------------------------------------
+
+        panel.getTxtNombreCliente()
+                .setText(nombre);
+
+
+        // --------------------------------------------------------
+        // CERRAR VENTANA
+        // --------------------------------------------------------
+
+        dialog.dispose();
+
+
+        // --------------------------------------------------------
+        // IR A PRODUCTO
+        // --------------------------------------------------------
+
+        panel.getTxtCodigo()
+                .requestFocus();
+    }
+
+
     // ============================================================
     // AGREGAR PRODUCTO ESCRIBIENDO CÓDIGO
     // ============================================================
 
     private void agregarProductoPorCodigo() {
 
-        String texto = panel.getTxtCodigo()
-                .getText()
-                .trim();
+        String texto =
+                panel.getTxtCodigo()
+                        .getText()
+                        .trim();
+
 
         if (texto.isEmpty()) {
 
@@ -218,43 +714,57 @@ public class CreditoClienteController {
                     "Ingrese el código o ID del producto"
             );
 
-            panel.getTxtCodigo().requestFocus();
+            panel.getTxtCodigo()
+                    .requestFocus();
 
             return;
         }
 
-        int idEmpresa = Sistema.getIdEmpresaActiva();
 
-        Productos pro = productoDao.BuscarPro(
-                texto,
-                idEmpresa
-        );
+        int idEmpresa =
+                Sistema.getIdEmpresaActiva();
 
-        // --------------------------------------------------------
-        // SI NO ENCONTRÓ POR CÓDIGO, INTENTAR POR ID
-        // --------------------------------------------------------
 
-        if (pro == null || pro.getNombre() == null) {
-
-            try {
-
-                int id = Integer.parseInt(texto);
-
-                pro = productoDao.BuscarId(
-                        id,
+        Productos pro =
+                productoDao.BuscarPro(
+                        texto,
                         idEmpresa
                 );
 
+
+        // --------------------------------------------------------
+        // SI NO ENCONTRÓ POR CÓDIGO,
+        // INTENTAR POR ID
+        // --------------------------------------------------------
+
+        if (pro == null ||
+                pro.getNombre() == null) {
+
+            try {
+
+                int id =
+                        Integer.parseInt(texto);
+
+
+                pro =
+                        productoDao.BuscarId(
+                                id,
+                                idEmpresa
+                        );
+
             } catch (NumberFormatException ignored) {
+
                 // No era un ID numérico.
             }
         }
+
 
         // --------------------------------------------------------
         // PRODUCTO NO ENCONTRADO
         // --------------------------------------------------------
 
-        if (pro == null || pro.getNombre() == null) {
+        if (pro == null ||
+                pro.getNombre() == null) {
 
             JOptionPane.showMessageDialog(
                     panel,
@@ -266,13 +776,16 @@ public class CreditoClienteController {
             return;
         }
 
+
         // --------------------------------------------------------
         // CANTIDAD POR DEFECTO
         // --------------------------------------------------------
 
         double cantidad = 1.0;
 
-        double stock = pro.getStock();
+        double stock =
+                pro.getStock();
+
 
         if (stock < cantidad) {
 
@@ -286,15 +799,18 @@ public class CreditoClienteController {
             return;
         }
 
+
         // --------------------------------------------------------
         // CALCULAR TOTAL
         // --------------------------------------------------------
 
         double total =
-                cantidad * pro.getPrecio();
+                cantidad *
+                        pro.getPrecio();
+
 
         // --------------------------------------------------------
-        // AGREGAR A LA TABLA NUEVA
+        // AGREGAR A TABLA
         // --------------------------------------------------------
 
         agregarFila(
@@ -305,11 +821,13 @@ public class CreditoClienteController {
                 total
         );
 
+
         limpiarCodigo();
     }
 
+
     // ============================================================
-    // AGREGAR FILA A LA TABLA DE CRÉDITO
+    // AGREGAR FILA A TABLA
     // ============================================================
 
     /**
@@ -334,32 +852,31 @@ public class CreditoClienteController {
         System.out.println("Total: " + total);
         System.out.println("======================================");
 
-        /*
-         * IMPORTANTE:
-         *
-         * Usamos directamente el modelo del
-         * CreditoClientePanel.
-         *
-         * Ya NO usamos:
-         *
-         * Sistema.TableCreditClient
-         */
 
-        Object[] fila = new Object[]{
-                idProducto,
-                nombre,
-                cantidad,
-                precio,
-                total
-        };
+        Object[] fila =
+                new Object[]{
+                        idProducto,
+                        nombre,
+                        cantidad,
+                        precio,
+                        total
+                };
 
-        panel.getModeloProductos().addRow(fila);
+
+        panel.getModeloProductos()
+                .addRow(fila);
+
 
         recalcularTotal();
 
-        panel.getTablaProductos().revalidate();
-        panel.getTablaProductos().repaint();
+
+        panel.getTablaProductos()
+                .revalidate();
+
+        panel.getTablaProductos()
+                .repaint();
     }
+
 
     // ============================================================
     // AGREGAR FILAS DESDE NUEVA VENTA
@@ -369,17 +886,23 @@ public class CreditoClienteController {
      * Recibe productos provenientes de Nueva Venta
      * y los pasa a Crédito Cliente.
      */
-    public void agregarFilasDesdeVenta(Object[][] filasVenta) {
+    public void agregarFilasDesdeVenta(
+            Object[][] filasVenta
+    ) {
 
         if (filasVenta == null) {
             return;
         }
 
+
         for (Object[] fila : filasVenta) {
 
-            if (fila == null || fila.length < 5) {
+            if (fila == null ||
+                    fila.length < 5) {
+
                 continue;
             }
+
 
             try {
 
@@ -388,23 +911,28 @@ public class CreditoClienteController {
                                 fila[0].toString()
                         );
 
+
                 String nombre =
                         fila[1].toString();
+
 
                 double cantidad =
                         Double.parseDouble(
                                 fila[2].toString()
                         );
 
+
                 double precio =
                         Double.parseDouble(
                                 fila[3].toString()
                         );
 
+
                 double total =
                         Double.parseDouble(
                                 fila[4].toString()
                         );
+
 
                 agregarFila(
                         idProducto,
@@ -413,6 +941,7 @@ public class CreditoClienteController {
                         precio,
                         total
                 );
+
 
             } catch (Exception ex) {
 
@@ -424,6 +953,7 @@ public class CreditoClienteController {
         }
     }
 
+
     // ============================================================
     // ELIMINAR PRODUCTO
     // ============================================================
@@ -431,7 +961,9 @@ public class CreditoClienteController {
     private void eliminarFilaSeleccionada() {
 
         int fila =
-                panel.getTablaProductos().getSelectedRow();
+                panel.getTablaProductos()
+                        .getSelectedRow();
+
 
         if (fila == -1) {
 
@@ -443,12 +975,18 @@ public class CreditoClienteController {
             return;
         }
 
-        panel.getModeloProductos().removeRow(fila);
+
+        panel.getModeloProductos()
+                .removeRow(fila);
+
 
         recalcularTotal();
 
-        panel.getTxtCodigo().requestFocus();
+
+        panel.getTxtCodigo()
+                .requestFocus();
     }
+
 
     // ============================================================
     // CALCULAR TOTAL
@@ -459,37 +997,51 @@ public class CreditoClienteController {
         DefaultTableModel modelo =
                 panel.getModeloProductos();
 
+
         double total = 0.0;
 
-        for (int i = 0; i < modelo.getRowCount(); i++) {
+
+        for (int i = 0;
+             i < modelo.getRowCount();
+             i++) {
 
             Object valor =
                     modelo.getValueAt(i, 4);
+
 
             if (valor == null) {
                 continue;
             }
 
+
             try {
 
-                total += Double.parseDouble(
-                        valor.toString()
-                );
+                total +=
+                        Double.parseDouble(
+                                valor.toString()
+                        );
 
             } catch (NumberFormatException ex) {
 
                 System.out.println(
                         "Valor de total inválido en fila "
-                                + i + ": "
+                                + i
+                                + ": "
                                 + valor
                 );
             }
         }
 
-        panel.getLblTotalValor().setText(
-                String.format("%.2f", total)
-        );
+
+        panel.getLblTotalValor()
+                .setText(
+                        String.format(
+                                "%.2f",
+                                total
+                        )
+                );
     }
+
 
     // ============================================================
     // VER HISTORIAL
@@ -502,28 +1054,36 @@ public class CreditoClienteController {
                         .getText()
                         .trim();
 
+
         String nombre =
                 panel.getTxtNombreCliente()
                         .getText()
                         .trim();
 
-        if (rucTexto.isEmpty() || nombre.isEmpty()) {
+
+        if (rucTexto.isEmpty() ||
+                nombre.isEmpty()) {
 
             JOptionPane.showMessageDialog(
                     panel,
                     "Ingresa Número de Cliente + ENTER"
             );
 
-            panel.getTxtRuc().requestFocus();
+            panel.getTxtRuc()
+                    .requestFocus();
 
             return;
         }
+
 
         int ruc;
 
         try {
 
-            ruc = Integer.parseInt(rucTexto);
+            ruc =
+                    Integer.parseInt(
+                            rucTexto
+                    );
 
         } catch (NumberFormatException ex) {
 
@@ -535,9 +1095,12 @@ public class CreditoClienteController {
             return;
         }
 
-        ConsultaCreditoCliente.setIdEmpresaActiva(
-                Sistema.getIdEmpresaActiva()
-        );
+
+        ConsultaCreditoCliente
+                .setIdEmpresaActiva(
+                        Sistema.getIdEmpresaActiva()
+                );
+
 
         ConsultaCreditoCliente consulta =
                 new ConsultaCreditoCliente(
@@ -547,8 +1110,10 @@ public class CreditoClienteController {
                         0
                 );
 
+
         consulta.setVisible(true);
     }
+
 
     // ============================================================
     // GENERAR VENTA A CRÉDITO
@@ -558,6 +1123,7 @@ public class CreditoClienteController {
 
         DefaultTableModel modelo =
                 panel.getModeloProductos();
+
 
         // --------------------------------------------------------
         // VALIDAR PRODUCTOS
@@ -570,10 +1136,12 @@ public class CreditoClienteController {
                     "No hay productos en la venta"
             );
 
-            panel.getTxtCodigo().requestFocus();
+            panel.getTxtCodigo()
+                    .requestFocus();
 
             return;
         }
+
 
         // --------------------------------------------------------
         // VALIDAR CLIENTE
@@ -584,10 +1152,12 @@ public class CreditoClienteController {
                         .getText()
                         .trim();
 
+
         String rucTexto =
                 panel.getTxtRuc()
                         .getText()
                         .trim();
+
 
         if (nombreCliente.isEmpty()) {
 
@@ -596,16 +1166,21 @@ public class CreditoClienteController {
                     "Debes buscar un cliente"
             );
 
-            panel.getTxtRuc().requestFocus();
+            panel.getTxtRuc()
+                    .requestFocus();
 
             return;
         }
+
 
         int dni;
 
         try {
 
-            dni = Integer.parseInt(rucTexto);
+            dni =
+                    Integer.parseInt(
+                            rucTexto
+                    );
 
         } catch (NumberFormatException ex) {
 
@@ -617,6 +1192,7 @@ public class CreditoClienteController {
             return;
         }
 
+
         // --------------------------------------------------------
         // GENERAR ID DE VENTA
         // --------------------------------------------------------
@@ -624,10 +1200,12 @@ public class CreditoClienteController {
         int idVenta =
                 ventaDao.IdVenta();
 
+
         String fechaActual =
                 new SimpleDateFormat(
                         "dd/MM/yyyy"
                 ).format(new Date());
+
 
         // --------------------------------------------------------
         // REGISTRAR PRODUCTOS
@@ -647,11 +1225,13 @@ public class CreditoClienteController {
                                 ).toString()
                         );
 
+
                 String nombreProducto =
                         modelo.getValueAt(
                                 i,
                                 1
                         ).toString();
+
 
                 double cantidad =
                         Double.parseDouble(
@@ -661,6 +1241,7 @@ public class CreditoClienteController {
                                 ).toString()
                         );
 
+
                 double precio =
                         Double.parseDouble(
                                 modelo.getValueAt(
@@ -668,6 +1249,7 @@ public class CreditoClienteController {
                                         3
                                 ).toString()
                         );
+
 
                 double total =
                         Double.parseDouble(
@@ -677,6 +1259,7 @@ public class CreditoClienteController {
                                 ).toString()
                         );
 
+
                 // ------------------------------------------------
                 // CREAR DETALLE
                 // ------------------------------------------------
@@ -684,15 +1267,43 @@ public class CreditoClienteController {
                 Detalle detalle =
                         new Detalle();
 
-                detalle.setId_pro(idProducto);
-                detalle.setNombre(nombreProducto);
-                detalle.setCantidad(cantidad);
-                detalle.setPrecio(precio);
-                detalle.setTotal(total);
-                detalle.setId(idVenta);
-                detalle.setCliente(nombreCliente);
-                detalle.setDni(dni);
-                detalle.setFecha(fechaActual);
+
+                detalle.setId_pro(
+                        idProducto
+                );
+
+                detalle.setNombre(
+                        nombreProducto
+                );
+
+                detalle.setCantidad(
+                        cantidad
+                );
+
+                detalle.setPrecio(
+                        precio
+                );
+
+                detalle.setTotal(
+                        total
+                );
+
+                detalle.setId(
+                        idVenta
+                );
+
+                detalle.setCliente(
+                        nombreCliente
+                );
+
+                detalle.setDni(
+                        dni
+                );
+
+                detalle.setFecha(
+                        fechaActual
+                );
+
 
                 // ------------------------------------------------
                 // REGISTRAR CRÉDITO
@@ -702,6 +1313,7 @@ public class CreditoClienteController {
                         detalle
                 );
 
+
                 // ------------------------------------------------
                 // ACTUALIZAR STOCK
                 // ------------------------------------------------
@@ -710,6 +1322,7 @@ public class CreditoClienteController {
                         idProducto,
                         cantidad
                 );
+
 
             } catch (Exception ex) {
 
@@ -725,17 +1338,20 @@ public class CreditoClienteController {
             }
         }
 
+
         // --------------------------------------------------------
         // LIMPIAR
         // --------------------------------------------------------
 
         limpiarTodo();
 
+
         JOptionPane.showMessageDialog(
                 panel,
                 "Registro exitoso"
         );
     }
+
 
     // ============================================================
     // ACTUALIZAR STOCK
@@ -749,11 +1365,13 @@ public class CreditoClienteController {
         int idEmpresa =
                 Sistema.getIdEmpresaActiva();
 
+
         Productos pro =
                 productoDao.BuscarId(
                         idProducto,
                         idEmpresa
                 );
+
 
         if (pro != null) {
 
@@ -763,6 +1381,7 @@ public class CreditoClienteController {
                             idProducto,
                             idEmpresa
                     );
+
 
             if (!actualizado) {
 
@@ -783,27 +1402,35 @@ public class CreditoClienteController {
         }
     }
 
+
     // ============================================================
     // LIMPIAR CÓDIGO
     // ============================================================
 
     private void limpiarCodigo() {
 
-        panel.getTxtCodigo().setText("");
+        panel.getTxtCodigo()
+                .setText("");
 
-        panel.getTxtCodigo().requestFocus();
+        panel.getTxtCodigo()
+                .requestFocus();
     }
+
 
     // ============================================================
     // LIMPIAR CLIENTE
     // ============================================================
 
-    private void limpiarCliente() {
+   public void limpiarCliente() {
 
-        panel.getTxtNombreCliente().setText("");
+    panel.getTxtRuc().setText("");
+    panel.getTxtNombreCliente().setText("");
 
-        idClienteActual = 0;
-    }
+    idClienteActual = 0;
+
+    panel.getTxtRuc().requestFocus();
+}
+
 
     // ============================================================
     // LIMPIAR TODO
@@ -811,18 +1438,30 @@ public class CreditoClienteController {
 
     private void limpiarTodo() {
 
-        panel.getModeloProductos().setRowCount(0);
+        panel.getModeloProductos()
+                .setRowCount(0);
 
-        panel.getTxtNombreCliente().setText("");
 
-        panel.getTxtRuc().setText("");
+        panel.getTxtNombreCliente()
+                .setText("");
 
-        panel.getTxtCodigo().setText("");
 
-        panel.getLblTotalValor().setText("-----");
+        panel.getTxtRuc()
+                .setText("");
+
+
+        panel.getTxtCodigo()
+                .setText("");
+
+
+        panel.getLblTotalValor()
+                .setText("-----");
+
 
         idClienteActual = 0;
 
-        panel.getTxtRuc().requestFocus();
+
+        panel.getTxtRuc()
+                .requestFocus();
     }
 }

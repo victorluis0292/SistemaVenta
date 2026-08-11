@@ -19,6 +19,7 @@ public class Venta {
 private double tarjeta;
     // Dentro de la clase Venta
 private String nombre_cli; // Nombre del cliente
+private String nombreEmpresa; // nombre de la empresa
 
     // Getters y setters
     public int getId() { return id; }
@@ -74,4 +75,15 @@ public void setEfectivo(double efectivo) { this.efectivo = efectivo; }
 
 public double getTarjeta() { return tarjeta; }
 public void setTarjeta(double tarjeta) { this.tarjeta = tarjeta; }
+
+
+public String getNombreEmpresa() {
+    return nombreEmpresa;
 }
+
+public void setNombreEmpresa(String nombreEmpresa) {
+    this.nombreEmpresa = nombreEmpresa;
+}
+}
+
+

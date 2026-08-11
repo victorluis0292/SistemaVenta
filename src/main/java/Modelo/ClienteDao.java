@@ -110,6 +110,62 @@ public List<Cliente> ListarCliente(int idEmpresa){
        }
    }
    
+   public List<Cliente> BuscarClientes(String texto, int idEmpresa) {
+
+    List<Cliente> lista = new ArrayList<>();
+
+    String sql = "SELECT * FROM clientes " +
+                 "WHERE id_empresa = ? " +
+                 "AND (CAST(id AS CHAR) LIKE ? " +
+                 "OR dni LIKE ? " +
+                 "OR nombre LIKE ?) " +
+                 "ORDER BY nombre ASC";
+
+    try {
+        con = cn.getConnection();
+        ps = con.prepareStatement(sql);
+
+        String filtro = "%" + texto.trim() + "%";
+
+        ps.setInt(1, idEmpresa);
+        ps.setString(2, filtro);
+        ps.setString(3, filtro);
+        ps.setString(4, filtro);
+
+        rs = ps.executeQuery();
+
+        while (rs.next()) {
+
+            Cliente cl = new Cliente();
+
+            cl.setId(rs.getInt("id"));
+            cl.setDni(rs.getString("dni"));
+            cl.setNombre(rs.getString("nombre"));
+            cl.setTelefono(rs.getString("telefono"));
+            cl.setDireccion(rs.getString("direccion"));
+            cl.setIdEmpresa(rs.getInt("id_empresa"));
+
+            lista.add(cl);
+        }
+
+    } catch (SQLException e) {
+
+        e.printStackTrace();
+
+    } finally {
+
+        try {
+            if (rs != null) rs.close();
+            if (ps != null) ps.close();
+            if (con != null) con.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    return lista;
+}
+   
 public Cliente BuscarCliente(int dni, int idEmpresa) {
     Cliente c = new Cliente();
     String sql = "SELECT * FROM clientes WHERE dni = ? AND id_empresa = ?";

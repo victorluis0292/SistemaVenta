@@ -6,17 +6,15 @@ import Modelo.VentaDao;
 import Vista.HistorialVentasPanel;
 
 import javax.swing.*;
+import javax.swing.table.DefaultTableCellRenderer;
 import javax.swing.table.DefaultTableModel;
+import java.awt.*;
 import java.awt.event.ActionEvent;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
  * Controlador de Historial de Ventas.
- * Regla de oro: para reimprimir SIEMPRE se usa el mismo método de
- * ImprimirTicket que usa ventanaCobrar al momento de la venta original.
- * Así evitamos que Historial y Venta muestren formatos distintos (ej. verdulería/kg).
  */
 public class HistorialVentasController {
 
@@ -37,6 +35,7 @@ public class HistorialVentasController {
         panel.limpiar();
         List<Venta> lista = ventaDao.ListarVentas(idEmpresa);
         for (Venta v : lista) {
+            // Asumiendo columnas: [0: Folio, 1: Cliente, 2: Vendedor, 3: Total, 4: ID/Acción]
             panel.agregarFila(v.getFolio(), v.getNombre_cli(), v.getVendedor(), v.getTotal(), v.getId());
         }
     }
@@ -65,62 +64,93 @@ public class HistorialVentasController {
 
     /**
      * Botón "Reimprimir" embebido en la columna 4 de la tabla.
-     * Al hacer click, regenera el ticket con EXACTAMENTE el mismo método
-     * que usó la venta original (ImprimirTicket.generarTicketEfectivo/Tarjeta),
-     * garantizando el mismo formato (incluida la línea de verdulería en kg).
      */
     private void instalarBotonReimprimir() {
         JTable tabla = panel.getTableVentas();
-        tabla.getColumnModel().getColumn(4).setCellRenderer((t, value, isSelected, hasFocus, row, column) -> {
-            JButton btn = new JButton("Reimprimir");
-            return btn;
+        
+        // Renderer para mostrar el botón
+        tabla.getColumnModel().getColumn(4).setCellRenderer(new DefaultTableCellRenderer() {
+            private final JButton btn = new JButton("Reimprimir");
+
+            @Override
+            public Component getTableCellRendererComponent(JTable t, Object val, boolean isSel, boolean hasFocus, int r, int c) {
+                return btn;
+            }
         });
 
         tabla.getColumnModel().getColumn(4).setCellEditor(new ReimprimirButtonEditor());
     }
 
-    /**
-     * Clase interna con nombre (no anónima) porque Java no permite
-     * combinar "extends" + "implements" en una clase anónima con "new".
-     */
     private class ReimprimirButtonEditor extends javax.swing.AbstractCellEditor
             implements javax.swing.table.TableCellEditor {
 
         private final JButton boton = new JButton("Reimprimir");
         private int filaActual;
+        private Object valorCelda;
 
         ReimprimirButtonEditor() {
             boton.addActionListener(e -> {
                 fireEditingStopped();
-                reimprimir(filaActual);
+                reimprimir(filaActual, valorCelda);
             });
         }
 
         @Override
         public Object getCellEditorValue() {
-            return "Reimprimir";
+            return valorCelda; // Devuelve el ID original para no sobrescribir el modelo
         }
 
         @Override
-        public java.awt.Component getTableCellEditorComponent(JTable table, Object value,
-                boolean isSelected, int row, int column) {
-            filaActual = row;
+        public Component getTableCellEditorComponent(JTable table, Object value,
+                                                       boolean isSelected, int row, int column) {
+            this.filaActual = row;
+            this.valorCelda = value; // Guarda el valor entero almacenado en la celda (id_venta)
             return boton;
         }
     }
 
-    private void reimprimir(int filaVista) {
+  private void reimprimir(int filaVista, Object valorIdCelda) {
         try {
+            int idVenta = -1;
+
+            // 1. Intentamos obtener el ID enviado
+            if (valorIdCelda instanceof Integer) {
+                idVenta = (Integer) valorIdCelda;
+            } else if (valorIdCelda != null && !valorIdCelda.toString().equals("Reimprimir")) {
+                idVenta = Integer.parseInt(valorIdCelda.toString().trim());
+            }
+
+            // 2. Leemos la fila del modelo
             int filaModelo = panel.getTableVentas().convertRowIndexToModel(filaVista);
             DefaultTableModel modelo = panel.getModelo();
-            int idVenta = (int) modelo.getValueAt(filaModelo, 5);
 
-            // Traemos la venta completa desde BD para saber tipo de pago, pago y cambio reales
-            Venta venta = ventaDao.BuscarVenta(idVenta);
+            // Intentamos buscar la venta primero por ID
+            Venta venta = null;
+            if (idVenta > 0) {
+                venta = ventaDao.BuscarVenta(idVenta);
+            }
+
+            // 3. Si no se encontró por ID, leemos la Columna 0 (que normalmente almacena el Folio)
             if (venta == null) {
-                JOptionPane.showMessageDialog(panel, "No se pudo recuperar la venta.");
+                Object valCol0 = modelo.getValueAt(filaModelo, 0);
+                if (valCol0 != null) {
+                    int folio = Integer.parseInt(valCol0.toString().trim());
+                    // Buscamos por Folio e ID de Empresa
+                    venta = ventaDao.BuscarVentaPorFolio(folio, idEmpresa);
+                }
+            }
+
+            // 4. Si aún es null, mostramos un aviso detallado
+            if (venta == null) {
+                JOptionPane.showMessageDialog(panel, 
+                    "No se pudo recuperar la venta.\n" +
+                    "Verifica si BuscarVenta o BuscarVentaPorFolio corresponden con la BD.",
+                    "Venta no encontrada", JOptionPane.WARNING_MESSAGE);
                 return;
             }
+
+            // Obtener el ID correcto de la venta recuperada
+            idVenta = venta.getId();
 
             String tipoPago = venta.getTipopago() != null ? venta.getTipopago() : "Efectivo";
             String ticket;
@@ -132,14 +162,35 @@ public class HistorialVentasController {
                     double comision = venta.getComision();
                     ticket = ImprimirTicket.generarTicketTarjeta(idVenta, comision, tipoPago, subtotal);
                     break;
+
                 case "credito":
-                    // El ticket de crédito requiere el detalle línea por línea
-                    // (no solo el total de la venta). Si se necesita reimpresión
-                    // de crédito desde Historial, hay que traer el detalle desde
-                    // AbonoDao/VentaDao y usar ImprimirTicket.generarTicketCredito(...).
-                    JOptionPane.showMessageDialog(panel,
-                            "La reimpresión de ventas a crédito aún no está soportada desde Historial.");
-                    return;
+                    List<Object[]> detalleCredito = ventaDao.listarDetalleCreditoPorVenta(idVenta);
+
+                    if (detalleCredito.isEmpty()) {
+                        JOptionPane.showMessageDialog(panel, "No se encontró detalle de crédito para esta venta.");
+                        return;
+                    }
+
+                    List<String[]> listaProductosCredito = new ArrayList<>();
+                    for (Object[] fila : detalleCredito) {
+                        listaProductosCredito.add(new String[]{
+                            String.valueOf(fila[0]), // producto
+                            String.valueOf(fila[1]), // cantidad
+                            String.valueOf(fila[2])  // precio
+                        });
+                    }
+
+                    ticket = ImprimirTicket.generarTicketCredito(
+                            idVenta, 
+                            venta.getTotal(), 
+                            tipoPago, 
+                            listaProductosCredito,
+                            venta.getPagaCon(), 
+                            venta.getCambio(), 
+                            venta.getNombre_cli()
+                    );
+                    break;
+
                 default: // Efectivo
                     ticket = ImprimirTicket.generarTicketEfectivo(
                             idVenta, venta.getPagaCon(), venta.getCambio(), tipoPago);
@@ -154,13 +205,12 @@ public class HistorialVentasController {
             ex.printStackTrace();
         }
     }
-
     private void mostrarVistaPrevia(String ticket) {
         JTextArea area = new JTextArea(ticket);
         area.setEditable(false);
-        area.setFont(new java.awt.Font("Monospaced", java.awt.Font.PLAIN, 20));
+        area.setFont(new Font("Monospaced", Font.PLAIN, 14));
         JScrollPane scroll = new JScrollPane(area);
-        scroll.setPreferredSize(new java.awt.Dimension(500, 600));
+        scroll.setPreferredSize(new Dimension(400, 500));
 
         JDialog dialog = new JDialog((JFrame) SwingUtilities.getWindowAncestor(panel), "Vista previa del ticket", true);
         dialog.getContentPane().add(scroll);

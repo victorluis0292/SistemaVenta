@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package Modelo;
 
 import javax.print.Doc;
@@ -12,42 +7,35 @@ import javax.print.PrintService;
 import javax.print.PrintServiceLookup;
 import javax.print.SimpleDoc;
 
-/**
- *
- * @author vic
- */
 public class AbrirCajaEfectivo {
-     public static void main(String[] args) {
+    public static void main(String[] args) {
         try {
-            // Nombre exacto de la impresora térmica en el sistema
-            String printerName = "POS-58";  
-
-            // Comando ESC/POS para abrir la caja de dinero (con casting explícito)
+            // Comando ESC/POS para abrir la caja de dinero
             byte[] openDrawerCommand = {27, 112, 0, (byte) 25, (byte) 250};
 
-            // Buscar la impresora en el sistema
-            PrintService selectedPrinter = null;
+            // Buscar todas las impresoras disponibles
             PrintService[] services = PrintServiceLookup.lookupPrintServices(null, null);
 
-            for (PrintService service : services) {
-                if (service.getName().equalsIgnoreCase(printerName)) {
-                    selectedPrinter = service;
-                    break;
-                }
+            if (services.length == 0) {
+                System.out.println("⚠️ No hay impresoras instaladas.");
+                return;
             }
 
-            if (selectedPrinter != null) {
-                // Crear el trabajo de impresión para la impresora térmica
-                DocPrintJob job = selectedPrinter.createPrintJob();
-                DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
-                Doc doc = new SimpleDoc(openDrawerCommand, flavor, null);
-                
-                // Enviar comando para abrir el cajón
-                job.print(doc, null);
-                System.out.println("✅ ¡Caja de efectivo abierta!");
-            } else {
-                System.out.println("⚠️ Impresora no encontrada.");
-            }
+            // Opción 1: usar la impresora por defecto del sistema
+            PrintService defaultPrinter = PrintServiceLookup.lookupDefaultPrintService();
+
+            // Si hay impresora por defecto, usarla
+            PrintService selectedPrinter = (defaultPrinter != null) ? defaultPrinter : services[0];
+
+            // Crear el trabajo de impresión
+            DocPrintJob job = selectedPrinter.createPrintJob();
+            DocFlavor flavor = DocFlavor.BYTE_ARRAY.AUTOSENSE;
+            Doc doc = new SimpleDoc(openDrawerCommand, flavor, null);
+
+            // Enviar comando para abrir el cajón
+            job.print(doc, null);
+            System.out.println("✅ Caja de efectivo abierta en: " + selectedPrinter.getName());
+
         } catch (Exception e) {
             e.printStackTrace();
         }

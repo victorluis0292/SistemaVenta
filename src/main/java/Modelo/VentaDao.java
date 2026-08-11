@@ -203,13 +203,14 @@ public class VentaDao {
     }
 
     // Buscar venta por ID por empresa
- public Venta BuscarVenta(int idVenta) {
+public Venta BuscarVenta(int idVenta) {
     Venta venta = null;
     String sql = "SELECT v.id, v.folio, v.id_empresa, v.cliente, v.vendedor, " +
                  "v.total, v.subtotal, v.pagacon, v.cambio, v.comision, v.fecha, v.tipopago, v.fecha_hora, v.id_turno, " +
-                 "c.nombre AS nombre_cliente " +   // <-- agregamos nombre del cliente
+                 "c.nombre AS nombre_cliente, e.nombre AS nombre_empresa " +
                  "FROM ventas v " +
-                 "LEFT JOIN clientes c ON v.cliente = c.id " + // <-- LEFT JOIN para traer nombre
+                 "LEFT JOIN clientes c ON v.cliente = c.id " +
+                 "LEFT JOIN empresa e ON v.id_empresa = e.id_empresa " +
                  "WHERE v.id = ?";
 
     try (Connection con = Conexion.getConnection();
@@ -233,9 +234,8 @@ public class VentaDao {
                 venta.setTipopago(rs.getString("tipopago"));
                 venta.setFechaHora(rs.getString("fecha_hora"));
                 venta.setIdTurno(rs.getInt("id_turno"));
-
-                // Asignamos nombre del cliente
                 venta.setNombre_cli(rs.getString("nombre_cliente"));
+                venta.setNombreEmpresa(rs.getString("nombre_empresa")); // 👈 Nombre del negocio
             }
         }
     } catch (SQLException e) {
@@ -407,7 +407,14 @@ public boolean eliminarProdCreditoPorId(int idDetalle, int idEmpresa) {
 
 public Venta BuscarVentaPorFolio(int folio, int idEmpresa) {
     Venta v = null;
-    String sql = "SELECT * FROM ventas WHERE folio = ? AND id_empresa = ?";
+    String sql = "SELECT v.id, v.folio, v.id_empresa, v.cliente, v.vendedor, " +
+                 "v.total, v.subtotal, v.pagacon, v.cambio, v.comision, v.fecha, v.tipopago, v.fecha_hora, v.id_turno, " +
+                 "c.nombre AS nombre_cliente, e.nombre AS nombre_empresa " +
+                 "FROM ventas v " +
+                 "LEFT JOIN clientes c ON v.cliente = c.id " +
+                 "LEFT JOIN empresa e ON v.id_empresa = e.id_empresa " +
+                 "WHERE v.folio = ? AND v.id_empresa = ?";
+
     try (Connection con = cn.getConnection();
          PreparedStatement ps = con.prepareStatement(sql)) {
 
@@ -418,17 +425,49 @@ public Venta BuscarVentaPorFolio(int folio, int idEmpresa) {
                 v = new Venta();
                 v.setId(rs.getInt("id"));
                 v.setFolio(rs.getInt("folio"));
+                v.setIdEmpresa(rs.getInt("id_empresa"));
                 v.setCliente(rs.getInt("cliente"));
                 v.setVendedor(rs.getString("vendedor"));
                 v.setTotal(rs.getDouble("total"));
-                v.setFechaHora(rs.getString("fecha_hora"));
+                v.setSubtotal(rs.getDouble("subtotal"));
+                v.setPagaCon(rs.getDouble("pagacon"));
+                v.setCambio(rs.getDouble("cambio"));
+                v.setComision(rs.getDouble("comision"));
+                v.setFecha(rs.getString("fecha"));
                 v.setTipopago(rs.getString("tipopago"));
+                v.setFechaHora(rs.getString("fecha_hora"));
+                v.setIdTurno(rs.getInt("id_turno"));
+                v.setNombre_cli(rs.getString("nombre_cliente"));
+                v.setNombreEmpresa(rs.getString("nombre_empresa")); // 👈 Nombre del negocio
             }
         }
     } catch (Exception e) {
         e.printStackTrace();
     }
     return v;
+}
+public List<Object[]> listarDetalleCreditoPorVenta(int idVenta) {
+    List<Object[]> lista = new ArrayList<>();
+    String sql = "SELECT p.nombre AS producto, d.cantidad, d.precio " +
+             "FROM detalle d " +
+             "JOIN productos p ON d.id_pro = p.id " +
+             "WHERE d.id_venta = ?";
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idVenta);
+        try (ResultSet rs = ps.executeQuery()) {
+            while (rs.next()) {
+                lista.add(new Object[]{
+                    rs.getString("producto"),
+                    rs.getDouble("cantidad"),
+                    rs.getDouble("precio")
+                });
+            }
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return lista;
 }
 public void asegurarClienteMostrador() {
     String sqlCheck = "SELECT COUNT(*) FROM clientes WHERE id = 1";
@@ -571,6 +610,21 @@ public void pdfV(int idVenta, String usuario) {
         JOptionPane.showMessageDialog(null, "Error al generar PDF: " + e.getMessage());
     }
 }
-
+public boolean marcarDetalleCreditoComoPagado(int idDetalleOriginal, int idVentaPago, int idEmpresa) {
+    String sql = "UPDATE detalle_creditocliente SET pagado = 1, id_venta = ? WHERE id = ? AND id_empresa = ?";
+    try (Connection con = cn.getConnection();
+         PreparedStatement ps = con.prepareStatement(sql)) {
+        ps.setInt(1, idVentaPago);
+        ps.setInt(2, idDetalleOriginal);
+        ps.setInt(3, idEmpresa);
+        int filas = ps.executeUpdate();
+        System.out.println("[TICKET-CREDITO] Marcado como pagado -> idDetalle=" + idDetalleOriginal
+                + " -> idVentaPago=" + idVentaPago + " | filas afectadas: " + filas);
+        return filas > 0;
+    } catch (SQLException e) {
+        System.err.println("Error en marcarDetalleCreditoComoPagado: " + e);
+        return false;
+    }
+}
 
 }

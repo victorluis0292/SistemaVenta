@@ -369,7 +369,8 @@ private void listarProductos() {
             true,
             tableProductos,
             dniCliente,
-            empresa
+            empresa,
+            this
     );
 
     cobroDialog.setTotal(creditoPendiente);
@@ -407,4 +408,12 @@ private void listarProductos() {
             ventana.setVisible(true);
         });
     }
+    // En ConsultaCreditoCliente.java
+
+public void limpiarCampos() {
+    txtRuc.setText("");
+    txtNombre.setText("");
+    txtTotalCredito.setText("0.00");
+    modeloProductos.setRowCount(0); // Vacía la tabla también
+}
 }
