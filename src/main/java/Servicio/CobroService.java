@@ -103,7 +103,7 @@ public class CobroService {
                 AbrirCajaEfectivo.main(null);
             }
 
-            String ticket = ImprimirTicket.generarTicketEfectivo(idVenta, pago, cambio, tipoPago);
+            String ticket = ImprimirTicket.generarTicketEfectivo(idVenta, pago, cambio, tipoPago, new Date());
             ImprimirTicket.imprimir(ticket);
 
         } catch (Exception e) {

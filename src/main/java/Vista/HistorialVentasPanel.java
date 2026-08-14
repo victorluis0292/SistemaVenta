@@ -23,6 +23,9 @@ public class HistorialVentasPanel extends JPanel {
     private DefaultTableModel modelo;
     private JButton btnPdf;
     private JTextField txtFolioSeleccionado;
+    private JButton btnDiaAnterior;
+    private JButton btnDiaSiguiente;
+    private JLabel lblFechaActual;
 
     public HistorialVentasPanel() {
         setLayout(new BorderLayout(10, 10));
@@ -30,7 +33,20 @@ public class HistorialVentasPanel extends JPanel {
 
         JLabel titulo = new JLabel("Historial de Ventas", JLabel.CENTER);
         titulo.setFont(titulo.getFont().deriveFont(18f));
-        add(titulo, BorderLayout.NORTH);
+
+        JPanel panelNavDia = new JPanel(new FlowLayout(FlowLayout.CENTER));
+        btnDiaAnterior = new JButton("◀ Día anterior");
+        lblFechaActual = new JLabel("Hoy");
+        lblFechaActual.setFont(lblFechaActual.getFont().deriveFont(14f));
+        btnDiaSiguiente = new JButton("Día siguiente ▶");
+        panelNavDia.add(btnDiaAnterior);
+        panelNavDia.add(lblFechaActual);
+        panelNavDia.add(btnDiaSiguiente);
+
+        JPanel panelNorte = new JPanel(new BorderLayout());
+        panelNorte.add(titulo, BorderLayout.NORTH);
+        panelNorte.add(panelNavDia, BorderLayout.SOUTH);
+        add(panelNorte, BorderLayout.NORTH);
 
         // Columnas visibles: Folio, Cliente, Vendedor, Total, Ticket
         // Columna oculta (5): id interno de la venta
@@ -87,6 +103,18 @@ public class HistorialVentasPanel extends JPanel {
 
     public JTextField getTxtFolioSeleccionado() {
         return txtFolioSeleccionado;
+    }
+
+    public JButton getBtnDiaAnterior() {
+        return btnDiaAnterior;
+    }
+
+    public JButton getBtnDiaSiguiente() {
+        return btnDiaSiguiente;
+    }
+
+    public JLabel getLblFechaActual() {
+        return lblFechaActual;
     }
 
     /** Limpia todas las filas de la tabla. */

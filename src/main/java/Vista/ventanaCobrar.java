@@ -21,8 +21,11 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.util.Date;
 public final class ventanaCobrar extends JDialog {
+    // Creamos la fecha forzada a la zona horaria del Centro de México (GMT-6)
+java.util.Calendar cal = java.util.Calendar.getInstance(java.util.TimeZone.getTimeZone("GMT-6"));
+Date fechaLocal = cal.getTime();
 
     private int idEmpresaActiva;
     private String dniCliente;
@@ -259,20 +262,23 @@ public final class ventanaCobrar extends JDialog {
         final double cambioUI = cambioTemporal;
 
         // Extraer productos a crédito de la UI una sola vez para no tocar JTable desde doInBackground
-        final List<String[]> listaProductosCredito = new ArrayList<>();
+       final List<String[]> listaProductosCredito = new ArrayList<>();
+        final List<String[]> listaAbonosCredito = new ArrayList<>();
         if (esVentaCredito && TableConsultaCreditCliente != null) {
             DefaultTableModel modelo = (DefaultTableModel) TableConsultaCreditCliente.getModel();
             for (int i = 0; i < modelo.getRowCount(); i++) {
                 String concepto = modelo.getValueAt(i, 2).toString();
-                if (concepto.toLowerCase().contains("abono")) {
-                    continue;
-                }
                 String[] fila = new String[4];
-                fila[0] = modelo.getValueAt(i, 2).toString(); // Nombre producto
+                fila[0] = modelo.getValueAt(i, 2).toString(); // Nombre producto o "ABONO REALIZADO"
                 fila[1] = modelo.getValueAt(i, 3).toString(); // Cantidad
                 fila[2] = modelo.getValueAt(i, 4).toString(); // Precio
                 fila[3] = modelo.getValueAt(i, 1).toString(); // Id Producto
-                listaProductosCredito.add(fila);
+
+                if (concepto.toLowerCase().contains("abono")) {
+                    listaAbonosCredito.add(fila);
+                } else {
+                    listaProductosCredito.add(fila);
+                }
             }
         }
 
@@ -330,25 +336,25 @@ public final class ventanaCobrar extends JDialog {
                         new AbonoDao().actualizarAbonosAplicados(dni, idVenta);
                     }
 
-                    if (tipoPagoFinal.equalsIgnoreCase("tarjeta")) {
-                        ticketGenerado = ImprimirTicket.generarTicketCreditoConTarjeta(idVenta, nombreCliente, subtotal, totalComision, totalPagar, listaProductosCredito);
-                    } else if (tipoPagoFinal.equalsIgnoreCase("mixto")) {
-                        ticketGenerado = ImprimirTicket.generarTicketCreditoMixto(idVenta, nombreCliente, subtotal, totalComision, totalPagar, listaProductosCredito);
-                    } else {
-                        double cambioCredito = Math.max(0, ultimoPagoEfectivo - totalPagar);
-                        ticketGenerado = ImprimirTicket.generarTicketCredito(idVenta, totalPagar, tipoPagoFinal, listaProductosCredito, ultimoPagoEfectivo, cambioCredito, nombreCliente);
-                    }
-                } else {
-                    switch (tipoPagoFinal.toLowerCase()) {
-                        case "efectivo":
-                            double cambioEfectivo = Math.max(0, ultimoPagoEfectivo - totalPagar);
-                            ticketGenerado = ImprimirTicket.generarTicketEfectivo(idVenta, ultimoPagoEfectivo, cambioEfectivo, tipoPagoFinal);
-                            break;
-                        default:
-                            ticketGenerado = ImprimirTicket.generarTicketTarjeta(idVenta, totalComision, tipoPagoFinal, subtotal);
-                            break;
-                    }
-                }
+                   if (tipoPagoFinal.equalsIgnoreCase("tarjeta")) {
+        ticketGenerado = ImprimirTicket.generarTicketCreditoConTarjeta(idVenta, nombreCliente, subtotal, totalComision, totalPagar, listaProductosCredito, listaAbonosCredito, fechaLocal);
+    } else if (tipoPagoFinal.equalsIgnoreCase("mixto")) {
+        ticketGenerado = ImprimirTicket.generarTicketCreditoMixto(idVenta, nombreCliente, subtotal, totalComision, totalPagar, listaProductosCredito, listaAbonosCredito, fechaLocal);
+    } else {
+        double cambioCredito = Math.max(0, ultimoPagoEfectivo - totalPagar);
+        ticketGenerado = ImprimirTicket.generarTicketCredito(idVenta, totalPagar, tipoPagoFinal, listaProductosCredito, listaAbonosCredito, ultimoPagoEfectivo, cambioCredito, nombreCliente, fechaLocal);
+    }
+} else {
+    switch (tipoPagoFinal.toLowerCase()) {
+        case "efectivo":
+            double cambioEfectivo = Math.max(0, ultimoPagoEfectivo - totalPagar);
+            ticketGenerado = ImprimirTicket.generarTicketEfectivo(idVenta, ultimoPagoEfectivo, cambioEfectivo, tipoPagoFinal, fechaLocal);
+            break;
+        default:
+            ticketGenerado = ImprimirTicket.generarTicketTarjeta(idVenta, totalComision, tipoPagoFinal, subtotal, fechaLocal);
+            break;
+    }
+}
 
                 return ticketGenerado;
             }

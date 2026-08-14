@@ -261,7 +261,7 @@ private void listarProductos() {
                 fila[0] = rs.getInt("id");
                 fila[1] = rs.getInt("id_pro");
                 fila[2] = rs.getString("nombre");
-                fila[3] = rs.getInt("cantidad");
+                fila[3] = rs.getDouble("cantidad");
                 fila[4] = rs.getDouble("precio");
                 fila[5] = rs.getDouble("total");
 

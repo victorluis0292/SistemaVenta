@@ -13,6 +13,7 @@ import Vista.Sistema;
 
 import javax.swing.*;
 import javax.swing.table.DefaultTableModel;
+import javax.swing.table.TableModel;
 import java.awt.Dialog;
 import java.awt.event.KeyAdapter;
 import java.awt.event.KeyEvent;
@@ -332,6 +333,11 @@ public class CreditoClienteController {
 
     // ========================================================
     // TABLA
+    //
+    // NOTA: el modelo SIEMPRE conserva la columna "ID" en el
+    // índice 0, aunque no se muestre en pantalla. Esto es
+    // necesario porque seleccionarCliente() sigue leyendo el
+    // ID desde el modelo (no desde la vista de la tabla).
     // ========================================================
 
     DefaultTableModel modelo =
@@ -372,6 +378,91 @@ public class CreditoClienteController {
 
     tabla.setSelectionMode(
             ListSelectionModel.SINGLE_SELECTION
+    );
+
+
+    // ========================================================
+    // OCULTAR COLUMNA ID
+    //
+    // Se remueve solo de la vista (columnModel), el modelo
+    // (DefaultTableModel) sigue teniendo la columna ID en el
+    // índice 0 internamente.
+    // ========================================================
+
+    tabla.getColumnModel()
+            .removeColumn(
+                    tabla.getColumnModel().getColumn(0)
+            );
+
+
+    // ========================================================
+    // ENTER EN LA FILA -> ACEPTAR
+    // ========================================================
+
+    tabla.addKeyListener(
+            new java.awt.event.KeyAdapter() {
+
+                @Override
+                public void keyPressed(
+                        java.awt.event.KeyEvent e
+                ) {
+
+                    if (e.getKeyCode() == java.awt.event.KeyEvent.VK_ENTER
+                            && tabla.getSelectedRow() != -1) {
+
+                        e.consume();
+
+                        seleccionarCliente(
+                                tabla,
+                                dialog
+                        );
+                    }
+                }
+            }
+    );
+
+
+    // ========================================================
+    // FLECHA ABAJO DESDE EL BUSCADOR -> BAJA A LA TABLA
+    // ========================================================
+
+    txtBuscar.addKeyListener(
+            new java.awt.event.KeyAdapter() {
+
+                @Override
+                public void keyPressed(
+                        java.awt.event.KeyEvent e
+                ) {
+
+                    if (e.getKeyCode() == java.awt.event.KeyEvent.VK_DOWN
+                            && tabla.getRowCount() > 0) {
+
+                        e.consume();
+
+                        tabla.requestFocusInWindow();
+
+                        int fila =
+                                tabla.getSelectedRow();
+
+                        if (fila == -1) {
+                            fila = 0;
+                        }
+
+                        tabla.setRowSelectionInterval(
+                                fila,
+                                fila
+                        );
+
+                        tabla.scrollRectToVisible(
+                                tabla.getCellRect(
+                                        fila,
+                                        0,
+                                        true
+                                )
+                        );
+                    }
+                }
+            }
     );
 
 
@@ -619,12 +710,30 @@ public class CreditoClienteController {
 
 
         // --------------------------------------------------------
+        // LEER DESDE EL MODELO (no desde la vista)
+        //
+        // IMPORTANTE:
+        // Como la columna "ID" fue removida de la vista
+        // (columnModel), tabla.getValueAt() ya NO corresponde
+        // a los mismos índices del modelo. Por eso leemos
+        // directamente del TableModel, donde ID sigue siendo
+        // la columna 0.
+        //
+        // Como no hay row sorter, el índice de fila de la vista
+        // coincide con el índice de fila del modelo.
+        // --------------------------------------------------------
+
+        TableModel modelo =
+                tabla.getModel();
+
+
+        // --------------------------------------------------------
         // OBTENER ID INTERNO
         // --------------------------------------------------------
 
         int id =
                 Integer.parseInt(
-                        tabla.getValueAt(
+                        modelo.getValueAt(
                                 fila,
                                 0
                         ).toString()
@@ -636,7 +745,7 @@ public class CreditoClienteController {
         // --------------------------------------------------------
 
         String dni =
-                tabla.getValueAt(
+                modelo.getValueAt(
                         fila,
                         1
                 ).toString();
@@ -647,7 +756,7 @@ public class CreditoClienteController {
         // --------------------------------------------------------
 
         String nombre =
-                tabla.getValueAt(
+                modelo.getValueAt(
                         fila,
                         2
                 ).toString();

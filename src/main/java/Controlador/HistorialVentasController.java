@@ -12,7 +12,10 @@ import java.awt.*;
 import java.awt.event.ActionEvent;
 import java.util.ArrayList;
 import java.util.List;
-
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.util.Date;
+import java.text.SimpleDateFormat;
 /**
  * Controlador de Historial de Ventas.
  */
@@ -21,23 +24,51 @@ public class HistorialVentasController {
     private final HistorialVentasPanel panel;
     private final VentaDao ventaDao = new VentaDao();
     private final int idEmpresa;
-
+    private LocalDate diaActual = LocalDate.now();
+    private static final DateTimeFormatter FORMATO_FECHA = DateTimeFormatter.ofPattern("dd/MM/yyyy");
     public HistorialVentasController(HistorialVentasPanel panel, int idEmpresa) {
         this.panel = panel;
         this.idEmpresa = idEmpresa;
 
         this.panel.getBtnPdf().addActionListener(this::onGenerarPdf);
         instalarBotonReimprimir();
+
+        this.panel.getBtnDiaAnterior().addActionListener(e -> {
+            diaActual = diaActual.minusDays(1);
+            cargarVentas();
+        });
+
+        this.panel.getBtnDiaSiguiente().addActionListener(e -> {
+            if (diaActual.isBefore(LocalDate.now())) {
+                diaActual = diaActual.plusDays(1);
+                cargarVentas();
+            }
+        });
     }
 
     /** Carga (o recarga) la tabla con las ventas de la empresa activa. */
     public void cargarVentas() {
         panel.limpiar();
-        List<Venta> lista = ventaDao.ListarVentas(idEmpresa);
+
+        java.sql.Date fechaSql = java.sql.Date.valueOf(diaActual);
+        List<Venta> lista = ventaDao.ListarVentasPorFecha(idEmpresa, fechaSql);
+
         for (Venta v : lista) {
-            // Asumiendo columnas: [0: Folio, 1: Cliente, 2: Vendedor, 3: Total, 4: ID/Acción]
             panel.agregarFila(v.getFolio(), v.getNombre_cli(), v.getVendedor(), v.getTotal(), v.getId());
         }
+
+        actualizarEtiquetaFecha();
+    }
+
+    private void actualizarEtiquetaFecha() {
+        String texto;
+        if (diaActual.equals(LocalDate.now())) {
+            texto = "Hoy (" + diaActual.format(FORMATO_FECHA) + ")";
+        } else {
+            texto = diaActual.format(FORMATO_FECHA);
+        }
+        panel.getLblFechaActual().setText(texto);
+        panel.getBtnDiaSiguiente().setEnabled(diaActual.isBefore(LocalDate.now()));
     }
 
     private void onGenerarPdf(ActionEvent e) {
@@ -157,11 +188,11 @@ public class HistorialVentasController {
 
             switch (tipoPago.toLowerCase()) {
                 case "tarjeta":
-                case "mixto":
-                    double subtotal = venta.getSubtotal();
-                    double comision = venta.getComision();
-                    ticket = ImprimirTicket.generarTicketTarjeta(idVenta, comision, tipoPago, subtotal);
-                    break;
+case "mixto":
+    double subtotal = venta.getSubtotal();
+    double comision = venta.getComision();
+    ticket = ImprimirTicket.generarTicketTarjeta(idVenta, comision, tipoPago, subtotal, parsearFechaVenta(venta.getFechaHora()));
+    break;
 
                 case "credito":
                     List<Object[]> detalleCredito = ventaDao.listarDetalleCreditoPorVenta(idVenta);
@@ -181,20 +212,22 @@ public class HistorialVentasController {
                     }
 
                     ticket = ImprimirTicket.generarTicketCredito(
-                            idVenta, 
-                            venta.getTotal(), 
-                            tipoPago, 
-                            listaProductosCredito,
-                            venta.getPagaCon(), 
-                            venta.getCambio(), 
-                            venta.getNombre_cli()
-                    );
+        idVenta, 
+        venta.getTotal(), 
+        tipoPago, 
+        listaProductosCredito,
+        new ArrayList<>(),
+        venta.getPagaCon(), 
+        venta.getCambio(), 
+        venta.getNombre_cli(),
+        parsearFechaVenta(venta.getFechaHora())
+);
                     break;
 
                 default: // Efectivo
-                    ticket = ImprimirTicket.generarTicketEfectivo(
-                            idVenta, venta.getPagaCon(), venta.getCambio(), tipoPago);
-                    break;
+    ticket = ImprimirTicket.generarTicketEfectivo(
+            idVenta, venta.getPagaCon(), venta.getCambio(), tipoPago, parsearFechaVenta(venta.getFechaHora()));
+    break;
             }
 
             ImprimirTicket.imprimir(ticket);
@@ -218,4 +251,16 @@ public class HistorialVentasController {
         dialog.setLocationRelativeTo(panel);
         dialog.setVisible(true);
     }
+    private Date parsearFechaVenta(String fechaHoraStr) {
+    try {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        
+        // Esto toma automáticamente la zona horaria de la PC (Windows/Linux) donde abres el programa
+        sdf.setTimeZone(java.util.TimeZone.getDefault()); 
+        
+        return sdf.parse(fechaHoraStr);
+    } catch (Exception e) {
+        return new Date();
+    }
+}
 }

@@ -10,13 +10,12 @@ import java.util.TimeZone;
 
 public class ImprimirTicket {
 
-    private static final String TIME_ZONE_ID = "GMT-06:00";
 
     private static SimpleDateFormat getFechaFormat() {
-        SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
-        sdf.setTimeZone(TimeZone.getTimeZone(TIME_ZONE_ID));
-        return sdf;
-    }
+  SimpleDateFormat sdf = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+sdf.setTimeZone(TimeZone.getTimeZone("GMT-6"));; 
+    return sdf;
+}
 
     private static int obtenerFolio(int idVenta) {
         int folio = 0;
@@ -88,8 +87,7 @@ public class ImprimirTicket {
     // =============================================
     // TICKET EFECTIVO
     // =============================================
-    public static String generarTicketEfectivo(int idVenta, double pago, double cambio, String tipoPago) {
-        StringBuilder sb = new StringBuilder();
+        public static String generarTicketEfectivo(int idVenta, double pago, double cambio, String tipoPago, Date fechaVenta) {        StringBuilder sb = new StringBuilder();
         int folio = obtenerFolio(idVenta);
 
         try (Connection con = Conexion.getConnection()) {
@@ -104,8 +102,7 @@ public class ImprimirTicket {
             sb.append("Tel: ").append(telefono).append("\n");
             sb.append("------------------------------\n");
             sb.append("Folio: ").append(folio).append("\n");
-            sb.append("Fecha: ").append(getFechaFormat().format(new Date())).append("\n");
-
+            sb.append("Fecha: ").append(getFechaFormat().format(fechaVenta)).append("\n");  
             String sqlVenta = "SELECT v.total, c.nombre AS cliente " +
                     "FROM ventas v LEFT JOIN clientes c ON v.cliente = c.id WHERE v.id = ?";
             double totalVenta = 0;
@@ -168,8 +165,7 @@ public class ImprimirTicket {
     // =============================================
     // TICKET TARJETA / MIXTO
     // =============================================
-    public static String generarTicketTarjeta(int idVenta, double comision, String tipoPago, double subtotal) {
-        StringBuilder sb = new StringBuilder();
+        public static String generarTicketTarjeta(int idVenta, double comision, String tipoPago, double subtotal, Date fechaVenta) {        StringBuilder sb = new StringBuilder();
         int folio = obtenerFolio(idVenta);
 
         try (Connection con = Conexion.getConnection()) {
@@ -184,7 +180,7 @@ public class ImprimirTicket {
             sb.append("Telefono: ").append(telefono).append("\n");
             sb.append("----------------------\n");
             sb.append("Folio: ").append(folio).append("\n");
-            sb.append("Fecha: ").append(getFechaFormat().format(new Date())).append("\n");
+            sb.append("Fecha: ").append(getFechaFormat().format(fechaVenta)).append("\n");
 
             String sqlVenta = "SELECT v.total, c.nombre AS cliente " +
                     "FROM ventas v LEFT JOIN clientes c ON v.cliente = c.id WHERE v.id = ?";
@@ -240,8 +236,8 @@ public class ImprimirTicket {
     // TICKET CRÉDITO
     // =============================================
     public static String generarTicketCredito(int idVenta, double total, String tipoPago, 
-                                             List<String[]> productos, double pagaCon, 
-                                             double cambio, String cliente) {
+                                         List<String[]> productos, List<String[]> abonos,
+                                         double pagaCon, double cambio, String cliente, Date fechaVenta) {
         StringBuilder sb = new StringBuilder();
         int folio = obtenerFolio(idVenta);
 
@@ -263,7 +259,7 @@ public class ImprimirTicket {
         sb.append("Tel: ").append(telefono).append("\n");
         sb.append("------------------------------\n");
         sb.append("Folio: ").append(folio).append("\n");
-        sb.append("Fecha: ").append(getFechaFormat().format(new Date())).append("\n");
+        sb.append("Fecha: ").append(getFechaFormat().format(fechaVenta)).append("\n");
         sb.append("Cliente: ").append(cliente != null ? cliente : "Público en general").append("\n");
         sb.append("------------------------------\n");
 
@@ -277,24 +273,36 @@ public class ImprimirTicket {
             sb.append(formatearLineaProducto(cant, precio, sub));
         }
 
+        for (String[] ab : abonos) {
+            String nombre = ab[0]; // "ABONO REALIZADO"
+            double cant = Double.parseDouble(ab[1]);
+            double precio = Double.parseDouble(ab[2]);
+            double sub = cant * precio;
+
+            sb.append(nombre).append("\n");
+            sb.append(formatearLineaProducto(cant, precio, sub));
+        }
+
         sb.append("------------------------------\n");
-        sb.append("Tipo: ").append(tipoPago).append("\n");
         sb.append(String.format("%-12s $%8.2f\n", "TOTAL:", total));
         sb.append(String.format("%-12s $%8.2f\n", "PAGA CON:", pagaCon));
         sb.append(String.format("%-12s $%8.2f\n", "CAMBIO:", cambio));
+        sb.append("Tipo: ").append(tipoPago).append("\n");
         sb.append("------------------------------\n");
         sb.append("¡Gracias por su compra!\n");
         sb.append("USAMOS VHAO PUNTO DE VENTAS\n\n\n");
 
         return sb.toString();
     }
-
+    // =============================================
+    // TICKET CRÉDITO CON TARJETA
+    // =============================================
     // =============================================
     // TICKET CRÉDITO CON TARJETA
     // =============================================
     public static String generarTicketCreditoConTarjeta(int idVenta, String cliente, double subtotal, 
-                                                        double comision, double total, 
-                                                        List<String[]> productos) {
+                                                    double comision, double total, 
+                                                    List<String[]> productos, List<String[]> abonos, Date fechaVenta) {
         StringBuilder sb = new StringBuilder();
         int folio = obtenerFolio(idVenta);
 
@@ -316,7 +324,7 @@ public class ImprimirTicket {
         sb.append("Tel: ").append(telefono).append("\n");
         sb.append("------------------------------\n");
         sb.append("Folio: ").append(folio).append("\n");
-        sb.append("Fecha: ").append(getFechaFormat().format(new Date())).append("\n");
+        sb.append("Fecha: ").append(getFechaFormat().format(fechaVenta)).append("\n");
         sb.append("Cliente: ").append(cliente != null ? cliente : "Público en general").append("\n");
         sb.append("------------------------------\n");
 
@@ -324,6 +332,16 @@ public class ImprimirTicket {
             String nombre = prod[0];
             double cant = Double.parseDouble(prod[1]);
             double precio = Double.parseDouble(prod[2]);
+            double sub = cant * precio;
+
+            sb.append(nombre).append("\n");
+            sb.append(formatearLineaProducto(cant, precio, sub));
+        }
+
+        for (String[] ab : abonos) {
+            String nombre = ab[0]; // "ABONO REALIZADO"
+            double cant = Double.parseDouble(ab[1]);
+            double precio = Double.parseDouble(ab[2]);
             double sub = cant * precio;
 
             sb.append(nombre).append("\n");
@@ -339,14 +357,14 @@ public class ImprimirTicket {
         sb.append("¡Gracias por su compra!\n\n");
 
         return sb.toString();
-    }
-
+    }// TICKET CRÉDITO MIXTO
     // =============================================
+  // =============================================
     // TICKET CRÉDITO MIXTO
     // =============================================
     public static String generarTicketCreditoMixto(int idVenta, String cliente, double subtotal, 
-                                                   double comision, double total, 
-                                                   List<String[]> productos) {
+                                               double comision, double total, 
+                                               List<String[]> productos, List<String[]> abonos, Date fechaVenta) {
         StringBuilder sb = new StringBuilder();
         int folio = obtenerFolio(idVenta);
 
@@ -368,7 +386,7 @@ public class ImprimirTicket {
         sb.append("Tel: ").append(telefono).append("\n");
         sb.append("------------------------------\n");
         sb.append("Folio: ").append(folio).append("\n");
-        sb.append("Fecha: ").append(getFechaFormat().format(new Date())).append("\n");
+        sb.append("Fecha: ").append(getFechaFormat().format(fechaVenta)).append("\n");
         sb.append("Cliente: ").append(cliente != null ? cliente : "Público en general").append("\n");
         sb.append("------------------------------\n");
 
@@ -376,6 +394,16 @@ public class ImprimirTicket {
             String nombre = prod[0];
             double cant = Double.parseDouble(prod[1]);
             double precio = Double.parseDouble(prod[2]);
+            double sub = cant * precio;
+
+            sb.append(nombre).append("\n");
+            sb.append(formatearLineaProducto(cant, precio, sub));
+        }
+
+        for (String[] ab : abonos) {
+            String nombre = ab[0]; // "ABONO REALIZADO"
+            double cant = Double.parseDouble(ab[1]);
+            double precio = Double.parseDouble(ab[2]);
             double sub = cant * precio;
 
             sb.append(nombre).append("\n");
@@ -391,9 +419,7 @@ public class ImprimirTicket {
         sb.append("¡Gracias por su compra!\n\n");
 
         return sb.toString();
-    }
-
-    // UTILITY
+    }  // UTILITY
     // =============================================
     private static String centrarConSaltos(String texto, int ancho) {
         StringBuilder sb = new StringBuilder();
