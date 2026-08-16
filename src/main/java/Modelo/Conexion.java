@@ -40,7 +40,7 @@ public class Conexion {
             if (dataSource != null) return;
 
             try {
-                String file = environment.equalsIgnoreCase("prod")
+                String file = environment.equalsIgnoreCase("local")
                         ? "config/config.prod.properties"
                         : "config/config.local.properties";
 

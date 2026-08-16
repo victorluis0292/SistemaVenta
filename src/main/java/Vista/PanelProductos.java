@@ -25,6 +25,8 @@ import javax.swing.event.DocumentListener;
 import javax.swing.table.DefaultTableModel;
 import javax.swing.table.TableColumn;
 import javax.swing.table.TableRowSorter;
+import Modelo.Categoria;
+import Modelo.CategoriaDao;
 
 public class PanelProductos extends JPanel {
 
@@ -42,7 +44,7 @@ public class PanelProductos extends JPanel {
             txtImagenPro;
 
     public JComboBox<Combo> cbxProveedorPro;
-    public JComboBox<String> cbxCategoria;
+    public JComboBox<Categoria> cbxCategoria;
 
     public JButton btnGuardarpro,
             btnEditarpro,
@@ -63,6 +65,7 @@ public class PanelProductos extends JPanel {
     // ============================================================
     // DAO
     // ============================================================
+    private final CategoriaDao categoriaDao = new CategoriaDao();
     private int idEmpresa;
 
     private ProductosDao proDao;
@@ -140,7 +143,7 @@ public class PanelProductos extends JPanel {
         initComponents();
 
         llenarProveedor();
-
+        llenarCategorias();
         ListarProductos();
 
         initEvents();
@@ -524,15 +527,7 @@ public class PanelProductos extends JPanel {
         // ========================================================
 
         cbxCategoria =
-                new JComboBox<>(
-                        new String[]{
-                                "-- Seleccione --",
-                                "Verduleria",
-                                "General",
-                                "Abarrotes",
-                                "Bebidas"
-                        }
-                );
+                new JComboBox<>();
 
         estilizarCombo(
                 cbxCategoria
@@ -552,7 +547,7 @@ public class PanelProductos extends JPanel {
 
 
         // ========================================================
-        // RENDERER PROVEEDOR
+        // RENDERER PROVEEDOR / CATEGORIA
         // ========================================================
 
         DefaultListCellRenderer cleanRenderer =
@@ -580,6 +575,13 @@ public class PanelProductos extends JPanel {
 
                             setText(
                                     ((Combo) value)
+                                            .getNombre()
+                            );
+
+                        } else if (value instanceof Categoria) {
+
+                            setText(
+                                    ((Categoria) value)
                                             .getNombre()
                             );
                         }
@@ -1026,7 +1028,7 @@ public class PanelProductos extends JPanel {
 
 
         TableProducto.setAutoResizeMode(
-                JTable.AUTO_RESIZE_ALL_COLUMNS
+        JTable.AUTO_RESIZE_OFF
         );
 
 
@@ -1599,18 +1601,46 @@ public class PanelProductos extends JPanel {
 
         // ========================================================
         // CATEGORIA
+        //
+        // El combo ahora contiene objetos Categoria, así que
+        // buscamos el item cuyo nombre coincida con el texto
+        // guardado en la tabla (columna 3) y lo seleccionamos.
         // ========================================================
 
-        String categoria =
+        String categoriaNombre =
                 valorTabla(
                         filaReal,
                         3
                 );
 
 
-        cbxCategoria.setSelectedItem(
-                categoria
-        );
+        for (
+                int i = 0;
+                i < cbxCategoria.getItemCount();
+                i++
+        ) {
+
+            Categoria item =
+                    cbxCategoria.getItemAt(i);
+
+
+            if (
+                    item != null
+                    &&
+                    item.getNombre() != null
+                    &&
+                    item.getNombre()
+                            .equalsIgnoreCase(categoriaNombre)
+            ) {
+
+                cbxCategoria.setSelectedIndex(i);
+
+                idCategoriaActual =
+                        item.getIdCategoria();
+
+                break;
+            }
+        }
 
 
         // ========================================================
@@ -1898,6 +1928,42 @@ public class PanelProductos extends JPanel {
                         "+ Agregar proveedor"
                 )
         );
+    }
+
+
+    // ============================================================
+    // CATEGORIAS
+    // ============================================================
+
+    public void llenarCategorias() {
+
+        cbxCategoria.removeAllItems();
+
+        cbxCategoria.addItem(
+                new Categoria(
+                        0,
+                        "-- Seleccione --",
+                        idEmpresa
+                )
+        );
+
+        List<Categoria> lista =
+                categoriaDao.listarPorEmpresa(
+                        idEmpresa
+                );
+
+        if (lista != null) {
+
+            for (
+                    Categoria cat
+                    : lista
+            ) {
+
+                cbxCategoria.addItem(
+                        cat
+                );
+            }
+        }
     }
 
 
@@ -2223,16 +2289,15 @@ public class PanelProductos extends JPanel {
         btnGuardarpro.addActionListener(
                 e -> {
 
+                    Categoria categoriaSeleccionada =
+                            (Categoria)
+                                    cbxCategoria.getSelectedItem();
+
+
                     if (
-                            cbxCategoria
-                                    .getSelectedIndex()
-                                    == 0
+                            categoriaSeleccionada == null
                             ||
-                            "-- Seleccione --"
-                                    .equals(
-                                            cbxCategoria
-                                                    .getSelectedItem()
-                                    )
+                            categoriaSeleccionada.getIdCategoria() == 0
                     ) {
 
                         JOptionPane.showMessageDialog(
@@ -2353,9 +2418,8 @@ public class PanelProductos extends JPanel {
 
 
                             pro.setCategoria(
-                                    cbxCategoria
-                                            .getSelectedItem()
-                                            .toString()
+                                    categoriaSeleccionada
+                                            .getNombre()
                             );
 
 
@@ -2415,7 +2479,8 @@ public class PanelProductos extends JPanel {
 
 
                             pro.setIdCategoria(
-                                    idCategoriaActual
+                                    categoriaSeleccionada
+                                            .getIdCategoria()
                             );
 
 
@@ -2590,16 +2655,15 @@ public class PanelProductos extends JPanel {
                     }
 
 
+                    Categoria categoriaSeleccionada =
+                            (Categoria)
+                                    cbxCategoria.getSelectedItem();
+
+
                     if (
-                            cbxCategoria
-                                    .getSelectedIndex()
-                                    == 0
+                            categoriaSeleccionada == null
                             ||
-                            "-- Seleccione --"
-                                    .equals(
-                                            cbxCategoria
-                                                    .getSelectedItem()
-                                    )
+                            categoriaSeleccionada.getIdCategoria() == 0
                     ) {
 
                         JOptionPane.showMessageDialog(
@@ -2689,9 +2753,8 @@ public class PanelProductos extends JPanel {
 
 
                             pro.setCategoria(
-                                    cbxCategoria
-                                            .getSelectedItem()
-                                            .toString()
+                                    categoriaSeleccionada
+                                            .getNombre()
                             );
 
 
@@ -2756,7 +2819,8 @@ public class PanelProductos extends JPanel {
 
 
                             pro.setIdCategoria(
-                                    idCategoriaActual
+                                    categoriaSeleccionada
+                                            .getIdCategoria()
                             );
 
 

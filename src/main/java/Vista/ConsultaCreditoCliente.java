@@ -20,7 +20,7 @@ import Utilidades.TablaBotonEliminarProducto;
 
 public class ConsultaCreditoCliente extends JFrame {
 private static int idEmpresaActiva;
-
+private Runnable onCerrarCallback;   // 👈 AGREGAR ESTA LÍNEA
     private JTextField txtBuscar3;
     private JTable tableProductos;
     private DefaultTableModel modeloProductos;
@@ -51,6 +51,17 @@ private double totalPagarCreditos = 0.0;
         setLayout(null);
 
         initComponentes();
+        // ========================================================
+    // AL CERRAR ESTA VENTANA, AVISAR AL PANEL PADRE
+    // ========================================================
+    addWindowListener(new WindowAdapter() {
+        @Override
+        public void windowClosed(WindowEvent e) {
+            if (onCerrarCallback != null) {
+                onCerrarCallback.run();
+            }
+        }
+    });
     }
 public static void setIdEmpresaActiva(int idEmpresa) {
     idEmpresaActiva = idEmpresa;
@@ -409,7 +420,9 @@ private void listarProductos() {
         });
     }
     // En ConsultaCreditoCliente.java
-
+     public void setOnCerrarCallback(Runnable callback) {
+    this.onCerrarCallback = callback;
+}
 public void limpiarCampos() {
     txtRuc.setText("");
     txtNombre.setText("");

@@ -1626,3 +1626,22 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2026-08-14T04:21:40.305 - INFO - Pool HikariCP inicializado con entorno: prod
 2026-08-14T04:21:46.049 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
 2026-08-14T04:30:10.918 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2026-08-15T22:30:37.543 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-15T22:30:58.084 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-15T22:31:09.988 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-08-15T22:47:09.016 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-15T22:47:15.813 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-08-16T00:45:21.584 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-16T00:45:26.499 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-08-16T00:49:50.039 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-16T00:49:55.375 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-08-16T00:59:41.627 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-16T00:59:49.905 - ERROR - Intento de login fallido: victorluishernandez92@gmail.com | Empresa: 1 - 
+2026-08-16T01:00:02.975 - ERROR - Intento de login fallido: efren@gmail.com | Empresa: 1 - 
+2026-08-16T01:00:08.791 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-08-16T01:21:07.821 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-16T01:21:12.652 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-08-16T01:29:58.826 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-16T01:30:07.512 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-08-16T01:31:36.404 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-16T01:31:42.046 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22

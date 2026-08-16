@@ -1219,6 +1219,7 @@ public class CreditoClienteController {
                         0
                 );
 
+        consulta.setOnCerrarCallback(this::limpiarCliente);   // 👈 AGREGAR ESTA LÍNEA
 
         consulta.setVisible(true);
     }
