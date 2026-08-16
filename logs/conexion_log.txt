@@ -1645,3 +1645,11 @@ The last packet sent successfully to the server was 0 milliseconds ago. The driv
 2026-08-16T01:30:07.512 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
 2026-08-16T01:31:36.404 - INFO - Pool HikariCP inicializado con entorno: prod
 2026-08-16T01:31:42.046 - INFO - Usuario válido: Efren Rodriguez | Empresa: 22
+2026-08-16T02:22:31.876 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-16T02:22:50.071 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2026-08-16T02:25:51.985 - INFO - Pool HikariCP inicializado con entorno: prod
+2026-08-16T02:25:56.727 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2026-08-16T02:34:38.752 - INFO - Pool HikariCP inicializado correctamente. Entorno: prod
+2026-08-16T02:34:43.276 - INFO - Usuario válido: victor luis hernandez | Empresa: 1
+2026-08-16T02:37:40.575 - INFO - Pool HikariCP inicializado correctamente. Entorno: prod
+2026-08-16T02:37:46.480 - INFO - Usuario válido: victor luis hernandez | Empresa: 1

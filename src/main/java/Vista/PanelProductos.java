@@ -819,7 +819,7 @@ public class PanelProductos extends JPanel {
 
         btnEditarpro =
                 new JButton(
-                        "📝 Editar"
+                        "📝 Actualizar"
                 );
 
         btnEliminarPro =
