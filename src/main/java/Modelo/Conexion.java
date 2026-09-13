@@ -51,9 +51,9 @@ public class Conexion {
             try {
 
                 // 🔹 Seleccionar archivo según el entorno
-                String file = environment.equalsIgnoreCase("prod")
-                        ? "config/config.prod.properties"
-                        : "config/config.local.properties";
+              String file = environment.equalsIgnoreCase("prod")
+        ? "config/config.prod.properties"   // si es prod → archivo de prod
+        : "config/config.local.properties"; // si no → archivo local
 
                 try (InputStream input =
                              Conexion.class.getClassLoader().getResourceAsStream(file)) {
@@ -86,7 +86,7 @@ public class Conexion {
                     config.setMaximumPoolSize(10);
 
                     // Conexiones mínimas que Hikari mantiene disponibles
-                    config.setMinimumIdle(2);
+                    config.setMinimumIdle(0);
 
                     /*
                      * Tu servidor MySQL tiene:
@@ -98,17 +98,20 @@ public class Conexion {
                      */
 
                     // 🔹 Cerrar conexiones inactivas después de 10 segundos
-                    config.setIdleTimeout(10_000);
+                    config.setIdleTimeout(15_000);
 
 
                     // 🔹 Reciclar conexiones antes del wait_timeout de MySQL
-                    config.setMaxLifetime(15_000);
+                    config.setMaxLifetime(18_000);
 
                     // 🔹 Esperar máximo 30 segundos por una conexión
                     config.setMaxLifetime(30_000);
 
                     // 🔹 Tiempo máximo para validar una conexión
                     config.setValidationTimeout(5_000);
+                    
+                    // Necesario cuando minimumIdle=0: evita que Hikari se queje
+                    config.setKeepaliveTime(0);
 
                     // =========================================================
                     // 🔹 CREAR POOL
